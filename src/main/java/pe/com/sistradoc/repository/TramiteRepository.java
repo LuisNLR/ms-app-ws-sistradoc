@@ -3,9 +3,9 @@ package pe.com.sistradoc.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import pe.com.sistradoc.model.AreaEntidad;
+import pe.com.sistradoc.model.Tramite;
 
 @Repository
-public interface AreaEntidadRepository extends JpaRepository<AreaEntidad, Long>{
+public interface TramiteRepository extends JpaRepository<Tramite, Long> {
 
 }
