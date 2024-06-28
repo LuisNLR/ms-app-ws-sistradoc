@@ -1,0 +1,25 @@
+2024-06-28 13:03:50,999 INFO [restartedMain] org.springframework.boot.StartupInfoLogger : Starting StartApplication using Java 11.0.18 on DESKTOP-8E5IKJ3 with PID 11220 (D:\Tools\Desarrollos\git projects\ms-app-ws-sistradoc\target\classes started by USER in D:\Tools\Desarrollos\git projects\ms-app-ws-sistradoc)
+2024-06-28 13:03:51,007 DEBUG [restartedMain] org.springframework.boot.StartupInfoLogger : Running with Spring Boot v2.7.11, Spring v5.3.27
+2024-06-28 13:03:51,008 INFO [restartedMain] org.springframework.boot.SpringApplication : No active profile set, falling back to 1 default profile: "default"
+2024-06-28 13:03:56,908 INFO [restartedMain] org.springframework.boot.StartupInfoLogger : Started StartApplication in 6.622 seconds (JVM running for 8.542)
+2024-06-28 13:04:06,659 INFO [http-nio-8090-exec-2] pe.com.sistradoc.controller.MaintenanceController : Mensaje de prueba desde 'pe.com.sistradoc.controller.MaintenanceController'
+2024-06-28 13:07:53,423 INFO [restartedMain] org.springframework.boot.StartupInfoLogger : Starting StartApplication using Java 11.0.18 on DESKTOP-8E5IKJ3 with PID 24208 (D:\Tools\Desarrollos\git projects\ms-app-ws-sistradoc\target\classes started by USER in D:\Tools\Desarrollos\git projects\ms-app-ws-sistradoc)
+2024-06-28 13:07:53,427 DEBUG [restartedMain] org.springframework.boot.StartupInfoLogger : Running with Spring Boot v2.7.11, Spring v5.3.27
+2024-06-28 13:07:53,428 INFO [restartedMain] org.springframework.boot.SpringApplication : No active profile set, falling back to 1 default profile: "default"
+2024-06-28 13:07:57,559 INFO [restartedMain] org.springframework.boot.StartupInfoLogger : Started StartApplication in 4.668 seconds (JVM running for 5.867)
+2024-06-28 13:08:01,533 INFO [http-nio-8090-exec-1] pe.com.sistradoc.controller.MaintenanceController : Mensaje de prueba desde 'pe.com.sistradoc.controller.MaintenanceController'
+2024-06-28 13:54:12,451 INFO [restartedMain] org.springframework.boot.StartupInfoLogger : Starting StartApplication using Java 11.0.18 on DESKTOP-8E5IKJ3 with PID 12756 (D:\Tools\Desarrollos\git projects\ms-app-ws-sistradoc\target\classes started by USER in D:\Tools\Desarrollos\git projects\ms-app-ws-sistradoc)
+2024-06-28 13:54:12,456 DEBUG [restartedMain] org.springframework.boot.StartupInfoLogger : Running with Spring Boot v2.7.11, Spring v5.3.27
+2024-06-28 13:54:12,457 INFO [restartedMain] org.springframework.boot.SpringApplication : No active profile set, falling back to 1 default profile: "default"
+2024-06-28 13:54:16,678 INFO [restartedMain] org.springframework.boot.StartupInfoLogger : Started StartApplication in 4.698 seconds (JVM running for 6.128)
+2024-06-28 13:54:23,293 INFO [http-nio-8090-exec-2] pe.com.sistradoc.controller.MaintenanceController : Mensaje de prueba desde 'pe.com.sistradoc.controller.MaintenanceController'
+2024-06-28 13:54:27,807 INFO [http-nio-8090-exec-3] pe.com.sistradoc.controller.MaintenanceController : Mensaje de prueba desde 'pe.com.sistradoc.controller.MaintenanceController'
+2024-06-28 13:54:55,112 INFO [http-nio-8090-exec-4] pe.com.sistradoc.controller.MaintenanceController : Mensaje de prueba desde 'pe.com.sistradoc.controller.MaintenanceController'
+2024-06-28 13:58:54,519 INFO [restartedMain] org.springframework.boot.StartupInfoLogger : Starting StartApplication using Java 11.0.18 on DESKTOP-8E5IKJ3 with PID 23292 (D:\Tools\Desarrollos\git projects\ms-app-ws-sistradoc\target\classes started by USER in D:\Tools\Desarrollos\git projects\ms-app-ws-sistradoc)
+2024-06-28 13:58:54,520 DEBUG [restartedMain] org.springframework.boot.StartupInfoLogger : Running with Spring Boot v2.7.11, Spring v5.3.27
+2024-06-28 13:58:54,521 INFO [restartedMain] org.springframework.boot.SpringApplication : No active profile set, falling back to 1 default profile: "default"
+2024-06-28 13:58:58,574 INFO [restartedMain] org.springframework.boot.StartupInfoLogger : Started StartApplication in 4.499 seconds (JVM running for 5.593)
+2024-06-28 14:10:45,702 INFO [restartedMain] org.springframework.boot.StartupInfoLogger : Starting StartApplication using Java 11.0.18 on DESKTOP-8E5IKJ3 with PID 10600 (D:\Tools\Desarrollos\git projects\ms-app-ws-sistradoc\target\classes started by USER in D:\Tools\Desarrollos\git projects\ms-app-ws-sistradoc)
+2024-06-28 14:10:45,703 DEBUG [restartedMain] org.springframework.boot.StartupInfoLogger : Running with Spring Boot v2.7.11, Spring v5.3.27
+2024-06-28 14:10:45,704 INFO [restartedMain] org.springframework.boot.SpringApplication : No active profile set, falling back to 1 default profile: "default"
+2024-06-28 14:10:49,756 INFO [restartedMain] org.springframework.boot.StartupInfoLogger : Started StartApplication in 4.49 seconds (JVM running for 5.622)

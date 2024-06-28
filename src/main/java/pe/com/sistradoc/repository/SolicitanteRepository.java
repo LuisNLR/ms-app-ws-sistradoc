@@ -7,5 +7,7 @@ import pe.com.sistradoc.model.Solicitante;
 
 @Repository
 public interface SolicitanteRepository extends JpaRepository<Solicitante, Long> {
+	
+	Solicitante findByNumeroDocumento(String numeroDocumento);
 
 }
