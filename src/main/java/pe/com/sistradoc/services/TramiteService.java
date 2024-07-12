@@ -4,19 +4,21 @@ import java.sql.SQLException;
 
 import org.hibernate.service.spi.ServiceException;
 
+import pe.com.sistradoc.dto.TramiteDTO;
 import pe.com.sistradoc.model.Tramite;
 import pe.com.sistradoc.model.TramiteMovimiento;
+import pe.com.sistradoc.utils.ValidateService;
 
 public interface TramiteService {
 
-	public void registrarTramite(Tramite tramite) throws SQLException, ServiceException;
+	public ValidateService registrarTramite(TramiteDTO tramite) throws SQLException, ServiceException;
 	
-	public void derivarTramite(TramiteMovimiento movimiento) throws SQLException, ServiceException;
+	public ValidateService derivarTramite(TramiteMovimiento movimiento) throws SQLException, ServiceException;
 	
-	public void rececepcionarTramite(TramiteMovimiento movimiento) throws SQLException, ServiceException;
+	public ValidateService rececepcionarTramite(TramiteMovimiento movimiento) throws SQLException, ServiceException;
 	
-	public void devolverTramite(TramiteMovimiento movimiento) throws SQLException, ServiceException;
+	public ValidateService devolverTramite(TramiteMovimiento movimiento) throws SQLException, ServiceException;
 	
-	public void finalizarTramite(Tramite tramite) throws SQLException, ServiceException;
+	public ValidateService finalizarTramite(Tramite tramite) throws SQLException, ServiceException;
 	
 }

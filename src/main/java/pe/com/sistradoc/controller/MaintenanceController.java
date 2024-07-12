@@ -13,12 +13,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.com.sistradoc.dto.SolicitanteDTO;
+import pe.com.sistradoc.dto.TipoTramiteDTO;
 import pe.com.sistradoc.model.Dependencia;
 import pe.com.sistradoc.model.DiaNoLaboral;
 import pe.com.sistradoc.repository.DependenciaRepository;
 import pe.com.sistradoc.repository.DiaNoLaboralRepository;
 import pe.com.sistradoc.services.SolicitanteService;
+import pe.com.sistradoc.services.TipoTramiteService;
 import pe.com.sistradoc.utils.ResponseService;
+import pe.com.sistradoc.utils.ValidateService;
 
 @RestController
 @RequestMapping("/api")
@@ -34,6 +37,10 @@ public class MaintenanceController {
 	
 	@Autowired
 	private SolicitanteService solicitanteService;
+	
+	@Autowired
+	private TipoTramiteService tipoTramiteService;
+	
 	
 	@GetMapping("/allNonWorkingDays")
 	private List<DiaNoLaboral> allDays() {
@@ -61,19 +68,51 @@ public class MaintenanceController {
 				solicitante = new SolicitanteDTO();
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			LOGGER.error("Error generado al intentar obtener  '{}'", documentNumber);
+			LOGGER.error(e.getMessage());
+			LOGGER.error(e.getLocalizedMessage(), e);
 			e.printStackTrace();
 		} 
 		
 		return solicitante;
 	}
 	
+	@GetMapping("/getTipoTramite/{idTipoTramite}")
+	private TipoTramiteDTO getTipoTramite(@PathVariable("idTipoTramite") Long idTipoTramite) {
+		LOGGER.info("Mensaje de prueba desde '{}'", MaintenanceController.class.getName());
+		TipoTramiteDTO tipoTramiteDto = null;
+		try {
+			tipoTramiteDto = tipoTramiteService.obtenerTipoTramite(idTipoTramite);
+			if(tipoTramiteDto==null) {
+				tipoTramiteDto = new TipoTramiteDTO();
+			}
+		} catch (Exception e) {
+			LOGGER.error("Error generado al intentar obtener  '{}'", idTipoTramite);
+			LOGGER.error(e.getMessage());
+			LOGGER.error(e.getLocalizedMessage(), e);
+			e.printStackTrace();
+		} 
+		
+		return tipoTramiteDto;
+	}
+	
+	@GetMapping("/getListTipoTramite")
+	private List<TipoTramiteDTO> listTipoTramite() {
+		List<TipoTramiteDTO> list = tipoTramiteService.listTipoTramite();
+		return list;
+	}
+	
 	@PostMapping("/registerOrUpdateSolicitant")
 	private ResponseService registerOrUpdateSolicitante(@RequestBody SolicitanteDTO solicDTO) {
 		ResponseService response = new ResponseService();
 		try {
-			solicitanteService.registrarSolicitante(solicDTO);
-			response.setMensaje("Registro exitoso");
+			ValidateService validate = solicitanteService.registrarSolicitante(solicDTO);
+			if(validate.isIsvalid()) {
+				response.setStatus(200);
+			}
+			response.setMensaje(validate.getMsj());
+			response.setFlag(validate.isIsvalid());
+			
 		} catch (Exception e) {
 			response.setMensaje(e.getMessage());
 			e.printStackTrace();

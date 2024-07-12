@@ -5,10 +5,11 @@ import java.sql.SQLException;
 import org.hibernate.service.spi.ServiceException;
 
 import pe.com.sistradoc.dto.SolicitanteDTO;
+import pe.com.sistradoc.utils.ValidateService;
 
-public interface SolicitanteService {
+public interface SolicitanteService /*extends ValidateService*/{
 	
-	public void registrarSolicitante(SolicitanteDTO solicitante) throws SQLException, ServiceException;
+	public ValidateService registrarSolicitante(SolicitanteDTO solicitante) throws SQLException, ServiceException;
 	
 	public SolicitanteDTO obtenerSolicitante(String numeroDocumento) throws SQLException, ServiceException;
 

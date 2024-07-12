@@ -8,4 +8,6 @@ import pe.com.sistradoc.model.TipoTramite;
 @Repository
 public interface TipoTramiteRepository extends JpaRepository<TipoTramite, Long> {
 
+	TipoTramite findByIdTipoTramite(Long id);
+	
 }
