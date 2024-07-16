@@ -97,10 +97,12 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 		movimiento.setEstadoMovimiento(Utils.estadoMovimientoRegistrado);
 		movimiento.setTramite(tramite);
 		
+		
 		//Registro de tramite y movimiento
 		tramiteRepository.save(tramite);
 		
 		movimientoRepository.save(movimiento);
+		
 		return validate;
 	}
 

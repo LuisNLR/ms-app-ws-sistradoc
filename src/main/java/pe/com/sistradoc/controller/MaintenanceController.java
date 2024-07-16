@@ -12,12 +12,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import pe.com.sistradoc.dto.DependenciaDTO;
 import pe.com.sistradoc.dto.SolicitanteDTO;
 import pe.com.sistradoc.dto.TipoTramiteDTO;
 import pe.com.sistradoc.model.Dependencia;
 import pe.com.sistradoc.model.DiaNoLaboral;
 import pe.com.sistradoc.repository.DependenciaRepository;
 import pe.com.sistradoc.repository.DiaNoLaboralRepository;
+import pe.com.sistradoc.services.DependenciaService;
 import pe.com.sistradoc.services.SolicitanteService;
 import pe.com.sistradoc.services.TipoTramiteService;
 import pe.com.sistradoc.utils.ResponseService;
@@ -41,6 +43,9 @@ public class MaintenanceController {
 	@Autowired
 	private TipoTramiteService tipoTramiteService;
 	
+	@Autowired
+	private DependenciaService dependenciaService;
+	
 	
 	@GetMapping("/allNonWorkingDays")
 	private List<DiaNoLaboral> allDays() {
@@ -58,7 +63,7 @@ public class MaintenanceController {
 		return list;
 	}
 	
-	@GetMapping("/getRequester/{documentNumber}")
+	@GetMapping("/getSolicitant/{documentNumber}")
 	private SolicitanteDTO getSolicitante(@PathVariable("documentNumber") String documentNumber) {
 		LOGGER.info("Mensaje de prueba desde '{}'", MaintenanceController.class.getName());
 		SolicitanteDTO solicitante = null;
@@ -75,6 +80,24 @@ public class MaintenanceController {
 		} 
 		
 		return solicitante;
+	}
+	
+	@PostMapping("/registerOrUpdateSolicitant")
+	private ResponseService registerOrUpdateSolicitante(@RequestBody SolicitanteDTO solicDTO) {
+		ResponseService response = new ResponseService();
+		try {
+			ValidateService validate = solicitanteService.registrarSolicitante(solicDTO);
+			if(validate.isIsvalid()) {
+				response.setStatus(200);
+			}
+			response.setMensaje(validate.getMsj());
+			response.setFlag(validate.isIsvalid());
+			
+		} catch (Exception e) {
+			response.setMensaje(e.getMessage());
+			e.printStackTrace();
+		}
+		return response;
 	}
 	
 	@GetMapping("/getTipoTramite/{idTipoTramite}")
@@ -102,22 +125,30 @@ public class MaintenanceController {
 		return list;
 	}
 	
-	@PostMapping("/registerOrUpdateSolicitant")
-	private ResponseService registerOrUpdateSolicitante(@RequestBody SolicitanteDTO solicDTO) {
-		ResponseService response = new ResponseService();
+	@GetMapping("/getDependencia/{idDependencia}")
+	private DependenciaDTO getDependencia(@PathVariable("idDependencia") Long idDependencia) {
+		LOGGER.info("Mensaje de prueba desde '{}'", MaintenanceController.class.getName());
+		DependenciaDTO dependenciaDto = null;
 		try {
-			ValidateService validate = solicitanteService.registrarSolicitante(solicDTO);
-			if(validate.isIsvalid()) {
-				response.setStatus(200);
+			dependenciaDto = dependenciaService.obtenerDependencia(idDependencia);
+			if(dependenciaDto==null) {
+				dependenciaDto = new DependenciaDTO();
 			}
-			response.setMensaje(validate.getMsj());
-			response.setFlag(validate.isIsvalid());
-			
 		} catch (Exception e) {
-			response.setMensaje(e.getMessage());
+			LOGGER.error("Error generado al intentar obtener  '{}'", idDependencia);
+			LOGGER.error(e.getMessage());
+			LOGGER.error(e.getLocalizedMessage(), e);
 			e.printStackTrace();
 		}
-		return response;
+		
+		return dependenciaDto;
 	}
+	
+	@GetMapping("/getListDependencia")
+	private List<DependenciaDTO> listDependencia() {
+		List<DependenciaDTO> list = dependenciaService.listDependencia();
+		return list;
+	}
+	
 	
 }
