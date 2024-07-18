@@ -66,11 +66,11 @@ public class MaintenanceController {
 	@GetMapping("/getSolicitant/{documentNumber}")
 	private SolicitanteDTO getSolicitante(@PathVariable("documentNumber") String documentNumber) {
 		LOGGER.info("Mensaje de prueba desde '{}'", MaintenanceController.class.getName());
-		SolicitanteDTO solicitante = null;
+		SolicitanteDTO solicitanteDto = null;
 		try {
-			solicitante = solicitanteService.obtenerSolicitante(documentNumber);
-			if(solicitante==null) {
-				solicitante = new SolicitanteDTO();
+			solicitanteDto = solicitanteService.obtenerSolicitante(documentNumber);
+			if(solicitanteDto==null) {
+				solicitanteDto = new SolicitanteDTO();
 			}
 		} catch (Exception e) {
 			LOGGER.error("Error generado al intentar obtener  '{}'", documentNumber);
@@ -79,7 +79,7 @@ public class MaintenanceController {
 			e.printStackTrace();
 		} 
 		
-		return solicitante;
+		return solicitanteDto;
 	}
 	
 	@PostMapping("/registerOrUpdateSolicitant")

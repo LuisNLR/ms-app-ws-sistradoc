@@ -25,9 +25,9 @@ public class TramiteMovimiento {
 	@Column(name = "IDX_MOVI_TRAM")
 	private Long idMovimiento;
 	
-	@Column(name = "FEC_AYUD_MOVI")
+	@Column(name = "FEC_DERI_MOVI_POST")
 	@CreatedDate
-	private Date fechaAyuda;
+	private Date fechaDerivacionPosterior;
 	
 	@Column(name = "FEC_DERI_MOVI")
 	@CreatedDate
@@ -67,12 +67,12 @@ public class TramiteMovimiento {
 		return idMovimiento;
 	}
 
-	public Date getFechaAyuda() {
-		return fechaAyuda;
+	public Date getFechaDerivacionPosterior() {
+		return fechaDerivacionPosterior;
 	}
 
-	public void setFechaAyuda(Date fechaAyuda) {
-		this.fechaAyuda = fechaAyuda;
+	public void setFechaDerivacionPosterior(Date fechaDerivacionPosterior) {
+		this.fechaDerivacionPosterior = fechaDerivacionPosterior;
 	}
 
 	public Date getFechaDerivacion() {
