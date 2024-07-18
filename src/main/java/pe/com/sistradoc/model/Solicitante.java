@@ -27,10 +27,10 @@ public class Solicitante {
 	private String nombreSolicitante;
 	
 	@Column(name = "TXT_APEX_PATE")
-	private String ApellidoPaterno;
+	private String apellidoPaterno;
 	
 	@Column(name = "TXT_APEX_MATE")
-	private String ApellidoMaterno;
+	private String apellidoMaterno;
 	
 	@Column(name = "TXT_MAIL_SOLI")
 	private String mail;
@@ -77,19 +77,19 @@ public class Solicitante {
 	}
 
 	public String getApellidoPaterno() {
-		return ApellidoPaterno;
+		return apellidoPaterno;
 	}
 
 	public void setApellidoPaterno(String apellidoPaterno) {
-		ApellidoPaterno = apellidoPaterno;
+		this.apellidoPaterno = apellidoPaterno;
 	}
 
 	public String getApellidoMaterno() {
-		return ApellidoMaterno;
+		return apellidoMaterno;
 	}
 
 	public void setApellidoMaterno(String apellidoMaterno) {
-		ApellidoMaterno = apellidoMaterno;
+		this.apellidoMaterno = apellidoMaterno;
 	}
 
 	public String getMail() {

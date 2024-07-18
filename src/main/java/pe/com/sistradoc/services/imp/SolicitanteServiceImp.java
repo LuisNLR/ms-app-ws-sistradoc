@@ -25,55 +25,55 @@ public class SolicitanteServiceImp extends ValidateServiceImp implements Solicit
 	SolicitanteRepository solicitanteRepository;
 	
 	@Override
-	public ValidateService registrarSolicitante(SolicitanteDTO solicitante) throws SQLException, ServiceException {
+	public ValidateService registrarSolicitante(SolicitanteDTO solicitanteDto) throws SQLException, ServiceException {
 		ValidateService validate = new ValidateServiceImp();
 		validate.setIsvalid(true);
 		validate.setMsj("Registro de Solicitante exitoso");
 		
-		if(solicitante==null) {
+		if(solicitanteDto==null) {
 			validate.setIsvalid(false);
 			validate.setMsj("No se ha creado el solicitante");
-		}else if(solicitante.getTipoSolicitante()==null || solicitante.getTipoSolicitante().isEmpty()) {
+		}else if(solicitanteDto.getTipoSolicitante()==null || solicitanteDto.getTipoSolicitante().isEmpty()) {
 			validate.setIsvalid(false);
 			validate.setMsj("Ingrese tipo de solicitante");
-		}else if(solicitante.getNumeroDocumento()==null || solicitante.getNumeroDocumento().isEmpty()) {
+		}else if(solicitanteDto.getNumeroDocumento()==null || solicitanteDto.getNumeroDocumento().isEmpty()) {
 			validate.setIsvalid(false);
 			validate.setMsj("Ingrese número de documento");
-		}else if(solicitante.getTipoDocumento()==null || solicitante.getTipoDocumento().isEmpty()) {
+		}else if(solicitanteDto.getTipoDocumento()==null || solicitanteDto.getTipoDocumento().isEmpty()) {
 			validate.setIsvalid(false);
 			validate.setMsj("Ingrese tipo de documento");
-		}else if(solicitante.getNombreSolicitante()==null || solicitante.getNombreSolicitante().isEmpty()) {
+		}else if(solicitanteDto.getNombreSolicitante()==null || solicitanteDto.getNombreSolicitante().isEmpty()) {
 			validate.setIsvalid(false);
 			validate.setMsj("Ingrese Nombre del solicitante");
-		}else if(solicitante.getTipoSolicitante().equals(Utils.tipoSolicitantePersona) && 
-				(solicitante.getApellidoPaterno()==null || solicitante.getApellidoPaterno().isEmpty())) {
+		}else if(solicitanteDto.getTipoSolicitante().equals(Utils.tipoSolicitantePersona) && 
+				(solicitanteDto.getApellidoPaterno()==null || solicitanteDto.getApellidoPaterno().isEmpty())) {
 			validate.setIsvalid(false);
 			validate.setMsj("Ingrese Apellido paterno del solicitante");
-		}else if(solicitante.getTipoSolicitante().equals(Utils.tipoSolicitantePersona) && 
-				(solicitante.getApellidoMaterno()==null || solicitante.getApellidoMaterno().isEmpty())) {
+		}else if(solicitanteDto.getTipoSolicitante().equals(Utils.tipoSolicitantePersona) && 
+				(solicitanteDto.getApellidoMaterno()==null || solicitanteDto.getApellidoMaterno().isEmpty())) {
 			validate.setIsvalid(false);
 			validate.setMsj("Ingrese Apellido materno del solicitante");
-		}else if(solicitante.getTipoSolicitante().equals(Utils.tipoSolicitanteEntidad) && 
-				(solicitante.getRepresentante()==null || solicitante.getRepresentante().isEmpty())) {
+		}else if(solicitanteDto.getTipoSolicitante().equals(Utils.tipoSolicitanteEntidad) && 
+				(solicitanteDto.getRepresentante()==null || solicitanteDto.getRepresentante().isEmpty())) {
 			validate.setIsvalid(false);
 			validate.setMsj("Ingrese el nombre del representante");
 		}
 		
-		Solicitante solic = new Solicitante();
-		solic.setNumeroDocumento(solicitante.getNumeroDocumento());
-		solic.setNombreSolicitante(solicitante.getNombreSolicitante());
-		solic.setTipoDocumento(solicitante.getTipoDocumento());
-		solic.setTipoSolicitante(solicitante.getTipoSolicitante());
-		solic.setApellidoMaterno(solicitante.getApellidoMaterno());
-		solic.setApellidoPaterno(solicitante.getApellidoPaterno());
-		solic.setDireccion(solicitante.getDireccion());
-		solic.setMail(solicitante.getMail());
-		solic.setRepresentante(solicitante.getRepresentante());
-		solic.setTelefono(solicitante.getTelefono());
+		Solicitante solicitante = new Solicitante();
+		solicitante.setNumeroDocumento(solicitanteDto.getNumeroDocumento());
+		solicitante.setNombreSolicitante(solicitanteDto.getNombreSolicitante());
+		solicitante.setTipoDocumento(solicitanteDto.getTipoDocumento());
+		solicitante.setTipoSolicitante(solicitanteDto.getTipoSolicitante());
+		solicitante.setApellidoMaterno(solicitanteDto.getApellidoMaterno());
+		solicitante.setApellidoPaterno(solicitanteDto.getApellidoPaterno());
+		solicitante.setDireccion(solicitanteDto.getDireccion());
+		solicitante.setMail(solicitanteDto.getMail());
+		solicitante.setRepresentante(solicitanteDto.getRepresentante());
+		solicitante.setTelefono(solicitanteDto.getTelefono());
 		
 		try {
 			if(validate.isIsvalid()) {
-				solicitanteRepository.save(solic);
+				solicitanteRepository.save(solicitante);
 			}
 		} catch (Exception sE) {
 			validate.setIsvalid(false);

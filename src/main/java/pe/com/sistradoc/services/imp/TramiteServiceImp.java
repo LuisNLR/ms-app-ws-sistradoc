@@ -49,8 +49,8 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 		TipoTramite tipoTramite = null;
 		Solicitante solicitante = null;
 		try {
-			tipoTramite = tipoTramiteRepository.findByIdTipoTramite(tramiteDto.getTipoTramite_ID());
-			solicitante = solicitanteRepository.findByNumeroDocumento(tramiteDto.getSolicitante_ID());
+			tipoTramite = tipoTramiteRepository.findByIdTipoTramite(tramiteDto.gettipoTramiteId());
+			solicitante = solicitanteRepository.findByNumeroDocumento(tramiteDto.getsolicitanteId());
 		} catch (Exception e) {
 			// TODO: handle exception
 		}

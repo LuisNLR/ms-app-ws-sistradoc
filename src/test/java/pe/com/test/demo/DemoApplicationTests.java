@@ -43,7 +43,12 @@ class DemoApplicationTests {
 	@Test
 	void getTipoTramiteWithMokito() {
 		TipoTramiteService tipoTramiteService = Mockito.mock(TipoTramiteServiceImp.class);
-		Mockito.when(tipoTramiteService.obtenerTipoTramite(Long.valueOf(0))).thenReturn(new TipoTramiteDTO(Long.valueOf(0), "Tipo Tramite Mockito", Double.valueOf(0.00), Integer.valueOf(1), Utils.estadoTramiteObservado));
+		Mockito.when(tipoTramiteService.obtenerTipoTramite(Long.valueOf(0)))
+				.thenReturn(new TipoTramiteDTO(Long.valueOf(0), 
+											   "Tipo Tramite Mockito", 
+											   Double.valueOf(0.00), 
+											   Integer.valueOf(1), 
+											   Utils.estadoGenericoHabilitado));
 		
 		String nombreTipoTramite = tipoTramiteService.obtenerTipoTramite(Long.valueOf(0)).getNombreTipoTramite();
 		assertEquals(nombreTipoTramite, "Tipo Tramite Mockito");

@@ -24,5 +24,8 @@ public class Utils {
 	//Tipos de solicitante
 	public static final String tipoSolicitantePersona = "PERSONA";
 	public static final String tipoSolicitanteEntidad = "ENTIDAD";
+	
+	public static final String estadoGenericoHabilitado = "H";
+	public static final String estadoGenericoDeshabilitado = "D";
 
 }

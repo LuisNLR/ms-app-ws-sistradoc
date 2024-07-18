@@ -15,8 +15,8 @@ public class TramiteDTO {
 	private String referencia;
 	private String estadoTramite;
 	private String tipoDocumento;
-	private Long tipoTramite_ID;
-	private String solicitante_ID;
+	private Long tipoTramiteId;
+	private String solicitanteId;
 	
 	public String getCodigoTramite() {
 		return codigoTramite;
@@ -84,17 +84,17 @@ public class TramiteDTO {
 	public void setTipoDocumento(String tipoDocumento) {
 		this.tipoDocumento = tipoDocumento;
 	}
-	public Long getTipoTramite_ID() {
-		return tipoTramite_ID;
+	public Long gettipoTramiteId() {
+		return tipoTramiteId;
 	}
-	public void setTipoTramite_ID(Long tipoTramite_ID) {
-		this.tipoTramite_ID = tipoTramite_ID;
+	public void settipoTramiteId(Long tipoTramiteId) {
+		this.tipoTramiteId = tipoTramiteId;
 	}
-	public String getSolicitante_ID() {
-		return solicitante_ID;
+	public String getsolicitanteId() {
+		return solicitanteId;
 	}
-	public void setSolicitante_ID(String solicitante_ID) {
-		this.solicitante_ID = solicitante_ID;
+	public void setsolicitanteId(String solicitanteId) {
+		this.solicitanteId = solicitanteId;
 	}
 
 }

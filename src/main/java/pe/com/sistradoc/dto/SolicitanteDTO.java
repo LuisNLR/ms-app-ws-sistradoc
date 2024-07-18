@@ -6,8 +6,8 @@ public class SolicitanteDTO {
 	private String tipoDocumento;
 	private String tipoSolicitante;
 	private String nombreSolicitante;
-	private String ApellidoPaterno;
-	private String ApellidoMaterno;
+	private String apellidoPaterno;
+	private String apellidoMaterno;
 	private String mail;
 	private String direccion;
 	private String telefono;
@@ -38,16 +38,16 @@ public class SolicitanteDTO {
 		this.nombreSolicitante = nombreSolicitante;
 	}
 	public String getApellidoPaterno() {
-		return ApellidoPaterno;
+		return apellidoPaterno;
 	}
 	public void setApellidoPaterno(String apellidoPaterno) {
-		ApellidoPaterno = apellidoPaterno;
+		this.apellidoPaterno = apellidoPaterno;
 	}
 	public String getApellidoMaterno() {
-		return ApellidoMaterno;
+		return apellidoMaterno;
 	}
 	public void setApellidoMaterno(String apellidoMaterno) {
-		ApellidoMaterno = apellidoMaterno;
+		this.apellidoMaterno = apellidoMaterno;
 	}
 	public String getMail() {
 		return mail;
