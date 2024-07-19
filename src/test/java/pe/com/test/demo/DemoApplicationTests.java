@@ -10,6 +10,7 @@ import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
+import pe.com.sistradoc.dto.DependenciaDTO;
 import pe.com.sistradoc.dto.TipoTramiteDTO;
 import pe.com.sistradoc.services.DependenciaService;
 import pe.com.sistradoc.services.TipoTramiteService;
@@ -38,6 +39,12 @@ class DemoApplicationTests {
 	void getDependency() {
 		String nombreDependencia = dependenciaService.obtenerDependencia(Long.valueOf(1)).getNombreDependencia();
 		assertEquals(nombreDependencia, "Mesa de partes");
+	}
+	
+	@Test
+	void getDependencyByTipoTramite() {
+		DependenciaDTO dependencia = dependenciaService.obtenerDependenciaByTipoTramite(Integer.valueOf(1), Long.valueOf(2));
+		assertEquals(dependencia.getNombreDependencia(), "Registro civil");
 	}
 	
 	@Test

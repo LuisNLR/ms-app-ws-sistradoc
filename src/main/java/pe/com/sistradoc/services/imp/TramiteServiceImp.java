@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pe.com.sistradoc.dto.TramiteDTO;
+import pe.com.sistradoc.dto.TramiteMovimientoDTO;
 import pe.com.sistradoc.model.Solicitante;
 import pe.com.sistradoc.model.TipoTramite;
 import pe.com.sistradoc.model.Tramite;
@@ -107,7 +108,7 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 	}
 
 	@Override
-	public ValidateService derivarTramite(TramiteMovimiento movimiento) throws SQLException, ServiceException {
+	public ValidateService derivarTramite(TramiteMovimientoDTO movimiento) throws SQLException, ServiceException {
 		// Registrar movimiento del trámite
 		
 		movimientoRepository.save(movimiento);
@@ -115,13 +116,13 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 	}
 
 	@Override
-	public ValidateService rececepcionarTramite(TramiteMovimiento movimiento) throws SQLException, ServiceException {
+	public ValidateService rececepcionarTramite(TramiteMovimientoDTO movimiento) throws SQLException, ServiceException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ValidateService devolverTramite(TramiteMovimiento movimiento) throws SQLException, ServiceException {
+	public ValidateService devolverTramite(TramiteMovimientoDTO movimiento) throws SQLException, ServiceException {
 		// TODO Auto-generated method stub
 		return null;
 	}

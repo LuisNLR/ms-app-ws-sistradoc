@@ -144,6 +144,25 @@ public class MaintenanceController {
 		return dependenciaDto;
 	}
 	
+	@GetMapping("/getDependenciaByTipoTramite/{nroPaso}/{idTipoTramite}")
+	private DependenciaDTO getDependenciaByTipoTramite(@PathVariable("nroPaso") Integer nroPaso, @PathVariable("idTipoTramite") Long idTipoTramite) {
+		LOGGER.info("Mensaje de prueba desde '{}'", MaintenanceController.class.getName());
+		DependenciaDTO dependenciaDto = null;
+		try {
+			dependenciaDto = dependenciaService.obtenerDependenciaByTipoTramite(nroPaso, idTipoTramite);
+			if(dependenciaDto==null) {
+				dependenciaDto = new DependenciaDTO();
+			}
+		} catch (Exception e) {
+			LOGGER.error("Error generado al intentar obtener  '{}'", idTipoTramite);
+			LOGGER.error(e.getMessage());
+			LOGGER.error(e.getLocalizedMessage(), e);
+			e.printStackTrace();
+		}
+		
+		return dependenciaDto;
+	}
+	
 	@GetMapping("/getListDependencia")
 	private List<DependenciaDTO> listDependencia() {
 		List<DependenciaDTO> list = dependenciaService.listDependencia();

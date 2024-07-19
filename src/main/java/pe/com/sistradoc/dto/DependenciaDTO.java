@@ -1,22 +1,20 @@
 package pe.com.sistradoc.dto;
 
-import pe.com.sistradoc.model.AreaEntidad;
-
 public class DependenciaDTO {
 	
 	private Long idDependencia;
 	private String nombreDependencia;
-	private AreaEntidad areaEntidad;
+	private AreaEntidadDTO areaEntidadDto;
 	
 	public DependenciaDTO() {
 		super();
 	}
 
-	public DependenciaDTO(Long idDependencia, String nombreDependencia, AreaEntidad areaEntidad) {
+	public DependenciaDTO(Long idDependencia, String nombreDependencia, AreaEntidadDTO areaEntidad) {
 		super();
 		this.idDependencia = idDependencia;
 		this.nombreDependencia = nombreDependencia;
-		this.areaEntidad = areaEntidad;
+		this.areaEntidadDto = areaEntidad;
 	}
 
 	public Long getIdDependencia() {
@@ -35,12 +33,12 @@ public class DependenciaDTO {
 		this.nombreDependencia = nombreDependencia;
 	}
 
-	public AreaEntidad getAreaEntidad() {
-		return areaEntidad;
+	public AreaEntidadDTO getAreaEntidadDto() {
+		return areaEntidadDto;
 	}
 
-	public void setAreaEntidad(AreaEntidad areaEntidad) {
-		this.areaEntidad = areaEntidad;
+	public void setAreaEntidadDto(AreaEntidadDTO areaEntidadDto) {
+		this.areaEntidadDto = areaEntidadDto;
 	}
 
 }
