@@ -60,12 +60,12 @@ public class DependenciaServiceImp implements DependenciaService {
 	public DependenciaDTO obtenerDependenciaByTipoTramite(Integer nroPaso, Long idTipoTramite) {
 		DependenciaDTO dependenciaDto = new DependenciaDTO();
 		
-		DependenciaByTipoTramite dependencia = dependenciaRepository.findDependenciaByTipoTramite(nroPaso, idTipoTramite);
+		DependenciaByTipoTramite dependenciaByTipoTramite = dependenciaRepository.findDependenciaByTipoTramite(nroPaso, idTipoTramite);
 		try {
-			if(dependencia!=null) {
-				dependenciaDto.setIdDependencia(dependencia.getIdDependencia());
-				dependenciaDto.setNombreDependencia(dependencia.getNombreDependencia());
-				AreaEntidadDTO areaEntidad = new AreaEntidadDTO(dependencia.getIdArea(), dependencia.getNombreArea());
+			if(dependenciaByTipoTramite!=null) {
+				dependenciaDto.setIdDependencia(dependenciaByTipoTramite.getIdDependencia());
+				dependenciaDto.setNombreDependencia(dependenciaByTipoTramite.getNombreDependencia());
+				AreaEntidadDTO areaEntidad = new AreaEntidadDTO(dependenciaByTipoTramite.getIdArea(), dependenciaByTipoTramite.getNombreArea());
 				dependenciaDto.setAreaEntidadDto(areaEntidad);
 			}else {
 				dependenciaDto.setIdDependencia(Long.valueOf(0));

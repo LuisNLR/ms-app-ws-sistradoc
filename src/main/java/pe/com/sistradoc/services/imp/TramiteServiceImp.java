@@ -1,6 +1,8 @@
 package pe.com.sistradoc.services.imp;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import org.hibernate.service.spi.ServiceException;
 import org.slf4j.Logger;
@@ -8,16 +10,22 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pe.com.sistradoc.dto.DependenciaDTO;
 import pe.com.sistradoc.dto.TramiteDTO;
 import pe.com.sistradoc.dto.TramiteMovimientoDTO;
+import pe.com.sistradoc.model.Dependencia;
 import pe.com.sistradoc.model.Solicitante;
 import pe.com.sistradoc.model.TipoTramite;
 import pe.com.sistradoc.model.Tramite;
+import pe.com.sistradoc.model.TramiteCode;
 import pe.com.sistradoc.model.TramiteMovimiento;
+import pe.com.sistradoc.repository.DependenciaRepository;
 import pe.com.sistradoc.repository.SolicitanteRepository;
 import pe.com.sistradoc.repository.TipoTramiteRepository;
 import pe.com.sistradoc.repository.TramiteMovimientoRepository;
 import pe.com.sistradoc.repository.TramiteRepository;
+import pe.com.sistradoc.services.DependenciaService;
+import pe.com.sistradoc.services.SolicitanteService;
 import pe.com.sistradoc.services.TramiteService;
 import pe.com.sistradoc.utils.Utils;
 import pe.com.sistradoc.utils.ValidateService;
@@ -40,23 +48,35 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 	@Autowired
 	private TipoTramiteRepository tipoTramiteRepository;
 	
+	@Autowired
+	private SolicitanteService solicitanteService;
+	
+	@Autowired
+	private DependenciaService dependenciaService;
+	
+	@Autowired
+	private DependenciaRepository dependenciaRepository;
+	
 	@Override
-	public ValidateService registrarTramite(TramiteDTO tramiteDto) throws SQLException, ServiceException {
+	public ValidateService registrarTramite(TramiteDTO tramiteDto, DependenciaDTO dependenciaDto) throws ServiceException {
 		ValidateService validate = new ValidateServiceImp();
 		validate.setIsvalid(true);
 		validate.setMsj("Registro de tramite exitoso");
+		
+		ValidateService validateSolicitante = null;
 		
 		//Obtención de valores necesarios
 		TipoTramite tipoTramite = null;
 		Solicitante solicitante = null;
 		try {
-			tipoTramite = tipoTramiteRepository.findByIdTipoTramite(tramiteDto.gettipoTramiteId());
-			solicitante = solicitanteRepository.findByNumeroDocumento(tramiteDto.getsolicitanteId());
+			validateSolicitante = solicitanteService.registrarSolicitante(tramiteDto.getSolicitanteDto());
+			tipoTramite = tipoTramiteRepository.findByIdTipoTramite(tramiteDto.getTipoTramiteDto().getIdTipoTramite());
+			solicitante = solicitanteRepository.findByNumeroDocumento(tramiteDto.getSolicitanteDto().getNumeroDocumento());
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		
-		//Validaciones funcionales
+
+		//Validaciones funcionales para el registro de trámite
 		if(tramiteDto==null) {
 			validate.setIsvalid(false);
 			validate.setMsj("No se ha creado el tramite");
@@ -78,32 +98,42 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 		}else if(tramiteDto.getNumeroFolios()<=0) {
 			validate.setIsvalid(false);
 			validate.setMsj("Ingrese la cantidad de folios presentados");
+		}else if(!validateSolicitante.isIsvalid()) {
+			validate.setMsj(validateSolicitante.getMsj());
+			validate.setIsvalid(validateSolicitante.isIsvalid());
+		}else if(tipoTramite.getIdTipoTramite().equals(Long.valueOf(1)) && dependenciaDto==null) {
+			validate.setIsvalid(false);
+			validate.setMsj("Asigne una dependencia para el trámite sin efecto administrativo");
+		}else {
+			TramiteCode tramiteCode = tramiteRepository.getCodeTramite();
+			String codigoTramite = generateCode(tramiteCode.getCodigoTramite());
+			
+			Tramite tramite = new Tramite(codigoTramite, tramiteDto.getAsunto(), tramiteDto.getFechaRegistro(), 
+										  tramiteDto.getNumeroFolios(), tramiteDto.getReferencia(), Utils.estadoTramiteEnTramite, 
+										  tramiteDto.getTipoDocumento(), tipoTramite, solicitante);
+			tramiteRepository.save(tramite);
+			
+			Dependencia dependencia=null;
+			if(tipoTramite.getIdTipoTramite()!=Long.valueOf(1)) {
+				DependenciaDTO dependenciaDtoTT;
+				try {
+					dependenciaDtoTT = dependenciaService.obtenerDependenciaByTipoTramite(Integer.valueOf(1), tipoTramite.getIdTipoTramite());
+					if(dependenciaDtoTT!=null) {
+						dependencia = dependenciaRepository.findByIdDependencia(dependenciaDtoTT.getIdDependencia());
+					}
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+			}else if(dependenciaDto!=null) {
+				dependencia = dependenciaRepository.findByIdDependencia(dependenciaDto.getIdDependencia());
+			}
+			
+			TramiteMovimiento movimiento = new TramiteMovimiento(tramite.getFechaRegistro(), Utils.motivoEnvioRegistro, 
+																 Integer.valueOf(1), Integer.valueOf(1), 
+																 Utils.flagEstadoActivo, Utils.estadoMovimientoRegistrado, 
+																 dependencia, tramite);
+			movimientoRepository.save(movimiento);
 		}
-		
-		//Seteo de valores - Trámite
-		Tramite tramite = new Tramite();
-		tramite.setArchivado(tramiteDto.getArchivado());
-		tramite.setAsunto(tramiteDto.getAsunto());
-		tramite.setCodigoTramite(tramiteDto.getCodigoTramite());
-		tramite.setEstadoTramite(Utils.estadoTramiteEnTramite);
-		tramite.setFechaRegistro(tramiteDto.getFechaRegistro());
-		tramite.setNumeroFolios(tramiteDto.getNumeroFolios());
-		tramite.setSolicitante(solicitante);
-		tramite.setTipoDocumento(tramiteDto.getTipoDocumento());
-		tramite.setTipoTramite(tipoTramite);
-		
-		
-		//Seteo de valores - Movimiento
-		TramiteMovimiento movimiento = new TramiteMovimiento();
-		movimiento.setEstadoMovimiento(Utils.estadoMovimientoRegistrado);
-		movimiento.setTramite(tramite);
-		
-		
-		//Registro de tramite y movimiento
-		tramiteRepository.save(tramite);
-		
-		movimientoRepository.save(movimiento);
-		
 		return validate;
 	}
 
@@ -111,7 +141,6 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 	public ValidateService derivarTramite(TramiteMovimientoDTO movimiento) throws SQLException, ServiceException {
 		// Registrar movimiento del trámite
 		
-		movimientoRepository.save(movimiento);
 		return null;
 	}
 
@@ -131,6 +160,19 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 	public ValidateService finalizarTramite(Tramite tramite) throws SQLException, ServiceException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	private static String generateCode(String nro) {
+		//Obtener y formatear fecha
+		LocalDate fechaActual = LocalDate.now();
+		DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyMMdd");
+        String fechaFormateada = fechaActual.format(formato);
+        //Obtener numero correlativo
+        String ceros = "00000";
+        int longitudNro = nro.length();
+        String numero = ceros.substring(longitudNro) + nro;
+        
+        return "TR".concat(fechaFormateada).concat(numero);
 	}
 
 }

@@ -27,5 +27,10 @@ public class Utils {
 	
 	public static final String estadoGenericoHabilitado = "H";
 	public static final String estadoGenericoDeshabilitado = "D";
-
+	
+	public static final String motivoEnvioRegistro = "Se registró como inicio de trámite";
+	
+	public static final String flagEstadoActivo = "1";
+	public static final String flagEstadoInactivo = "0";
+	
 }

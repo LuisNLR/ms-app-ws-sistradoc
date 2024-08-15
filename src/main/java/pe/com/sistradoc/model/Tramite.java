@@ -10,7 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
@@ -20,7 +19,6 @@ public class Tramite {
 	
 	@Id
 	@Column(name = "TXT_CODI_TRAM")
-	@CreatedDate
 	private String codigoTramite;
 	
 	@Column(name = "TXT_ARCH_TRAM")
@@ -36,11 +34,10 @@ public class Tramite {
 	private String motivoAnulacion;
 	
 	@Column(name = "FEC_INGR_TRAM")
-	@CreatedDate
+//	@CreatedDate
 	private Date fechaRegistro;
 	
 	@Column(name = "FEC_TERM_TRAM")
-	@CreatedDate
 	private Date fechaTermino;
 	
 	@Column(name = "NUM_FOLI_TRAM")
@@ -63,6 +60,24 @@ public class Tramite {
 	@JoinColumn(name = "FK1_SOLI_NUME_DOCU")
 	private Solicitante solicitante;
 
+	public Tramite() {
+		super();
+	}
+	
+	public Tramite(String codigoTramite, String asunto, Date fechaRegistro, Integer numeroFolios, String referencia,
+			String estadoTramite, String tipoDocumento, TipoTramite tipoTramite, Solicitante solicitante) {
+		super();
+		this.codigoTramite = codigoTramite;
+		this.asunto = asunto;
+		this.fechaRegistro = fechaRegistro;
+		this.numeroFolios = numeroFolios;
+		this.referencia = referencia;
+		this.estadoTramite = estadoTramite;
+		this.tipoDocumento = tipoDocumento;
+		this.tipoTramite = tipoTramite;
+		this.solicitante = solicitante;
+	}
+	
 	public String getCodigoTramite() {
 		return codigoTramite;
 	}

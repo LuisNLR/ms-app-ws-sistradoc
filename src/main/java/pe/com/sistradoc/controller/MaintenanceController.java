@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import pe.com.sistradoc.dto.DependenciaDTO;
 import pe.com.sistradoc.dto.SolicitanteDTO;
 import pe.com.sistradoc.dto.TipoTramiteDTO;
+import pe.com.sistradoc.dto.TramiteDTO;
+import pe.com.sistradoc.dto.TramiteRegisterDTO;
 import pe.com.sistradoc.model.Dependencia;
 import pe.com.sistradoc.model.DiaNoLaboral;
 import pe.com.sistradoc.repository.DependenciaRepository;
@@ -22,6 +24,7 @@ import pe.com.sistradoc.repository.DiaNoLaboralRepository;
 import pe.com.sistradoc.services.DependenciaService;
 import pe.com.sistradoc.services.SolicitanteService;
 import pe.com.sistradoc.services.TipoTramiteService;
+import pe.com.sistradoc.services.TramiteService;
 import pe.com.sistradoc.utils.ResponseService;
 import pe.com.sistradoc.utils.ValidateService;
 
@@ -45,6 +48,9 @@ public class MaintenanceController {
 	
 	@Autowired
 	private DependenciaService dependenciaService;
+	
+	@Autowired
+	private TramiteService tramiteService;
 	
 	
 	@GetMapping("/allNonWorkingDays")
@@ -169,5 +175,26 @@ public class MaintenanceController {
 		return list;
 	}
 	
+	@PostMapping("/registerTramite")
+	private ResponseService registerTramite(@RequestBody TramiteRegisterDTO tramiteRegisterDto) {
+		ResponseService response = new ResponseService();
+		TramiteDTO tramiteDto = null;
+		DependenciaDTO dependenciaDto = null;
+		try {
+			tramiteDto = tramiteRegisterDto.getTramiteDto();
+			dependenciaDto = tramiteRegisterDto.getDependenciaDto();
+			ValidateService validate = tramiteService.registrarTramite(tramiteDto, dependenciaDto);
+			if(validate.isIsvalid()) {
+				response.setStatus(200);
+			}
+			response.setMensaje(validate.getMsj());
+			response.setFlag(validate.isIsvalid());
+			
+		} catch (Exception e) {
+			response.setMensaje(e.getMessage());
+			e.printStackTrace();
+		}
+		return response;
+	}
 	
 }

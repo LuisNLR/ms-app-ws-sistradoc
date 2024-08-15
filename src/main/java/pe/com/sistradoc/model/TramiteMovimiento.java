@@ -12,7 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
@@ -26,15 +25,12 @@ public class TramiteMovimiento {
 	private Long idMovimiento;
 	
 	@Column(name = "FEC_DERI_MOVI_POST")
-	@CreatedDate
 	private Date fechaDerivacionPosterior;
 	
 	@Column(name = "FEC_DERI_MOVI")
-	@CreatedDate
 	private Date fechaDerivacion;
 	
 	@Column(name = "FEC_RECE_MOVI")
-	@CreatedDate
 	private Date fechaRecepcion;
 	
 	@Column(name = "TXT_MOTI_ENVI")
@@ -62,6 +58,23 @@ public class TramiteMovimiento {
 	@OneToOne
 	@JoinColumn(name = "FK1_TRAM_IDX_TRAM")
 	private Tramite tramite;
+
+	public TramiteMovimiento() {
+		super();
+	}
+	
+	public TramiteMovimiento(Date fechaDerivacion, String motivoEnvio, Integer numeroMovimiento, Integer pasoActual,
+			String ubicacionActual, String estadoMovimiento, Dependencia dependencia, Tramite tramite) {
+		super();
+		this.fechaDerivacion = fechaDerivacion;
+		this.motivoEnvio = motivoEnvio;
+		this.numeroMovimiento = numeroMovimiento;
+		this.pasoActual = pasoActual;
+		this.ubicacionActual = ubicacionActual;
+		this.estadoMovimiento = estadoMovimiento;
+		this.dependencia = dependencia;
+		this.tramite = tramite;
+	}
 
 	public Long getIdMovimiento() {
 		return idMovimiento;
