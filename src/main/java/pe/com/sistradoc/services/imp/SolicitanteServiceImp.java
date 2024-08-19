@@ -30,33 +30,39 @@ public class SolicitanteServiceImp extends ValidateServiceImp implements Solicit
 		validate.setIsvalid(true);
 		validate.setMsj("Registro de Solicitante exitoso");
 		
-		if(solicitanteDto==null) {
-			validate.setIsvalid(false);
-			validate.setMsj("No se ha creado el solicitante");
-		}else if(solicitanteDto.getTipoSolicitante()==null || solicitanteDto.getTipoSolicitante().isEmpty()) {
-			validate.setIsvalid(false);
-			validate.setMsj("Ingrese tipo de solicitante");
-		}else if(solicitanteDto.getNumeroDocumento()==null || solicitanteDto.getNumeroDocumento().isEmpty()) {
-			validate.setIsvalid(false);
-			validate.setMsj("Ingrese número de documento");
-		}else if(solicitanteDto.getTipoDocumento()==null || solicitanteDto.getTipoDocumento().isEmpty()) {
-			validate.setIsvalid(false);
-			validate.setMsj("Ingrese tipo de documento");
-		}else if(solicitanteDto.getNombreSolicitante()==null || solicitanteDto.getNombreSolicitante().isEmpty()) {
-			validate.setIsvalid(false);
-			validate.setMsj("Ingrese Nombre del solicitante");
-		}else if(solicitanteDto.getTipoSolicitante().equals(Utils.tipoSolicitantePersona) && 
-				(solicitanteDto.getApellidoPaterno()==null || solicitanteDto.getApellidoPaterno().isEmpty())) {
-			validate.setIsvalid(false);
-			validate.setMsj("Ingrese Apellido paterno del solicitante");
-		}else if(solicitanteDto.getTipoSolicitante().equals(Utils.tipoSolicitantePersona) && 
-				(solicitanteDto.getApellidoMaterno()==null || solicitanteDto.getApellidoMaterno().isEmpty())) {
-			validate.setIsvalid(false);
-			validate.setMsj("Ingrese Apellido materno del solicitante");
-		}else if(solicitanteDto.getTipoSolicitante().equals(Utils.tipoSolicitanteEntidad) && 
-				(solicitanteDto.getRepresentante()==null || solicitanteDto.getRepresentante().isEmpty())) {
-			validate.setIsvalid(false);
-			validate.setMsj("Ingrese el nombre del representante");
+		if(solicitanteDto!=null && solicitanteDto.getNumeroDocumento()!=null && 
+								   !obtenerSolicitante(solicitanteDto.getNumeroDocumento()).getNumeroDocumento().equals("")) {
+			validate.setIsvalid(true);
+			validate.setMsj("Solicitante ya existe");
+		}else {
+			if(solicitanteDto==null) {
+				validate.setIsvalid(false);
+				validate.setMsj("No se ha creado el solicitante");
+			}else if(solicitanteDto.getTipoSolicitante()==null || solicitanteDto.getTipoSolicitante().isEmpty()) {
+				validate.setIsvalid(false);
+				validate.setMsj("Ingrese tipo de solicitante");
+			}else if(solicitanteDto.getNumeroDocumento()==null || solicitanteDto.getNumeroDocumento().isEmpty()) {
+				validate.setIsvalid(false);
+				validate.setMsj("Ingrese número de documento");
+			}else if(solicitanteDto.getTipoDocumento()==null || solicitanteDto.getTipoDocumento().isEmpty()) {
+				validate.setIsvalid(false);
+				validate.setMsj("Ingrese tipo de documento");
+			}else if(solicitanteDto.getNombreSolicitante()==null || solicitanteDto.getNombreSolicitante().isEmpty()) {
+				validate.setIsvalid(false);
+				validate.setMsj("Ingrese Nombre del solicitante");
+			}else if(solicitanteDto.getTipoSolicitante().equals(Utils.tipoSolicitantePersona) && 
+					(solicitanteDto.getApellidoPaterno()==null || solicitanteDto.getApellidoPaterno().isEmpty())) {
+				validate.setIsvalid(false);
+				validate.setMsj("Ingrese Apellido paterno del solicitante");
+			}else if(solicitanteDto.getTipoSolicitante().equals(Utils.tipoSolicitantePersona) && 
+					(solicitanteDto.getApellidoMaterno()==null || solicitanteDto.getApellidoMaterno().isEmpty())) {
+				validate.setIsvalid(false);
+				validate.setMsj("Ingrese Apellido materno del solicitante");
+			}else if(solicitanteDto.getTipoSolicitante().equals(Utils.tipoSolicitanteEntidad) && 
+					(solicitanteDto.getRepresentante()==null || solicitanteDto.getRepresentante().isEmpty())) {
+				validate.setIsvalid(false);
+				validate.setMsj("Para el tipo de solicitante ENTIDAD Ingrese el nombre del representante");
+			}
 		}
 		
 		Solicitante solicitante = new Solicitante();

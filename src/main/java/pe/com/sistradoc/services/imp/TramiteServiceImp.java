@@ -68,10 +68,12 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 		//Obtención de valores necesarios
 		TipoTramite tipoTramite = null;
 		Solicitante solicitante = null;
+		Dependencia dependencia=null;
 		try {
 			validateSolicitante = solicitanteService.registrarSolicitante(tramiteDto.getSolicitanteDto());
 			tipoTramite = tipoTramiteRepository.findByIdTipoTramite(tramiteDto.getTipoTramiteDto().getIdTipoTramite());
 			solicitante = solicitanteRepository.findByNumeroDocumento(tramiteDto.getSolicitanteDto().getNumeroDocumento());
+			dependencia = dependenciaRepository.findByIdDependencia(Long.valueOf(1));
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -83,6 +85,9 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 		}else if(tramiteDto.getAsunto()==null || tramiteDto.getAsunto().isEmpty()) {
 			validate.setIsvalid(false);
 			validate.setMsj("Ingrese el asunto del trámite");
+		}else if(!validateSolicitante.isIsvalid()) {
+			validate.setMsj(validateSolicitante.getMsj());
+			validate.setIsvalid(validateSolicitante.isIsvalid());
 		}else if(solicitante==null) {
 			validate.setIsvalid(false);
 			validate.setMsj("Ingrese o asigne el solicitante");
@@ -98,38 +103,19 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 		}else if(tramiteDto.getNumeroFolios()<=0) {
 			validate.setIsvalid(false);
 			validate.setMsj("Ingrese la cantidad de folios presentados");
-		}else if(!validateSolicitante.isIsvalid()) {
-			validate.setMsj(validateSolicitante.getMsj());
-			validate.setIsvalid(validateSolicitante.isIsvalid());
-		}else if(tipoTramite.getIdTipoTramite().equals(Long.valueOf(1)) && dependenciaDto==null) {
-			validate.setIsvalid(false);
-			validate.setMsj("Asigne una dependencia para el trámite sin efecto administrativo");
 		}else {
 			TramiteCode tramiteCode = tramiteRepository.getCodeTramite();
 			String codigoTramite = generateCode(tramiteCode.getCodigoTramite());
 			
-			Tramite tramite = new Tramite(codigoTramite, tramiteDto.getAsunto(), tramiteDto.getFechaRegistro(), 
-										  tramiteDto.getNumeroFolios(), tramiteDto.getReferencia(), Utils.estadoTramiteEnTramite, 
-										  tramiteDto.getTipoDocumento(), tipoTramite, solicitante);
+			Tramite tramite = new Tramite(codigoTramite, tramiteDto.getAsunto(), 
+										  tramiteDto.getFechaRegistro(), tramiteDto.getNumeroFolios(), 
+										  tramiteDto.getReferencia(), Utils.estadoTramiteEnTramite, 
+										  tramiteDto.getTipoDocumento(), tramiteDto.getObservacion(), 
+										  tipoTramite, solicitante);
 			tramiteRepository.save(tramite);
 			
-			Dependencia dependencia=null;
-			if(tipoTramite.getIdTipoTramite()!=Long.valueOf(1)) {
-				DependenciaDTO dependenciaDtoTT;
-				try {
-					dependenciaDtoTT = dependenciaService.obtenerDependenciaByTipoTramite(Integer.valueOf(1), tipoTramite.getIdTipoTramite());
-					if(dependenciaDtoTT!=null) {
-						dependencia = dependenciaRepository.findByIdDependencia(dependenciaDtoTT.getIdDependencia());
-					}
-				} catch (Exception e) {
-					// TODO: handle exception
-				}
-			}else if(dependenciaDto!=null) {
-				dependencia = dependenciaRepository.findByIdDependencia(dependenciaDto.getIdDependencia());
-			}
-			
 			TramiteMovimiento movimiento = new TramiteMovimiento(tramite.getFechaRegistro(), Utils.motivoEnvioRegistro, 
-																 Integer.valueOf(1), Integer.valueOf(1), 
+																 Integer.valueOf(1), Integer.valueOf(0), 
 																 Utils.flagEstadoActivo, Utils.estadoMovimientoRegistrado, 
 																 dependencia, tramite);
 			movimientoRepository.save(movimiento);
@@ -139,9 +125,9 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 
 	@Override
 	public ValidateService derivarTramite(TramiteMovimientoDTO movimiento) throws SQLException, ServiceException {
-		// Registrar movimiento del trámite
+		ValidateService validate = new ValidateServiceImp();
 		
-		return null;
+		return validate;
 	}
 
 	@Override

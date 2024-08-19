@@ -7,7 +7,7 @@ public class TramiteDTO {
 	private String codigoTramite;
 	private String archivado;
 	private String asunto;
-	private String observador;
+	private String observacion;
 	private String motivoAnulacion;
 	private Date fechaRegistro;
 	private Date fechaTermino;
@@ -36,11 +36,11 @@ public class TramiteDTO {
 	public void setAsunto(String asunto) {
 		this.asunto = asunto;
 	}
-	public String getObservador() {
-		return observador;
+	public String getObservacion() {
+		return observacion;
 	}
-	public void setObservador(String observador) {
-		this.observador = observador;
+	public void setObservacion(String observacion) {
+		this.observacion = observacion;
 	}
 	public String getMotivoAnulacion() {
 		return motivoAnulacion;

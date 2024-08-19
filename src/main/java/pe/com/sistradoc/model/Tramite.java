@@ -28,13 +28,12 @@ public class Tramite {
 	private String asunto;
 	
 	@Column(name = "TXT_OBSE_TRAM")
-	private String observador;
+	private String observacion;
 	
 	@Column(name = "TXT_MOTI_ANUL")
 	private String motivoAnulacion;
 	
 	@Column(name = "FEC_INGR_TRAM")
-//	@CreatedDate
 	private Date fechaRegistro;
 	
 	@Column(name = "FEC_TERM_TRAM")
@@ -64,8 +63,9 @@ public class Tramite {
 		super();
 	}
 	
-	public Tramite(String codigoTramite, String asunto, Date fechaRegistro, Integer numeroFolios, String referencia,
-			String estadoTramite, String tipoDocumento, TipoTramite tipoTramite, Solicitante solicitante) {
+	public Tramite(String codigoTramite, String asunto, Date fechaRegistro, Integer numeroFolios, 
+				   String referencia, String estadoTramite, String tipoDocumento, String observacion, 
+				   TipoTramite tipoTramite, Solicitante solicitante) {
 		super();
 		this.codigoTramite = codigoTramite;
 		this.asunto = asunto;
@@ -74,6 +74,7 @@ public class Tramite {
 		this.referencia = referencia;
 		this.estadoTramite = estadoTramite;
 		this.tipoDocumento = tipoDocumento;
+		this.observacion = observacion;
 		this.tipoTramite = tipoTramite;
 		this.solicitante = solicitante;
 	}
@@ -102,12 +103,12 @@ public class Tramite {
 		this.asunto = asunto;
 	}
 
-	public String getObservador() {
-		return observador;
+	public String getObservacion() {
+		return observacion;
 	}
 
-	public void setObservador(String observador) {
-		this.observador = observador;
+	public void setObservacion(String observacion) {
+		this.observacion = observacion;
 	}
 
 	public String getMotivoAnulacion() {
