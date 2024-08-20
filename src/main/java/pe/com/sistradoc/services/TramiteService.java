@@ -4,7 +4,6 @@ import java.sql.SQLException;
 
 import org.hibernate.service.spi.ServiceException;
 
-import pe.com.sistradoc.dto.DependenciaDTO;
 import pe.com.sistradoc.dto.TramiteDTO;
 import pe.com.sistradoc.dto.TramiteMovimientoDTO;
 import pe.com.sistradoc.model.Tramite;

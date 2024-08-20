@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import pe.com.sistradoc.dto.DependenciaDTO;
 import pe.com.sistradoc.dto.TramiteDTO;
 import pe.com.sistradoc.dto.TramiteMovimientoDTO;
 import pe.com.sistradoc.model.Dependencia;
@@ -24,7 +23,6 @@ import pe.com.sistradoc.repository.SolicitanteRepository;
 import pe.com.sistradoc.repository.TipoTramiteRepository;
 import pe.com.sistradoc.repository.TramiteMovimientoRepository;
 import pe.com.sistradoc.repository.TramiteRepository;
-import pe.com.sistradoc.services.DependenciaService;
 import pe.com.sistradoc.services.SolicitanteService;
 import pe.com.sistradoc.services.TramiteService;
 import pe.com.sistradoc.utils.Utils;
@@ -50,9 +48,6 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 	
 	@Autowired
 	private SolicitanteService solicitanteService;
-	
-	@Autowired
-	private DependenciaService dependenciaService;
 	
 	@Autowired
 	private DependenciaRepository dependenciaRepository;
