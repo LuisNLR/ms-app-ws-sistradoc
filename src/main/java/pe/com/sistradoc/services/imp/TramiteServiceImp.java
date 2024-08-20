@@ -58,7 +58,7 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 	private DependenciaRepository dependenciaRepository;
 	
 	@Override
-	public ValidateService registrarTramite(TramiteDTO tramiteDto, DependenciaDTO dependenciaDto) throws ServiceException {
+	public ValidateService registrarTramite(TramiteDTO tramiteDto) throws ServiceException {
 		ValidateService validate = new ValidateServiceImp();
 		validate.setIsvalid(true);
 		validate.setMsj("Registro de tramite exitoso");

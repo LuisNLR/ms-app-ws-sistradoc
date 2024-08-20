@@ -12,7 +12,7 @@ import pe.com.sistradoc.utils.ValidateService;
 
 public interface TramiteService {
 
-	public ValidateService registrarTramite(TramiteDTO tramiteDto,DependenciaDTO dependenciaDto) throws ServiceException;
+	public ValidateService registrarTramite(TramiteDTO tramiteDto) throws ServiceException;
 	
 	public ValidateService derivarTramite(TramiteMovimientoDTO movimiento) throws SQLException, ServiceException;
 	

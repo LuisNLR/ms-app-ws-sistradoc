@@ -179,11 +179,9 @@ public class MaintenanceController {
 	private ResponseService registerTramite(@RequestBody TramiteRegisterDTO tramiteRegisterDto) {
 		ResponseService response = new ResponseService();
 		TramiteDTO tramiteDto = null;
-		DependenciaDTO dependenciaDto = null;
 		try {
 			tramiteDto = tramiteRegisterDto.getTramiteDto();
-			dependenciaDto = tramiteRegisterDto.getDependenciaDto();
-			ValidateService validate = tramiteService.registrarTramite(tramiteDto, dependenciaDto);
+			ValidateService validate = tramiteService.registrarTramite(tramiteDto);
 			if(validate.isIsvalid()) {
 				response.setStatus(200);
 			}
