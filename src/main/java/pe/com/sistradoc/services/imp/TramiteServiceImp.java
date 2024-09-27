@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.hibernate.service.spi.ServiceException;
 import org.slf4j.Logger;
@@ -62,6 +63,7 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 	
 	@Override
 	public ValidateService registrarTramite(TramiteDTO tramiteDto) throws ServiceException {
+		LOGGER.info(":::: Proceso registrarTramite. Inicio :::: '{}' ", TramiteServiceImp.class.getName());
 		ValidateService validate = new ValidateServiceImp();
 		validate.setIsvalid(true);
 		validate.setMsj("Registro de tramite exitoso");
@@ -122,23 +124,32 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 																 Utils.flagEstadoActivo, Utils.estadoMovimientoRegistrado, 
 																 dependencia, tramite);
 			movimientoRepository.save(movimiento);
+			LOGGER.info(":::: Proceso registrarTramite. Datos - CodigoTramite. '{}' ", codigoTramite);
+			LOGGER.info(":::: Proceso registrarTramite. Datos - Solicitante. '{}' ", solicitante.getTipoDocumento() + " - " + solicitante.getNumeroDocumento());
+			LOGGER.info(":::: Proceso registrarTramite. Datos - TipoTramite. '{}' ", tipoTramite.getIdTipoTramite() + " - " + tipoTramite.getNombreTipoTramite());
 		}
+		LOGGER.info(":::: Proceso registrarTramite. Resultado '{}' ", validate.isIsvalid()+ " - " + validate.getMsj());
+		LOGGER.info(":::: Proceso registrarTramite. Final :::: '{}' ", TramiteServiceImp.class.getName());
 		return validate;
 	}
 
 	@Override
 	public ValidateService derivarTramite(TramiteMovimientoDTO movimientoDto) throws SQLException, ServiceException {
+		String correlationId = UUID.randomUUID().toString();
+		LOGGER.info(correlationId + ":::: Proceso derivarTramite. Inicio :::: '{}' ", TramiteServiceImp.class.getName());
 		ValidateService validate = new ValidateServiceImp();
 		validate.setIsvalid(true);
 		validate.setMsj("Registro de Derivación exitoso");
 		
 		TramiteMovimiento movimientoAnterior=null;
 		TramiteMovimiento movimientoNuevo=null;
-		
+		Dependencia dependenciaSiguiente = null;
 		try {
 			movimientoAnterior = movimientoRepository.findByTramiteCodigoTramiteAndUbicacionActual(movimientoDto.getTramiteDto().getCodigoTramite(), "1");
+			dependenciaSiguiente = dependenciaRepository.findDependenciaByPasoAndTipoTramite(movimientoAnterior.getPasoActual() +1, movimientoAnterior.getTramite().getTipoTramite().getIdTipoTramite());
 		}catch (Exception e) {
-			// TODO: handle exception
+			LOGGER.error(correlationId + ":::: Proceso derivarTramite. Error Mensaje :::: '{}' ", e.getMessage());
+			LOGGER.error(e.getLocalizedMessage(), e);
 		}
 		
 		if(movimientoAnterior==null) {
@@ -154,6 +165,10 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 				movimientoDto.getDependenciaDto()==null) {
 			validate.setIsvalid(false);
 			validate.setMsj("Asigne la dependencia, este tramite no tiene efecto administrativo");
+		}else if(movimientoAnterior.getTramite().getTipoTramite().getIdTipoTramite()!=Utils.valueDefaultLongOne && 
+				dependenciaSiguiente==null) {
+			validate.setIsvalid(false);
+			validate.setMsj("Dicho trámite ya no tiene más dependencias a derivar");
 		}else {
 			Date fechaDerivacion = new Date();
 			
@@ -180,8 +195,14 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 													movimientoAnterior.getTramite());
 			movimientoRepository.save(movimientoNuevo);
 			
+			LOGGER.info(correlationId + ":::: Proceso derivarTramite. Datos - CodigoTramite. '{}' ", movimientoAnterior.getTramite().getCodigoTramite());
+			LOGGER.info(correlationId + ":::: Proceso derivarTramite. Datos - TipoTramite. '{}' ", movimientoAnterior.getTramite().getTipoTramite().getIdTipoTramite() + " - " + movimientoAnterior.getTramite().getTipoTramite().getNombreTipoTramite());
+			LOGGER.info(correlationId + ":::: Proceso derivarTramite. Datos - Dependencia anterior. '{}' ", movimientoAnterior.getDependencia().getIdDependencia() + " - " + movimientoAnterior.getDependencia().getNombreDependencia());
+			LOGGER.info(correlationId + ":::: Proceso derivarTramite. Datos - Dependencia a enviar. '{}' ", dependenciaDestino.getIdDependencia() + " - " + dependenciaDestino.getNombreDependencia());
+			
 		}
-		
+		LOGGER.info(correlationId + ":::: Proceso derivarTramite. Resultado '{}' ", validate.isIsvalid()+ " - " + validate.getMsj());
+		LOGGER.info(correlationId + ":::: Proceso derivarTramite. Final :::: '{}' ", TramiteServiceImp.class.getName());
 		return validate;
 	}
 
@@ -193,6 +214,8 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 
 	@Override
 	public ValidateService devolverTramite(TramiteMovimientoDTO movimientoDto) throws SQLException, ServiceException {
+		String correlationId = UUID.randomUUID().toString();
+		LOGGER.info(correlationId + ":::: Proceso devolverTramite. Inicio :::: '{}' ", TramiteServiceImp.class.getName());
 		ValidateService validate = new ValidateServiceImp();
 		validate.setIsvalid(true);
 		validate.setMsj("Registro de Devolución exitoso");
@@ -248,13 +271,21 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 													movimientoAnterior.getTramite());
 			movimientoRepository.save(movimientoNuevo);
 			
+			LOGGER.info(correlationId + ":::: Proceso devolverTramite. Datos - CodigoTramite. '{}' ", movimientoAnterior.getTramite().getCodigoTramite());
+			LOGGER.info(correlationId + ":::: Proceso devolverTramite. Datos - TipoTramite. '{}' ", movimientoAnterior.getTramite().getTipoTramite().getIdTipoTramite() + " - " + movimientoAnterior.getTramite().getTipoTramite().getNombreTipoTramite());
+			LOGGER.info(correlationId + ":::: Proceso devolverTramite. Datos - Dependencia anterior. '{}' ", movimientoAnterior.getDependencia().getIdDependencia() + " - " + movimientoAnterior.getDependencia().getNombreDependencia());
+			LOGGER.info(correlationId + ":::: Proceso devolverTramite. Datos - Dependencia devolver. '{}' ", dependenciaDestino.getIdDependencia() + " - " + dependenciaDestino.getNombreDependencia());
+			
 		}
-		
+		LOGGER.info(correlationId + ":::: Proceso devolverTramite. Resultado '{}' ", validate.isIsvalid()+ " - " + validate.getMsj());
+		LOGGER.info(correlationId + ":::: Proceso devolverTramite. Final :::: '{}' ", TramiteServiceImp.class.getName());
 		return validate;
 	}
 
 	@Override
 	public ValidateService finalizarTramite(TramiteDTO tramiteDto) throws SQLException, ServiceException {
+		String correlationId = UUID.randomUUID().toString();
+		LOGGER.info(correlationId + ":::: Proceso finalizarTramite. Inicio :::: '{}' ", TramiteServiceImp.class.getName());
 		ValidateService validate = new ValidateServiceImp();
 		
 		validate.setIsvalid(true);
@@ -296,13 +327,22 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 		}else {
 			try {
 				tramite.setEstadoTramite(tramiteDto.getEstadoTramite());
-				tramite.setObservacion(tramite.getObservacion() + "\n" + tramiteDto.getObservacion());
+				tramite.setObservacion(tramite.getObservacion()!=null?tramite.getObservacion()+ "\n" : "" + tramiteDto.getObservacion());
 				tramite.setFechaTermino(new Date());
+				
 				tramiteRepository.save(tramite);
+				
+				LOGGER.info(correlationId + ":::: Proceso finalizarTramite. Datos - CodigoTramite. '{}' ", tramite.getCodigoTramite());
+				LOGGER.info(correlationId + ":::: Proceso finalizarTramite. Datos - TipoTramite. '{}' " ,  tramite.getTipoTramite().getIdTipoTramite() + " - " + tramite.getTipoTramite().getNombreTipoTramite());
+				LOGGER.info(correlationId + ":::: Proceso finalizarTramite. Datos - Estado Tramite. '{}' ", tramite.getEstadoTramite());
+				LOGGER.info(correlationId + ":::: Proceso finalizarTramite. Datos - Fecha Termino. '{}' ", tramite.getFechaTermino());
+				
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
 		}
+		LOGGER.info(correlationId + ":::: Proceso finalizarTramite. Resultado '{}' ", validate.isIsvalid()+ " - " + validate.getMsj());
+		LOGGER.info(correlationId + ":::: Proceso finalizarTramite. Final :::: '{}' ", TramiteServiceImp.class.getName());
 		return validate;
 	}
 	
