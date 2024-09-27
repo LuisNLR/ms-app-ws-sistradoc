@@ -16,6 +16,7 @@ import pe.com.sistradoc.dto.DependenciaDTO;
 import pe.com.sistradoc.dto.SolicitanteDTO;
 import pe.com.sistradoc.dto.TipoTramiteDTO;
 import pe.com.sistradoc.dto.TramiteDTO;
+import pe.com.sistradoc.dto.TramiteMovimientoDTO;
 import pe.com.sistradoc.dto.TramiteRegisterDTO;
 import pe.com.sistradoc.model.Dependencia;
 import pe.com.sistradoc.model.DiaNoLaboral;
@@ -54,7 +55,7 @@ public class MaintenanceController {
 	
 	
 	@GetMapping("/allNonWorkingDays")
-	private List<DiaNoLaboral> allDays() {
+	public List<DiaNoLaboral> allDays() {
 		String p="asd";
 		System.out.println(p);
 		List<DiaNoLaboral> list = repositoryNonWorkingDays.findAll(); 
@@ -63,14 +64,14 @@ public class MaintenanceController {
 	}
 	
 	@GetMapping("/allDependencys")
-	private List<Dependencia> allDependencys() {
+	public List<Dependencia> allDependencys() {
 		List<Dependencia> list = repositoryDependency.findAll(); 
 		System.out.println(list.size());
 		return list;
 	}
 	
 	@GetMapping("/getSolicitant/{documentNumber}")
-	private SolicitanteDTO getSolicitante(@PathVariable("documentNumber") String documentNumber) {
+	public SolicitanteDTO getSolicitante(@PathVariable("documentNumber") String documentNumber) {
 		LOGGER.info("Mensaje de prueba desde '{}'", MaintenanceController.class.getName());
 		SolicitanteDTO solicitanteDto = null;
 		try {
@@ -89,7 +90,7 @@ public class MaintenanceController {
 	}
 	
 	@PostMapping("/registerOrUpdateSolicitant")
-	private ResponseService registerOrUpdateSolicitante(@RequestBody SolicitanteDTO solicDTO) {
+	public ResponseService registerOrUpdateSolicitante(@RequestBody SolicitanteDTO solicDTO) {
 		ResponseService response = new ResponseService();
 		try {
 			ValidateService validate = solicitanteService.registrarSolicitante(solicDTO);
@@ -107,7 +108,7 @@ public class MaintenanceController {
 	}
 	
 	@GetMapping("/getTipoTramite/{idTipoTramite}")
-	private TipoTramiteDTO getTipoTramite(@PathVariable("idTipoTramite") Long idTipoTramite) {
+	public TipoTramiteDTO getTipoTramite(@PathVariable("idTipoTramite") Long idTipoTramite) {
 		LOGGER.info("Mensaje de prueba desde '{}'", MaintenanceController.class.getName());
 		TipoTramiteDTO tipoTramiteDto = null;
 		try {
@@ -126,13 +127,13 @@ public class MaintenanceController {
 	}
 	
 	@GetMapping("/getListTipoTramite")
-	private List<TipoTramiteDTO> listTipoTramite() {
+	public List<TipoTramiteDTO> listTipoTramite() {
 		List<TipoTramiteDTO> list = tipoTramiteService.listTipoTramite();
 		return list;
 	}
 	
 	@GetMapping("/getDependencia/{idDependencia}")
-	private DependenciaDTO getDependencia(@PathVariable("idDependencia") Long idDependencia) {
+	public DependenciaDTO getDependencia(@PathVariable("idDependencia") Long idDependencia) {
 		LOGGER.info("Mensaje de prueba desde '{}'", MaintenanceController.class.getName());
 		DependenciaDTO dependenciaDto = null;
 		try {
@@ -151,7 +152,7 @@ public class MaintenanceController {
 	}
 	
 	@GetMapping("/getDependenciaByTipoTramite/{nroPaso}/{idTipoTramite}")
-	private DependenciaDTO getDependenciaByTipoTramite(@PathVariable("nroPaso") Integer nroPaso, @PathVariable("idTipoTramite") Long idTipoTramite) {
+	public DependenciaDTO getDependenciaByTipoTramite(@PathVariable("nroPaso") Integer nroPaso, @PathVariable("idTipoTramite") Long idTipoTramite) {
 		LOGGER.info("Mensaje de prueba desde '{}'", MaintenanceController.class.getName());
 		DependenciaDTO dependenciaDto = null;
 		try {
@@ -170,18 +171,79 @@ public class MaintenanceController {
 	}
 	
 	@GetMapping("/getListDependencia")
-	private List<DependenciaDTO> listDependencia() {
+	public List<DependenciaDTO> listDependencia() {
 		List<DependenciaDTO> list = dependenciaService.listDependencia();
 		return list;
 	}
 	
 	@PostMapping("/registerTramite")
-	private ResponseService registerTramite(@RequestBody TramiteRegisterDTO tramiteRegisterDto) {
+	public ResponseService registerTramite(@RequestBody TramiteRegisterDTO tramiteRegisterDto) {
 		ResponseService response = new ResponseService();
 		TramiteDTO tramiteDto = null;
 		try {
 			tramiteDto = tramiteRegisterDto.getTramiteDto();
 			ValidateService validate = tramiteService.registrarTramite(tramiteDto);
+			if(validate.isIsvalid()) {
+				response.setStatus(200);
+			}
+			response.setMensaje(validate.getMsj());
+			response.setFlag(validate.isIsvalid());
+			
+		} catch (Exception e) {
+			response.setMensaje(e.getMessage());
+			e.printStackTrace();
+		}
+		return response;
+	}
+	
+	@PostMapping("/deriverTramite")
+	public ResponseService deriverTramite(@RequestBody TramiteMovimientoDTO tramiteDeriverDto) {
+		ResponseService response = new ResponseService();
+		try {
+			ValidateService validate = tramiteService.derivarTramite(tramiteDeriverDto);
+			if(validate.isIsvalid()) {
+				response.setStatus(200);
+			}
+			response.setMensaje(validate.getMsj());
+			response.setFlag(validate.isIsvalid());
+			
+		} catch (Exception e) {
+			response.setMensaje(e.getMessage());
+			e.printStackTrace();
+		}
+		return response;
+	}
+	
+	@GetMapping("/getListDependenciaDevolver/{codigoTramite}")
+	public List<DependenciaDTO> listDependenciaByDevolver(@PathVariable("codigoTramite") String codigoTramite) {
+		return dependenciaService.listDependenciaByDevolver(codigoTramite);
+	}
+	
+	@PostMapping("/devolverTramite")
+	public ResponseService devolverTramite(@RequestBody TramiteMovimientoDTO tramiteDeriverDto) {
+		ResponseService response = new ResponseService();
+		try {
+			ValidateService validate = tramiteService.devolverTramite(tramiteDeriverDto);
+			if(validate.isIsvalid()) {
+				response.setStatus(200);
+			}
+			response.setMensaje(validate.getMsj());
+			response.setFlag(validate.isIsvalid());
+			
+		} catch (Exception e) {
+			response.setMensaje(e.getMessage());
+			e.printStackTrace();
+		}
+		return response;
+	}
+	
+	@PostMapping("/finishedTramite")
+	public ResponseService finishedTramite(@RequestBody TramiteRegisterDTO tramiteRegisterDto) {
+		ResponseService response = new ResponseService();
+		TramiteDTO tramiteDto = null;
+		try {
+			tramiteDto = tramiteRegisterDto.getTramiteDto();
+			ValidateService validate = tramiteService.finalizarTramite(tramiteDto);
 			if(validate.isIsvalid()) {
 				response.setStatus(200);
 			}

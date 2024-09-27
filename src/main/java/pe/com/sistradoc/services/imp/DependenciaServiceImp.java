@@ -55,6 +55,20 @@ public class DependenciaServiceImp implements DependenciaService {
 													.collect(Collectors.toList());
 		return listDependenciaDto;
 	}
+	
+	@Override
+	public List<DependenciaDTO> listDependenciaByDevolver(String codigoTramite) {
+		
+		List<Dependencia> listDependencia = dependenciaRepository.listDependenciasByDevolver(codigoTramite);
+		
+		List<DependenciaDTO> listDependenciaDto = listDependencia.stream()
+													.map(dependencia -> new DependenciaDTO(dependencia.getIdDependencia(), 
+																						   dependencia.getNombreDependencia(), 
+																						   new AreaEntidadDTO(dependencia.getAreaEntidad().getIdArea(), 
+																								   			  dependencia.getAreaEntidad().getNombreArea())))
+													.collect(Collectors.toList());
+		return listDependenciaDto;
+	}
 
 	@Override
 	public DependenciaDTO obtenerDependenciaByTipoTramite(Integer nroPaso, Long idTipoTramite) {
@@ -77,6 +91,39 @@ public class DependenciaServiceImp implements DependenciaService {
 		}
 		
 		return dependenciaDto;
+	}
+	
+	@Override
+	public DependenciaDTO obtenerDependenciaByPasoAndTipoTramite(Integer nroPaso, Long idTipoTramite) {
+		DependenciaDTO dependenciaDto = new DependenciaDTO();
+		
+		Dependencia dependenciaByPasoAndTipoTramite = dependenciaRepository.findDependenciaByPasoAndTipoTramite(nroPaso, idTipoTramite);
+		try {
+			if(dependenciaByPasoAndTipoTramite!=null) {
+				dependenciaDto.setIdDependencia(dependenciaByPasoAndTipoTramite.getIdDependencia());
+				dependenciaDto.setNombreDependencia(dependenciaByPasoAndTipoTramite.getNombreDependencia());
+				AreaEntidadDTO areaEntidad = new AreaEntidadDTO(dependenciaByPasoAndTipoTramite.getAreaEntidad().getIdArea(), dependenciaByPasoAndTipoTramite.getAreaEntidad().getNombreArea());
+				dependenciaDto.setAreaEntidadDto(areaEntidad);
+			}else {
+				dependenciaDto.setIdDependencia(Long.valueOf(0));
+				dependenciaDto.setNombreDependencia("");
+				dependenciaDto.setAreaEntidadDto(new AreaEntidadDTO(Long.valueOf(0), ""));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		return dependenciaDto;
+	}
+	
+	@Override
+	public boolean isExistDependenciainFlujoTramite(List<DependenciaDTO> listDependenciaDto, DependenciaDTO dependenciaDto) {
+		for(DependenciaDTO dependencyDto : listDependenciaDto) {
+			if(dependencyDto.getIdDependencia()==dependenciaDto.getIdDependencia()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

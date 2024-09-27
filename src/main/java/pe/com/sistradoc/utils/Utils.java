@@ -4,8 +4,8 @@ public class Utils {
 	
 	//Estados que tendrá un trámite
 	public static final String estadoTramiteEnTramite = "EN TRAMITE";
-	public static final String estadoTramiteAprobadoFinalizado = "APROBADO";
-	public static final String estadoTramiteDesaprobadoFinalizado = "DESAPROBADO";
+	public static final String estadoTramiteFinalizadoAprobado = "APROBADO";
+	public static final String estadoTramiteFinalizadoDesaprobado = "DESAPROBADO";
 	public static final String estadoTramiteObservado = "OBSERVADO";
 	public static final String estadoTramiteAnulado = "ANULADO";
 	
@@ -32,5 +32,9 @@ public class Utils {
 	
 	public static final String flagEstadoActivo = "1";
 	public static final String flagEstadoInactivo = "0";
+	
+	public static final Long valueDefaultLongOne = Long.valueOf(1);
+	public static final Integer valueDefaultIntegerOne = Integer.valueOf(1);
+	public static final Integer valueDefaultIntegerZero = Integer.valueOf(0);
 	
 }
