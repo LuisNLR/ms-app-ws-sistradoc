@@ -146,7 +146,7 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 			validate.setMsj("No existe movimiento anterior");
 		}else if(movimientoDto==null) {
 			validate.setIsvalid(false);
-			validate.setMsj("No existe movimiento anterior");
+			validate.setMsj("No se ha creado el nuevo movimiento");
 		}else if(movimientoDto.getMotivoEnvio()==null || movimientoDto.getMotivoEnvio().isEmpty()) {
 			validate.setIsvalid(false);
 			validate.setMsj("Asigne un motivo para derivar dicho tramite");
@@ -222,6 +222,10 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 																	  movimientoDto.getDependenciaDto())) {
 			validate.setIsvalid(false);
 			validate.setMsj("La dependencia indicada no existe en el flujo de este trámite");
+		}else if(movimientoAnterior.getTramite().getEstadoTramite().equals(Utils.estadoTramiteFinalizadoAprobado) || 
+				 movimientoAnterior.getTramite().getEstadoTramite().equals(Utils.estadoTramiteFinalizadoDesaprobado)) {
+			validate.setIsvalid(false);
+			validate.setMsj("No se puede devolver un tramite ya finalizado");
 		}else {
 			Date fechaDerivacion = new Date();
 			
@@ -268,20 +272,31 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 		}else if(tramiteDto.getCodigoTramite()==null || tramiteDto.getCodigoTramite().isEmpty()) {
 			validate.setIsvalid(false);
 			validate.setMsj("Ingrese el código de tramite");
+		}else if(tramite==null) {
+			validate.setIsvalid(false);
+			validate.setMsj("No eixste el tramite");
 		}else if(tramite.getCodigoTramite()==null || tramite.getCodigoTramite().isEmpty()) {
 			validate.setIsvalid(false);
 			validate.setMsj("El trámite ingresado no se encuentra registrado");
+		}else if(tramite.getEstadoTramite().equals(Utils.estadoTramiteFinalizadoAprobado) || 
+				 tramite.getEstadoTramite().equals(Utils.estadoTramiteFinalizadoDesaprobado)) {
+			validate.setIsvalid(false);
+			validate.setMsj("El trámite indicado previamente ya ha sido finalizado");
+		}else if(tramite.getEstadoTramite().equals(Utils.estadoTramiteAnulado)) {
+			validate.setIsvalid(false);
+			validate.setMsj("El trámite indicado previamente ha sido anulado");
 		}else if(tramiteDto.getEstadoTramite()==null || tramiteDto.getEstadoTramite().isEmpty()) {
 			validate.setIsvalid(false);
 			validate.setMsj("Asigne el estado del trámite");
 		}else if(!isEstadoTramiteFinalized(tramiteDto.getEstadoTramite())) {
 			validate.setIsvalid(false);
 			validate.setMsj("El estado asignado no es permitido, solo puede asignarse " + 
-							 Utils.estadoTramiteFinalizadoAprobado + " ó " + 
+							 Utils.estadoTramiteFinalizadoAprobado + " ó " +
 							 Utils.estadoTramiteFinalizadoDesaprobado);
 		}else {
 			try {
 				tramite.setEstadoTramite(tramiteDto.getEstadoTramite());
+				tramite.setObservacion(tramite.getObservacion() + "\n" + tramiteDto.getObservacion());
 				tramite.setFechaTermino(new Date());
 				tramiteRepository.save(tramite);
 			} catch (Exception e) {
