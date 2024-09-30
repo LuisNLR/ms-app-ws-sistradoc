@@ -20,4 +20,6 @@ public interface TramiteService {
 	
 	public ValidateService finalizarTramite(TramiteDTO tramiteDto) throws SQLException, ServiceException;
 	
+	public ValidateService anularTramite(TramiteDTO tramiteDto) throws SQLException, ServiceException;
+	
 }

@@ -371,4 +371,65 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 		return false;
 	}
 
+	@Override
+	public ValidateService anularTramite(TramiteDTO tramiteDto) throws SQLException, ServiceException {
+		String correlationId = UUID.randomUUID().toString();
+		LOGGER.info(correlationId + ":::: Proceso anularTramite. Inicio :::: '{}' ", TramiteServiceImp.class.getName());
+		ValidateService validate = new ValidateServiceImp();
+		
+		validate.setIsvalid(true);
+		validate.setMsj("Se dió por finalizado dicho trámite");
+		Tramite tramite = null;
+		try {
+			tramite = tramiteRepository.findByCodigoTramite(tramiteDto.getCodigoTramite());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		if(tramiteDto==null) {
+			validate.setIsvalid(false);
+			validate.setMsj("No existe el tramite a finalizar");
+		}else if(tramiteDto.getCodigoTramite()==null || tramiteDto.getCodigoTramite().isEmpty()) {
+			validate.setIsvalid(false);
+			validate.setMsj("Ingrese el código de tramite");
+		}else if(tramite==null) {
+			validate.setIsvalid(false);
+			validate.setMsj("No eixste el tramite");
+		}else if(tramite.getCodigoTramite()==null || tramite.getCodigoTramite().isEmpty()) {
+			validate.setIsvalid(false);
+			validate.setMsj("El trámite ingresado no se encuentra registrado");
+		}else if(tramite.getEstadoTramite().equals(Utils.estadoTramiteFinalizadoAprobado) || 
+				 tramite.getEstadoTramite().equals(Utils.estadoTramiteFinalizadoDesaprobado)) {
+			validate.setIsvalid(false);
+			validate.setMsj("El trámite indicado previamente ya ha sido finalizado");
+		}else if(tramite.getEstadoTramite().equals(Utils.estadoTramiteAnulado)) {
+			validate.setIsvalid(false);
+			validate.setMsj("El trámite indicado anteriormente ha sido anulado");
+		}else if(tramiteDto.getMotivoAnulacion()==null || tramiteDto.getMotivoAnulacion().isEmpty()) {
+			validate.setIsvalid(false);
+			validate.setMsj("Ingrese el motivo por el que se anula dicho tramite");
+		}else {
+			try {
+				tramite.setEstadoTramite(Utils.estadoTramiteAnulado);
+				tramite.setMotivoAnulacion(tramiteDto.getMotivoAnulacion());
+				tramite.setFechaTermino(new Date());
+				
+				tramiteRepository.save(tramite);
+				
+				LOGGER.info(correlationId + ":::: Proceso anularTramite. Datos - CodigoTramite. '{}' ", tramite.getCodigoTramite());
+				LOGGER.info(correlationId + ":::: Proceso anularTramite. Datos - TipoTramite. '{}' " ,  tramite.getTipoTramite().getIdTipoTramite() + " - " + tramite.getTipoTramite().getNombreTipoTramite());
+				LOGGER.info(correlationId + ":::: Proceso anularTramite. Datos - Estado Tramite. '{}' ", tramite.getEstadoTramite());
+				LOGGER.info(correlationId + ":::: Proceso anularTramite. Datos - Fecha Termino. '{}' ", tramite.getFechaTermino());
+				
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+		
+		LOGGER.info(correlationId + ":::: Proceso anularTramite. Resultado '{}' ", validate.isIsvalid()+ " - " + validate.getMsj());
+		LOGGER.info(correlationId + ":::: Proceso anularTramite. Final :::: '{}' ", TramiteServiceImp.class.getName());
+		
+		return validate;
+	}
+
 }

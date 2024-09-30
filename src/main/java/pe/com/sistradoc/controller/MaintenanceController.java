@@ -257,4 +257,24 @@ public class MaintenanceController {
 		return response;
 	}
 	
+	@PostMapping("/anullarTramiter")
+	public ResponseService anullarTramiter(@RequestBody TramiteRegisterDTO tramiteRegisterDto) {
+		ResponseService response = new ResponseService();
+		TramiteDTO tramiteDto = null;
+		try {
+			tramiteDto = tramiteRegisterDto.getTramiteDto();
+			ValidateService validate = tramiteService.anularTramite(tramiteDto);
+			if(validate.isIsvalid()) {
+				response.setStatus(200);
+			}
+			response.setMensaje(validate.getMsj());
+			response.setFlag(validate.isIsvalid());
+			
+		} catch (Exception e) {
+			response.setMensaje(e.getMessage());
+			e.printStackTrace();
+		}
+		return response;
+	}
+	
 }
