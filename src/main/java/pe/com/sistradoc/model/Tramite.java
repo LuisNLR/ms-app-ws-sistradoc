@@ -58,6 +58,9 @@ public class Tramite {
 	@OneToOne
 	@JoinColumn(name = "FK1_SOLI_NUME_DOCU")
 	private Solicitante solicitante;
+	
+	@Column(name = "NUM_IDX_DEPE")
+	private Long idDependencia;
 
 	public Tramite() {
 		super();
@@ -181,6 +184,14 @@ public class Tramite {
 
 	public void setSolicitante(Solicitante solicitante) {
 		this.solicitante = solicitante;
+	}
+
+	public Long getIdDependencia() {
+		return idDependencia;
+	}
+
+	public void setIdDependencia(Long idDependencia) {
+		this.idDependencia = idDependencia;
 	}
 	
 }

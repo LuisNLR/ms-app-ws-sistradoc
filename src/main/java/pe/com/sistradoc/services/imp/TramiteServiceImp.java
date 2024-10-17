@@ -96,9 +96,6 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 		}else if(solicitante==null) {
 			validate.setIsvalid(false);
 			validate.setMsj("Ingrese o asigne el solicitante");
-		}else if(tramiteDto.getFechaRegistro()==null) {
-			validate.setIsvalid(false);
-			validate.setMsj("Asigne la fecha de registro");
 		}else if(tipoTramite==null) {
 			validate.setIsvalid(false);
 			validate.setMsj("Asigne el tipo de tramite");
@@ -113,7 +110,7 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 			String codigoTramite = generateCode(tramiteCode.getCodigoTramite());
 			
 			Tramite tramite = new Tramite(codigoTramite, tramiteDto.getAsunto(), 
-										  tramiteDto.getFechaRegistro(), tramiteDto.getNumeroFolios(), 
+										  new Date(), tramiteDto.getNumeroFolios(), 
 										  tramiteDto.getReferencia(), Utils.estadoTramiteEnTramite, 
 										  tramiteDto.getTipoDocumento(), tramiteDto.getObservacion(), 
 										  tipoTramite, solicitante);
@@ -124,6 +121,10 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 																 Utils.flagEstadoActivo, Utils.estadoMovimientoRegistrado, 
 																 dependencia, tramite);
 			movimientoRepository.save(movimiento);
+			
+			tramiteDto.setCodigoTramite(codigoTramite);
+			tramiteDto.setFechaRegistro(tramite.getFechaRegistro());
+			
 			LOGGER.info(":::: Proceso registrarTramite. Datos - CodigoTramite. '{}' ", codigoTramite);
 			LOGGER.info(":::: Proceso registrarTramite. Datos - Solicitante. '{}' ", solicitante.getTipoDocumento() + " - " + solicitante.getNumeroDocumento());
 			LOGGER.info(":::: Proceso registrarTramite. Datos - TipoTramite. '{}' ", tipoTramite.getIdTipoTramite() + " - " + tipoTramite.getNombreTipoTramite());

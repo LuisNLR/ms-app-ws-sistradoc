@@ -2,6 +2,9 @@ package pe.com.sistradoc.dto;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class TramiteDTO {
 	
 	private String codigoTramite;

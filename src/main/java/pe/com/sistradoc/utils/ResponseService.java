@@ -5,7 +5,7 @@ public class ResponseService {
 	private String mensaje;
 	private boolean flag;
 	private int status;
-	private Object values;
+	private Object data;
 	
 	public ResponseService() {
 		super();
@@ -18,12 +18,12 @@ public class ResponseService {
 		this.status = status;
 	}
 	
-	public ResponseService(String mensaje, boolean flag, int status, Object values) {
+	public ResponseService(String mensaje, boolean flag, int status, Object data) {
 		super();
 		this.mensaje = mensaje;
 		this.flag = flag;
 		this.status = status;
-		this.values = values;
+		this.data = data;
 	}
 
 	public String getMensaje() {
@@ -44,11 +44,11 @@ public class ResponseService {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	public Object getValues() {
-		return values;
+	public Object getData() {
+		return data;
 	}
-	public void setValues(Object values) {
-		this.values = values;
+	public void setData(Object data) {
+		this.data = data;
 	}
 
 }

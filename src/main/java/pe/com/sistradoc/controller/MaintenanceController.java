@@ -5,6 +5,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -177,7 +179,7 @@ public class MaintenanceController {
 	}
 	
 	@PostMapping("/registerTramite")
-	public ResponseService registerTramite(@RequestBody TramiteRegisterDTO tramiteRegisterDto) {
+	public ResponseEntity<ResponseService> registerTramite(@RequestBody TramiteRegisterDTO tramiteRegisterDto) {
 		ResponseService response = new ResponseService();
 		TramiteDTO tramiteDto = null;
 		try {
@@ -188,16 +190,17 @@ public class MaintenanceController {
 			}
 			response.setMensaje(validate.getMsj());
 			response.setFlag(validate.isIsvalid());
-			
+			response.setData(tramiteDto);
+			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
 			response.setMensaje(e.getMessage());
 			e.printStackTrace();
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return response;
 	}
 	
 	@PostMapping("/deriverTramite")
-	public ResponseService deriverTramite(@RequestBody TramiteMovimientoDTO tramiteDeriverDto) {
+	public ResponseEntity<ResponseService> deriverTramite(@RequestBody TramiteMovimientoDTO tramiteDeriverDto) {
 		ResponseService response = new ResponseService();
 		try {
 			ValidateService validate = tramiteService.derivarTramite(tramiteDeriverDto);
@@ -207,11 +210,13 @@ public class MaintenanceController {
 			response.setMensaje(validate.getMsj());
 			response.setFlag(validate.isIsvalid());
 			
+			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
 			response.setMensaje(e.getMessage());
 			e.printStackTrace();
+			
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return response;
 	}
 	
 	@GetMapping("/getListDependenciaDevolver/{codigoTramite}")
@@ -220,7 +225,7 @@ public class MaintenanceController {
 	}
 	
 	@PostMapping("/devolverTramite")
-	public ResponseService devolverTramite(@RequestBody TramiteMovimientoDTO tramiteDeriverDto) {
+	public ResponseEntity<ResponseService> devolverTramite(@RequestBody TramiteMovimientoDTO tramiteDeriverDto) {
 		ResponseService response = new ResponseService();
 		try {
 			ValidateService validate = tramiteService.devolverTramite(tramiteDeriverDto);
@@ -230,15 +235,17 @@ public class MaintenanceController {
 			response.setMensaje(validate.getMsj());
 			response.setFlag(validate.isIsvalid());
 			
+			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
 			response.setMensaje(e.getMessage());
 			e.printStackTrace();
+			
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return response;
 	}
 	
 	@PostMapping("/finishedTramite")
-	public ResponseService finishedTramite(@RequestBody TramiteRegisterDTO tramiteRegisterDto) {
+	public ResponseEntity<ResponseService> finishedTramite(@RequestBody TramiteRegisterDTO tramiteRegisterDto) {
 		ResponseService response = new ResponseService();
 		TramiteDTO tramiteDto = null;
 		try {
@@ -250,15 +257,16 @@ public class MaintenanceController {
 			response.setMensaje(validate.getMsj());
 			response.setFlag(validate.isIsvalid());
 			
+			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
 			response.setMensaje(e.getMessage());
 			e.printStackTrace();
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return response;
 	}
 	
 	@PostMapping("/anullarTramiter")
-	public ResponseService anullarTramiter(@RequestBody TramiteRegisterDTO tramiteRegisterDto) {
+	public ResponseEntity<ResponseService> anullarTramiter(@RequestBody TramiteRegisterDTO tramiteRegisterDto) {
 		ResponseService response = new ResponseService();
 		TramiteDTO tramiteDto = null;
 		try {
@@ -270,11 +278,13 @@ public class MaintenanceController {
 			response.setMensaje(validate.getMsj());
 			response.setFlag(validate.isIsvalid());
 			
+			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
 			response.setMensaje(e.getMessage());
 			e.printStackTrace();
+			
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return response;
 	}
 	
 }
