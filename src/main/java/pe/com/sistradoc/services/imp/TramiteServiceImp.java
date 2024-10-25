@@ -63,7 +63,8 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 	
 	@Override
 	public ValidateService registrarTramite(TramiteDTO tramiteDto) throws ServiceException {
-		LOGGER.info(":::: Proceso registrarTramite. Inicio :::: '{}' ", TramiteServiceImp.class.getName());
+		String correlationId = UUID.randomUUID().toString();
+		LOGGER.info(correlationId + ":::: Proceso registrarTramite. Inicio :::: '{}' ", TramiteServiceImp.class.getName());
 		ValidateService validate = new ValidateServiceImp();
 		validate.setIsvalid(true);
 		validate.setMsj("Registro de tramite exitoso");
@@ -80,7 +81,8 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 			solicitante = solicitanteRepository.findByNumeroDocumento(tramiteDto.getSolicitanteDto().getNumeroDocumento());
 			dependencia = dependenciaRepository.findByIdDependencia(Utils.valueDefaultLongOne);
 		} catch (Exception e) {
-			// TODO: handle exception
+			LOGGER.error(correlationId + ":::: Proceso registrarTramite. Error Mensaje :::: '{}' ", e.getMessage());
+			LOGGER.error(e.getLocalizedMessage(), e);
 		}
 
 		//Validaciones funcionales para el registro de trámite
@@ -114,13 +116,25 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 										  tramiteDto.getReferencia(), Utils.estadoTramiteEnTramite, 
 										  tramiteDto.getTipoDocumento(), tramiteDto.getObservacion(), 
 										  tipoTramite, solicitante);
-			tramiteRepository.save(tramite);
+			try {
+				tramiteRepository.save(tramite);				
+			} catch (Exception e) {
+				LOGGER.error(correlationId + ":::: Proceso registrarTramite, registro a tabla Tramite. Error Mensaje :::: '{}' ", e.getMessage());
+				LOGGER.error(e.getLocalizedMessage(), e);
+			}
+			
 			
 			TramiteMovimiento movimiento = new TramiteMovimiento(tramite.getFechaRegistro(), Utils.motivoEnvioRegistro, 
 																 Utils.valueDefaultIntegerOne, Utils.valueDefaultIntegerZero, 
 																 Utils.flagEstadoActivo, Utils.estadoMovimientoRegistrado, 
 																 dependencia, tramite);
-			movimientoRepository.save(movimiento);
+			try {
+				movimientoRepository.save(movimiento);
+			} catch (Exception e) {
+				LOGGER.error(correlationId + ":::: Proceso registrarTramite, registro a tabla movimiento. Error Mensaje :::: '{}' ", e.getMessage());
+				LOGGER.error(e.getLocalizedMessage(), e);
+			}
+			
 			
 			tramiteDto.setCodigoTramite(codigoTramite);
 			tramiteDto.setFechaRegistro(tramite.getFechaRegistro());
