@@ -4,13 +4,13 @@ public interface TramiteByDeriver {
 	
 	public String getCodigoTramite();
 	
-	public String getSolicitante();
+	public String getFechaIngreso();
 	
 	public String getTipoTramite();
 	
 	public String getAsunto();
 	
-	public String getObservacion();
+	public String getSolicitante();
 	
 	public String getDependencoiaActual();
 	
