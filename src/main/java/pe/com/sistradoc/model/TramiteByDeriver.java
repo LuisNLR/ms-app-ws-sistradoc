@@ -12,7 +12,7 @@ public interface TramiteByDeriver {
 	
 	public String getSolicitante();
 	
-	public String getDependencoiaActual();
+	public String getDependenciaActual();
 	
 	public String getDependenciaDestino();
 
