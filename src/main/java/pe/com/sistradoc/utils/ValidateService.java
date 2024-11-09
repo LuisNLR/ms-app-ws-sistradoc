@@ -9,5 +9,9 @@ public interface ValidateService {
 	public boolean isIsvalid();
 	
 	public void setIsvalid(boolean isvalid);
+	
+	public Object getData();
+	
+	public void setData(Object data);
 
 }

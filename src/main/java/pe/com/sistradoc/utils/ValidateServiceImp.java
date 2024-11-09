@@ -4,6 +4,7 @@ public class ValidateServiceImp implements ValidateService {
 
 	private String msj;
 	private boolean isvalid;
+	private Object data;
 	
 	public String getMsj() {
 		return msj;
@@ -17,6 +18,11 @@ public class ValidateServiceImp implements ValidateService {
 	public void setIsvalid(boolean isvalid) {
 		this.isvalid = isvalid;
 	}
-	
+	public Object getData() {
+		return data;
+	}
+	public void setData(Object data) {
+		this.data = data;
+	}
 	
 }

@@ -5,7 +5,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -209,6 +211,18 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 													dependenciaDestino, 
 													movimientoAnterior.getTramite());
 			movimientoRepository.save(movimientoNuevo);
+			Map<String, Object> data = new HashMap<>();
+			data.put("codigoTramite", movimientoNuevo.getTramite().getCodigoTramite());
+			data.put("asunto", movimientoNuevo.getTramite().getAsunto());
+			data.put("tipoTramite", movimientoNuevo.getTramite().getTipoTramite().getIdTipoTramite() + ". " + movimientoNuevo.getTramite().getTipoTramite().getNombreTipoTramite());
+			data.put("solicitante", movimientoNuevo.getTramite().getSolicitante().getTipoDocumento() + ". " +
+									movimientoNuevo.getTramite().getSolicitante().getNumeroDocumento() + " - " + (
+									movimientoNuevo.getTramite().getSolicitante().getTipoSolicitante().equals(Utils.tipoSolicitantePersona) ? 
+													movimientoNuevo.getTramite().getSolicitante().getNombreSolicitante() + " " + movimientoNuevo.getTramite().getSolicitante().getApellidoPaterno() + " " + movimientoNuevo.getTramite().getSolicitante().getApellidoMaterno() : 
+													movimientoNuevo.getTramite().getSolicitante().getNombreSolicitante()));
+			data.put("estado", movimientoNuevo.getEstadoMovimiento());
+			data.put("dependenciaDestino", movimientoNuevo.getDependencia().getNombreDependencia());
+			validate.setData(data);
 			
 			LOGGER.info(correlationId + ":::: Proceso derivarTramite. Datos - CodigoTramite. '{}' ", movimientoAnterior.getTramite().getCodigoTramite());
 			LOGGER.info(correlationId + ":::: Proceso derivarTramite. Datos - TipoTramite. '{}' ", movimientoAnterior.getTramite().getTipoTramite().getIdTipoTramite() + " - " + movimientoAnterior.getTramite().getTipoTramite().getNombreTipoTramite());

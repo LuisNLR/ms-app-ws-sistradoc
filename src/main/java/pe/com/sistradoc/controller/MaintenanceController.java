@@ -1,7 +1,6 @@
 package pe.com.sistradoc.controller;
 
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -209,7 +208,10 @@ public class MaintenanceController {
 			}
 			response.setMensaje(validate.getMsj());
 			response.setFlag(validate.isIsvalid());
-			
+//			Map<String, String> datos = new HashMap<>();
+//			datos.put("codigoTramite", tramiteDeriverDto.getTramiteDto().getCodigoTramite());
+//			datos.put("motivoEnvio", tramiteDeriverDto.getMotivoEnvio());
+			response.setData(validate.getData());
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
 			response.setMensaje(e.getMessage());
