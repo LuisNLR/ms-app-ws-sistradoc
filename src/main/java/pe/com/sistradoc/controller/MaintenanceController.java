@@ -236,7 +236,7 @@ public class MaintenanceController {
 			}
 			response.setMensaje(validate.getMsj());
 			response.setFlag(validate.isIsvalid());
-			
+			response.setData(validate.getData());
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
 			response.setMensaje(e.getMessage());
@@ -258,7 +258,7 @@ public class MaintenanceController {
 			}
 			response.setMensaje(validate.getMsj());
 			response.setFlag(validate.isIsvalid());
-			
+			response.setData(validate.getData());
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
 			response.setMensaje(e.getMessage());

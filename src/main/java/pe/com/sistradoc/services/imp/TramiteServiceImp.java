@@ -299,7 +299,7 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 													dependenciaDestino, 
 													movimientoAnterior.getTramite());
 			movimientoRepository.save(movimientoNuevo);
-			
+			validate.setData(movimientoNuevo);
 			LOGGER.info(correlationId + ":::: Proceso devolverTramite. Datos - CodigoTramite. '{}' ", movimientoAnterior.getTramite().getCodigoTramite());
 			LOGGER.info(correlationId + ":::: Proceso devolverTramite. Datos - TipoTramite. '{}' ", movimientoAnterior.getTramite().getTipoTramite().getIdTipoTramite() + " - " + movimientoAnterior.getTramite().getTipoTramite().getNombreTipoTramite());
 			LOGGER.info(correlationId + ":::: Proceso devolverTramite. Datos - Dependencia anterior. '{}' ", movimientoAnterior.getDependencia().getIdDependencia() + " - " + movimientoAnterior.getDependencia().getNombreDependencia());
@@ -334,7 +334,7 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 			validate.setMsj("Ingrese el código de tramite");
 		}else if(tramite==null) {
 			validate.setIsvalid(false);
-			validate.setMsj("No eixste el tramite");
+			validate.setMsj("No existe el tramite");
 		}else if(tramite.getCodigoTramite()==null || tramite.getCodigoTramite().isEmpty()) {
 			validate.setIsvalid(false);
 			validate.setMsj("El trámite ingresado no se encuentra registrado");
@@ -360,6 +360,7 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 				tramite.setFechaTermino(new Date());
 				
 				tramiteRepository.save(tramite);
+				validate.setData(tramiteDto);
 				
 				LOGGER.info(correlationId + ":::: Proceso finalizarTramite. Datos - CodigoTramite. '{}' ", tramite.getCodigoTramite());
 				LOGGER.info(correlationId + ":::: Proceso finalizarTramite. Datos - TipoTramite. '{}' " ,  tramite.getTipoTramite().getIdTipoTramite() + " - " + tramite.getTipoTramite().getNombreTipoTramite());
