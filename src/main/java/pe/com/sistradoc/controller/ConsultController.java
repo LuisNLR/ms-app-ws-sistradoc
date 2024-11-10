@@ -29,4 +29,22 @@ public class ConsultController {
 		}
 	}
 	
+	@GetMapping("/getListTramiteByDevolver")
+	public ResponseEntity<List<TramiteByDeriver>> getListTramiteByDevolver() {
+		try {
+			return new ResponseEntity<>(tramiteQueryService.getListTramiteByDevolver(), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("/getListTramiteByFinished")
+	public ResponseEntity<List<TramiteByDeriver>> getListTramiteByFinished() {
+		try {
+			return new ResponseEntity<>(tramiteQueryService.getListTramiteByFinished(), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 }

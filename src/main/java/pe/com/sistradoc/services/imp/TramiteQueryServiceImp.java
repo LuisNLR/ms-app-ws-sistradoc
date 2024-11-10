@@ -19,5 +19,15 @@ public class TramiteQueryServiceImp implements TramiteQueryService {
 	public List<TramiteByDeriver> getListTramiteByDeriver() {
 		return tramiteRepository.getListTramiteDerivar();
 	}
+	
+	@Override
+	public List<TramiteByDeriver> getListTramiteByDevolver() {
+		return tramiteRepository.getListTramiteDevolver();
+	}
+	
+	@Override
+	public List<TramiteByDeriver> getListTramiteByFinished() {
+		return tramiteRepository.getListTramiteFinished();
+	}
 
 }
