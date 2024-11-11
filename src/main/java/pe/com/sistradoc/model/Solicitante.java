@@ -8,6 +8,8 @@ import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import pe.com.sistradoc.utils.Utils;
+
 @Entity
 @Table(name = "TB_SOLI_TRAM")
 @EntityListeners(AuditingEntityListener.class)
@@ -122,6 +124,18 @@ public class Solicitante {
 
 	public void setRepresentante(String representante) {
 		this.representante = representante;
+	}
+	
+	public String getSolicitanteFullName() {
+		String solicitante = tipoDocumento + ". " + numeroDocumento;
+		String nombreCompleto = null;
+		if(tipoSolicitante.equals(Utils.tipoSolicitantePersona) ) {
+			nombreCompleto =  nombreSolicitante + " " + apellidoPaterno + " " + apellidoMaterno;
+		}else {
+			nombreCompleto =  nombreSolicitante;
+		}
+		solicitante = solicitante + " - " + nombreCompleto.toUpperCase();
+		return solicitante;
 	}
 
 }

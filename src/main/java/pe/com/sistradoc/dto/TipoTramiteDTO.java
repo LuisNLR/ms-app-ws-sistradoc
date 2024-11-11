@@ -56,5 +56,4 @@ public class TipoTramiteDTO {
 		this.estado = estado;
 	}
 	
-	
 }

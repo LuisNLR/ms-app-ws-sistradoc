@@ -5,9 +5,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -19,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import pe.com.sistradoc.dto.TramiteDTO;
 import pe.com.sistradoc.dto.TramiteMovimientoDTO;
+import pe.com.sistradoc.dto.TramiteResponseDTO;
 import pe.com.sistradoc.model.Dependencia;
 import pe.com.sistradoc.model.Solicitante;
 import pe.com.sistradoc.model.TipoTramite;
@@ -211,18 +210,6 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 													dependenciaDestino, 
 													movimientoAnterior.getTramite());
 			movimientoRepository.save(movimientoNuevo);
-			Map<String, Object> data = new HashMap<>();
-			data.put("codigoTramite", movimientoNuevo.getTramite().getCodigoTramite());
-			data.put("asunto", movimientoNuevo.getTramite().getAsunto());
-			data.put("tipoTramite", movimientoNuevo.getTramite().getTipoTramite().getIdTipoTramite() + ". " + movimientoNuevo.getTramite().getTipoTramite().getNombreTipoTramite());
-			data.put("solicitante", movimientoNuevo.getTramite().getSolicitante().getTipoDocumento() + ". " +
-									movimientoNuevo.getTramite().getSolicitante().getNumeroDocumento() + " - " + (
-									movimientoNuevo.getTramite().getSolicitante().getTipoSolicitante().equals(Utils.tipoSolicitantePersona) ? 
-													movimientoNuevo.getTramite().getSolicitante().getNombreSolicitante() + " " + movimientoNuevo.getTramite().getSolicitante().getApellidoPaterno() + " " + movimientoNuevo.getTramite().getSolicitante().getApellidoMaterno() : 
-													movimientoNuevo.getTramite().getSolicitante().getNombreSolicitante()));
-			data.put("estado", movimientoNuevo.getEstadoMovimiento());
-			data.put("dependenciaDestino", movimientoNuevo.getDependencia().getNombreDependencia());
-			validate.setData(data);
 			
 			LOGGER.info(correlationId + ":::: Proceso derivarTramite. Datos - CodigoTramite. '{}' ", movimientoAnterior.getTramite().getCodigoTramite());
 			LOGGER.info(correlationId + ":::: Proceso derivarTramite. Datos - TipoTramite. '{}' ", movimientoAnterior.getTramite().getTipoTramite().getIdTipoTramite() + " - " + movimientoAnterior.getTramite().getTipoTramite().getNombreTipoTramite());
@@ -230,6 +217,17 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 			LOGGER.info(correlationId + ":::: Proceso derivarTramite. Datos - Dependencia a enviar. '{}' ", dependenciaDestino.getIdDependencia() + " - " + dependenciaDestino.getNombreDependencia());
 			
 		}
+		
+		TramiteResponseDTO tramiteResponse = new TramiteResponseDTO(movimientoNuevo.getTramite().getCodigoTramite(), 
+																	movimientoNuevo.getTramite().getAsunto(), 
+																	movimientoNuevo.getTramite().getTipoTramite().getFullName(), 
+																	movimientoNuevo.getTramite().getSolicitante().getSolicitanteFullName(), 
+																	movimientoNuevo.getMotivoEnvio(), 
+																	movimientoAnterior.getDependencia().getNombreDependencia(), 
+																	movimientoNuevo.getDependencia().getNombreDependencia());
+		
+		validate.setData(tramiteResponse);
+		
 		LOGGER.info(correlationId + ":::: Proceso derivarTramite. Resultado '{}' ", validate.isIsvalid()+ " - " + validate.getMsj());
 		LOGGER.info(correlationId + ":::: Proceso derivarTramite. Final :::: '{}' ", TramiteServiceImp.class.getName());
 		return validate;
@@ -255,7 +253,8 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 		try {
 			movimientoAnterior = movimientoRepository.findByTramiteCodigoTramiteAndUbicacionActual(movimientoDto.getTramiteDto().getCodigoTramite(), "1");
 		}catch (Exception e) {
-			// TODO: handle exception
+			LOGGER.error(correlationId + ":::: Proceso devolverTramite. Error Mensaje :::: '{}' ", e.getMessage());
+			LOGGER.error(e.getLocalizedMessage(), e);
 		}
 		
 		if(movimientoAnterior==null) {
@@ -299,13 +298,23 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 													dependenciaDestino, 
 													movimientoAnterior.getTramite());
 			movimientoRepository.save(movimientoNuevo);
-			validate.setData(movimientoNuevo);
+			
 			LOGGER.info(correlationId + ":::: Proceso devolverTramite. Datos - CodigoTramite. '{}' ", movimientoAnterior.getTramite().getCodigoTramite());
 			LOGGER.info(correlationId + ":::: Proceso devolverTramite. Datos - TipoTramite. '{}' ", movimientoAnterior.getTramite().getTipoTramite().getIdTipoTramite() + " - " + movimientoAnterior.getTramite().getTipoTramite().getNombreTipoTramite());
 			LOGGER.info(correlationId + ":::: Proceso devolverTramite. Datos - Dependencia anterior. '{}' ", movimientoAnterior.getDependencia().getIdDependencia() + " - " + movimientoAnterior.getDependencia().getNombreDependencia());
 			LOGGER.info(correlationId + ":::: Proceso devolverTramite. Datos - Dependencia devolver. '{}' ", dependenciaDestino.getIdDependencia() + " - " + dependenciaDestino.getNombreDependencia());
 			
 		}
+		TramiteResponseDTO tramiteResponse = new TramiteResponseDTO(movimientoNuevo.getTramite().getCodigoTramite(), 
+				movimientoNuevo.getTramite().getAsunto(), 
+				movimientoNuevo.getTramite().getTipoTramite().getFullName(), 
+				movimientoNuevo.getTramite().getSolicitante().getSolicitanteFullName(), 
+				movimientoNuevo.getMotivoEnvio(), 
+				movimientoAnterior.getDependencia().getNombreDependencia(), 
+				movimientoNuevo.getDependencia().getNombreDependencia());
+
+		validate.setData(tramiteResponse);
+		
 		LOGGER.info(correlationId + ":::: Proceso devolverTramite. Resultado '{}' ", validate.isIsvalid()+ " - " + validate.getMsj());
 		LOGGER.info(correlationId + ":::: Proceso devolverTramite. Final :::: '{}' ", TramiteServiceImp.class.getName());
 		return validate;
@@ -322,55 +331,59 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 		Tramite tramite = null;
 		try {
 			tramite = tramiteRepository.findByCodigoTramite(tramiteDto.getCodigoTramite());
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		
-		if(tramiteDto==null) {
-			validate.setIsvalid(false);
-			validate.setMsj("No existe el tramite a finalizar");
-		}else if(tramiteDto.getCodigoTramite()==null || tramiteDto.getCodigoTramite().isEmpty()) {
-			validate.setIsvalid(false);
-			validate.setMsj("Ingrese el código de tramite");
-		}else if(tramite==null) {
-			validate.setIsvalid(false);
-			validate.setMsj("No existe el tramite");
-		}else if(tramite.getCodigoTramite()==null || tramite.getCodigoTramite().isEmpty()) {
-			validate.setIsvalid(false);
-			validate.setMsj("El trámite ingresado no se encuentra registrado");
-		}else if(tramite.getEstadoTramite().equals(Utils.estadoTramiteFinalizadoAprobado) || 
-				 tramite.getEstadoTramite().equals(Utils.estadoTramiteFinalizadoDesaprobado)) {
-			validate.setIsvalid(false);
-			validate.setMsj("El trámite indicado previamente ya ha sido finalizado");
-		}else if(tramite.getEstadoTramite().equals(Utils.estadoTramiteAnulado)) {
-			validate.setIsvalid(false);
-			validate.setMsj("El trámite indicado previamente ha sido anulado");
-		}else if(tramiteDto.getEstadoTramite()==null || tramiteDto.getEstadoTramite().isEmpty()) {
-			validate.setIsvalid(false);
-			validate.setMsj("Asigne el estado del trámite");
-		}else if(!isEstadoTramiteFinalized(tramiteDto.getEstadoTramite())) {
-			validate.setIsvalid(false);
-			validate.setMsj("El estado asignado no es permitido, solo puede asignarse " + 
-							 Utils.estadoTramiteFinalizadoAprobado + " ó " +
-							 Utils.estadoTramiteFinalizadoDesaprobado);
-		}else {
-			try {
+			
+			if(tramiteDto==null) {
+				validate.setIsvalid(false);
+				validate.setMsj("No existe el tramite a finalizar");
+			}else if(tramiteDto.getCodigoTramite()==null || tramiteDto.getCodigoTramite().isEmpty()) {
+				validate.setIsvalid(false);
+				validate.setMsj("Ingrese el código de tramite");
+			}else if(tramite==null) {
+				validate.setIsvalid(false);
+				validate.setMsj("No existe el tramite");
+			}else if(tramite.getCodigoTramite()==null || tramite.getCodigoTramite().isEmpty()) {
+				validate.setIsvalid(false);
+				validate.setMsj("El trámite ingresado no se encuentra registrado");
+			}else if(tramite.getEstadoTramite().equals(Utils.estadoTramiteFinalizadoAprobado) || 
+					 tramite.getEstadoTramite().equals(Utils.estadoTramiteFinalizadoDesaprobado)) {
+				validate.setIsvalid(false);
+				validate.setMsj("El trámite indicado previamente ya ha sido finalizado");
+			}else if(tramite.getEstadoTramite().equals(Utils.estadoTramiteAnulado)) {
+				validate.setIsvalid(false);
+				validate.setMsj("El trámite indicado previamente ha sido anulado");
+			}else if(tramiteDto.getEstadoTramite()==null || tramiteDto.getEstadoTramite().isEmpty()) {
+				validate.setIsvalid(false);
+				validate.setMsj("Asigne el estado del trámite");
+			}else if(!isEstadoTramiteFinalized(tramiteDto.getEstadoTramite())) {
+				validate.setIsvalid(false);
+				validate.setMsj("El estado asignado no es permitido, solo puede asignarse " + 
+								 Utils.estadoTramiteFinalizadoAprobado + " ó " +
+								 Utils.estadoTramiteFinalizadoDesaprobado);
+			}else {
 				tramite.setEstadoTramite(tramiteDto.getEstadoTramite());
 				tramite.setObservacion(tramite.getObservacion()!=null?tramite.getObservacion()+ "\n" : "" + tramiteDto.getObservacion());
 				tramite.setFechaTermino(new Date());
 				
 				tramiteRepository.save(tramite);
-				validate.setData(tramiteDto);
 				
-				LOGGER.info(correlationId + ":::: Proceso finalizarTramite. Datos - CodigoTramite. '{}' ", tramite.getCodigoTramite());
-				LOGGER.info(correlationId + ":::: Proceso finalizarTramite. Datos - TipoTramite. '{}' " ,  tramite.getTipoTramite().getIdTipoTramite() + " - " + tramite.getTipoTramite().getNombreTipoTramite());
-				LOGGER.info(correlationId + ":::: Proceso finalizarTramite. Datos - Estado Tramite. '{}' ", tramite.getEstadoTramite());
-				LOGGER.info(correlationId + ":::: Proceso finalizarTramite. Datos - Fecha Termino. '{}' ", tramite.getFechaTermino());
-				
-			} catch (Exception e) {
-				// TODO: handle exception
 			}
+		} catch (Exception e) {
+			LOGGER.error(correlationId + ":::: Proceso finalizarTramite. Error Mensaje :::: '{}' ", e.getMessage());
+			LOGGER.error(e.getLocalizedMessage(), e);
 		}
+		
+		LOGGER.info(correlationId + ":::: Proceso finalizarTramite. Datos - CodigoTramite. '{}' ", tramite.getCodigoTramite());
+		LOGGER.info(correlationId + ":::: Proceso finalizarTramite. Datos - TipoTramite. '{}' " ,  tramite.getTipoTramite().getIdTipoTramite() + " - " + tramite.getTipoTramite().getNombreTipoTramite());
+		LOGGER.info(correlationId + ":::: Proceso finalizarTramite. Datos - Estado Tramite. '{}' ", tramite.getEstadoTramite());
+		LOGGER.info(correlationId + ":::: Proceso finalizarTramite. Datos - Fecha Termino. '{}' ", tramite.getFechaTermino());
+		
+		TramiteResponseDTO tramiteResponse = new TramiteResponseDTO(tramite.getCodigoTramite(), 
+																	tramite.getAsunto(), 
+																	tramite.getTipoTramite().getFullName(), 
+																	tramite.getSolicitante().getSolicitanteFullName(), 
+																	tramite.getEstadoTramite());
+		validate.setData(tramiteResponse);
+		
 		LOGGER.info(correlationId + ":::: Proceso finalizarTramite. Resultado '{}' ", validate.isIsvalid()+ " - " + validate.getMsj());
 		LOGGER.info(correlationId + ":::: Proceso finalizarTramite. Final :::: '{}' ", TramiteServiceImp.class.getName());
 		return validate;
