@@ -7,7 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import pe.com.sistradoc.model.Tramite;
-import pe.com.sistradoc.model.TramiteByDeriver;
+import pe.com.sistradoc.model.TramiteQueryByDeriver;
+import pe.com.sistradoc.model.TramiteQueryResumen;
 import pe.com.sistradoc.model.TramiteCode;
 
 @Repository
@@ -52,7 +53,7 @@ public interface TramiteRepository extends JpaRepository<Tramite, Long> {
 			     + "                            WHERE f.FK1_TIPO_TRAM_IDX = tt.IDX_TIPO_TRAM) \r\n"
 			     + " ORDER BY T.FEC_INGR_TRAM ASC, TT.IDX_TIPO_TRAM ASC  "
 		    , nativeQuery = true)
-	List<TramiteByDeriver> getListTramiteDerivar();
+	List<TramiteQueryByDeriver> getListTramiteDerivar();
 	
 	
 	@Query(value = "SELECT t.TXT_CODI_TRAM as 'codigoTramite',  \r\n"
@@ -79,7 +80,7 @@ public interface TramiteRepository extends JpaRepository<Tramite, Long> {
 			     + "   AND TM.NUM_PASO_ACTU >= 1 \r\n"
 			     + " ORDER BY T.FEC_INGR_TRAM ASC, TT.IDX_TIPO_TRAM ASC  "
 			, nativeQuery = true)
-	List<TramiteByDeriver> getListTramiteDevolver();
+	List<TramiteQueryByDeriver> getListTramiteDevolver();
 
 	
 	@Query(value = "SELECT t.TXT_CODI_TRAM as 'codigoTramite',  \r\n"
@@ -101,6 +102,71 @@ public interface TramiteRepository extends JpaRepository<Tramite, Long> {
 			     + "                            WHERE f.FK1_TIPO_TRAM_IDX = tt.IDX_TIPO_TRAM) \r\n"
 			     + " ORDER BY T.FEC_INGR_TRAM ASC, TT.IDX_TIPO_TRAM ASC  "
 		     , nativeQuery = true)
-	List<TramiteByDeriver> getListTramiteFinished();
+	List<TramiteQueryByDeriver> getListTramiteFinished();
 
+	
+	@Query(value = "SELECT d.TXT_NOMB_DEPE AS 'dependenciaActual' , \r\n"
+			+ "       COUNT(t.TXT_CODI_TRAM) as 'cantidadTramites'\r\n"
+			+ "  FROM tb_tram_padr t  \r\n"
+			+ " INNER JOIN tb_tram_padr_movi tm on t.TXT_CODI_TRAM=tm.FK1_TRAM_IDX_TRAM \r\n"
+			+ " INNER JOIN tb_soli_tram s  on t.FK1_SOLI_NUME_DOCU=s.TXT_NUME_DOCU \r\n"
+			+ " INNER JOIN tb_depe_enti d  on tm.FK0_DEPE_ENTI_IDX=d.IDX_DEPE_ENTI \r\n"
+			+ " INNER JOIN tb_tipo_tram tt on t.FK0_TIPO_TRAM_IDX=tt.IDX_TIPO_TRAM \r\n"
+			+ " WHERE T.TXT_ESTA_TRAM='EN TRAMITE'  \r\n"
+			+ "   AND TM.TXT_UBIC_ACTU='1' \r\n"
+			+ "   AND TM.NUM_PASO_ACTU < (SELECT MAX(F.NUM_ORDE_FLUJ) \r\n"
+			+ "                             FROM tb_fluj_tram_depe f \r\n"
+			+ "                            WHERE f.FK1_TIPO_TRAM_IDX = tt.IDX_TIPO_TRAM)\r\n"
+			+ "   AND fnGetRequestTime(tm.FEC_DERI_MOVI, sysdate()) >= if(\r\n"
+			+ "                                                           (SELECT ftd.NUM_DURA_DIAS\r\n"
+			+ "                                                              FROM tb_fluj_tram_depe ftd \r\n"
+			+ "														     WHERE ftd.FK1_TIPO_TRAM_IDX = tt.IDX_TIPO_TRAM \r\n"
+			+ "                                                               AND tm.FK0_DEPE_ENTI_IDX=ftd.FK0_DEPE_ENTI_IDX \r\n"
+			+ "                                                               AND ftd.num_orde_fluj=tm.NUM_PASO_ACTU\r\n"
+			+ "                                                           ) IS NULL, \r\n"
+			+ "                                                           1, \r\n"
+			+ "                                                           (SELECT f.NUM_DURA_DIAS\r\n"
+			+ "                                                              FROM tb_fluj_tram_depe f \r\n"
+			+ "                                                             WHERE f.FK1_TIPO_TRAM_IDX = tt.IDX_TIPO_TRAM \r\n"
+			+ "                                                               AND tm.FK0_DEPE_ENTI_IDX=f.FK0_DEPE_ENTI_IDX\r\n"
+			+ "                                                               AND f.num_orde_fluj=tm.NUM_PASO_ACTU\r\n"
+			+ "                                                           ) \r\n"
+			+ "                                                          )\r\n"
+			+ "GROUP BY d.TXT_NOMB_DEPE\r\n"
+			+ "ORDER BY COUNT(t.TXT_CODI_TRAM) desc   "
+	     , nativeQuery = true)
+	List<TramiteQueryResumen> getListTramiteDeriverResumen();
+	
+	@Query(value = "SELECT d.TXT_NOMB_DEPE AS 'dependenciaActual' , \r\n"
+			+ "       COUNT(t.TXT_CODI_TRAM) as 'cantidadTramites' \r\n"
+			+ "  FROM tb_tram_padr t  \r\n"
+			+ " INNER JOIN tb_tram_padr_movi tm on t.TXT_CODI_TRAM=tm.FK1_TRAM_IDX_TRAM \r\n"
+			+ " INNER JOIN tb_soli_tram s  on t.FK1_SOLI_NUME_DOCU=s.TXT_NUME_DOCU \r\n"
+			+ " INNER JOIN tb_depe_enti d  on tm.FK0_DEPE_ENTI_IDX=d.IDX_DEPE_ENTI \r\n"
+			+ " INNER JOIN tb_tipo_tram tt on t.FK0_TIPO_TRAM_IDX=tt.IDX_TIPO_TRAM \r\n"
+			+ " WHERE T.TXT_ESTA_TRAM='EN TRAMITE'  \r\n"
+			+ "   AND TM.TXT_UBIC_ACTU='1' \r\n"
+			+ "   AND TM.NUM_PASO_ACTU >= (SELECT MAX(F.NUM_ORDE_FLUJ) \r\n"
+			+ "                             FROM tb_fluj_tram_depe f \r\n"
+			+ "                            WHERE f.FK1_TIPO_TRAM_IDX = tt.IDX_TIPO_TRAM)\r\n"
+			+ "   AND fnGetRequestTime(tm.FEC_DERI_MOVI, sysdate()) >= if(\r\n"
+			+ "                                                           (SELECT ftd.NUM_DURA_DIAS\r\n"
+			+ "                                                              FROM tb_fluj_tram_depe ftd \r\n"
+			+ "														     WHERE ftd.FK1_TIPO_TRAM_IDX = tt.IDX_TIPO_TRAM \r\n"
+			+ "                                                               AND tm.FK0_DEPE_ENTI_IDX=ftd.FK0_DEPE_ENTI_IDX \r\n"
+			+ "                                                               AND ftd.num_orde_fluj=tm.NUM_PASO_ACTU\r\n"
+			+ "                                                           ) IS NULL, \r\n"
+			+ "                                                           1, \r\n"
+			+ "                                                           (SELECT f.NUM_DURA_DIAS\r\n"
+			+ "                                                              FROM tb_fluj_tram_depe f \r\n"
+			+ "                                                             WHERE f.FK1_TIPO_TRAM_IDX = tt.IDX_TIPO_TRAM \r\n"
+			+ "                                                               AND tm.FK0_DEPE_ENTI_IDX=f.FK0_DEPE_ENTI_IDX\r\n"
+			+ "                                                               AND f.num_orde_fluj=tm.NUM_PASO_ACTU\r\n"
+			+ "                                                           ) \r\n"
+			+ "                                                          )\r\n"
+			+ "GROUP BY d.TXT_NOMB_DEPE\r\n"
+			+ "ORDER BY COUNT(t.TXT_CODI_TRAM) desc   "
+     , nativeQuery = true)
+	List<TramiteQueryResumen> getListTramiteFinishedResumen();
+	
 }

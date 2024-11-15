@@ -2,14 +2,19 @@ package pe.com.sistradoc.services;
 
 import java.util.List;
 
-import pe.com.sistradoc.model.TramiteByDeriver;
+import pe.com.sistradoc.model.TramiteQueryByDeriver;
+import pe.com.sistradoc.model.TramiteQueryResumen;
 
 public interface TramiteQueryService {
 	
-	public List<TramiteByDeriver> getListTramiteByDeriver();
+	public List<TramiteQueryByDeriver> getListTramiteByDeriver();
 	
-	public List<TramiteByDeriver> getListTramiteByDevolver();
+	public List<TramiteQueryByDeriver> getListTramiteByDevolver();
 	
-	public List<TramiteByDeriver> getListTramiteByFinished();
-
+	public List<TramiteQueryByDeriver> getListTramiteByFinished();
+	
+	public List<TramiteQueryResumen> getListTramiteDeriverDelayed();
+	
+	public List<TramiteQueryResumen> getListTramiteFinishedDelayed();
+	
 }

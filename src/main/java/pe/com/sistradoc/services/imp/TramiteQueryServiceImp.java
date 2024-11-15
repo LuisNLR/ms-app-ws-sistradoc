@@ -5,7 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import pe.com.sistradoc.model.TramiteByDeriver;
+import pe.com.sistradoc.model.TramiteQueryByDeriver;
+import pe.com.sistradoc.model.TramiteQueryResumen;
 import pe.com.sistradoc.repository.TramiteRepository;
 import pe.com.sistradoc.services.TramiteQueryService;
 
@@ -16,18 +17,28 @@ public class TramiteQueryServiceImp implements TramiteQueryService {
 	TramiteRepository tramiteRepository;
 	
 	@Override
-	public List<TramiteByDeriver> getListTramiteByDeriver() {
+	public List<TramiteQueryByDeriver> getListTramiteByDeriver() {
 		return tramiteRepository.getListTramiteDerivar();
 	}
 	
 	@Override
-	public List<TramiteByDeriver> getListTramiteByDevolver() {
+	public List<TramiteQueryByDeriver> getListTramiteByDevolver() {
 		return tramiteRepository.getListTramiteDevolver();
 	}
 	
 	@Override
-	public List<TramiteByDeriver> getListTramiteByFinished() {
+	public List<TramiteQueryByDeriver> getListTramiteByFinished() {
 		return tramiteRepository.getListTramiteFinished();
+	}
+
+	@Override
+	public List<TramiteQueryResumen> getListTramiteDeriverDelayed() {
+		return tramiteRepository.getListTramiteDeriverResumen();
+	}
+
+	@Override
+	public List<TramiteQueryResumen> getListTramiteFinishedDelayed() {
+		return tramiteRepository.getListTramiteFinishedResumen();
 	}
 
 }

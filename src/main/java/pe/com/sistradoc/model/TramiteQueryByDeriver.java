@@ -1,6 +1,6 @@
 package pe.com.sistradoc.model;
 
-public interface TramiteByDeriver {
+public interface TramiteQueryByDeriver {
 	
 	public String getCodigoTramite();
 	

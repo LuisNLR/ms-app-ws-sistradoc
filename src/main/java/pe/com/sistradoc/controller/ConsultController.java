@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import pe.com.sistradoc.model.TramiteByDeriver;
+import pe.com.sistradoc.model.TramiteQueryByDeriver;
+import pe.com.sistradoc.model.TramiteQueryResumen;
 import pe.com.sistradoc.services.TramiteQueryService;
 
 @RestController
@@ -21,7 +22,7 @@ public class ConsultController {
 	private TramiteQueryService tramiteQueryService;
 	
 	@GetMapping("/getListTramiteByDeriver")
-	public ResponseEntity<List<TramiteByDeriver>> getListTramiteByDeriver() {
+	public ResponseEntity<List<TramiteQueryByDeriver>> getListTramiteByDeriver() {
 		try {
 			return new ResponseEntity<>(tramiteQueryService.getListTramiteByDeriver(), HttpStatus.OK);
 		} catch (Exception e) {
@@ -30,7 +31,7 @@ public class ConsultController {
 	}
 	
 	@GetMapping("/getListTramiteByDevolver")
-	public ResponseEntity<List<TramiteByDeriver>> getListTramiteByDevolver() {
+	public ResponseEntity<List<TramiteQueryByDeriver>> getListTramiteByDevolver() {
 		try {
 			return new ResponseEntity<>(tramiteQueryService.getListTramiteByDevolver(), HttpStatus.OK);
 		} catch (Exception e) {
@@ -39,9 +40,29 @@ public class ConsultController {
 	}
 	
 	@GetMapping("/getListTramiteByFinished")
-	public ResponseEntity<List<TramiteByDeriver>> getListTramiteByFinished() {
+	public ResponseEntity<List<TramiteQueryByDeriver>> getListTramiteByFinished() {
 		try {
 			return new ResponseEntity<>(tramiteQueryService.getListTramiteByFinished(), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("/getListTramiteByDeriverDelayed")
+	public ResponseEntity<List<TramiteQueryResumen>> getListTramiteDeriverDelayedResumen() {
+		try {
+			List<TramiteQueryResumen> list = tramiteQueryService.getListTramiteDeriverDelayed();
+			System.out.println(list.size());
+			return new ResponseEntity<>(tramiteQueryService.getListTramiteDeriverDelayed(), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("/getListTramiteByFinishedDelayed")
+	public ResponseEntity<List<TramiteQueryResumen>> getListTramiteFinishedDelayedResumen() {
+		try {
+			return new ResponseEntity<>(tramiteQueryService.getListTramiteFinishedDelayed(), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
