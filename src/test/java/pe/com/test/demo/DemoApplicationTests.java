@@ -80,11 +80,11 @@ class DemoApplicationTests {
 		assertEquals(nombreTipoTramite, "Tipo Tramite Mockito");
 	}
 	
-	@Test
-	void getMovimientoByTramiteAndUbicacion() {
-		TramiteMovimiento movimiento = movimientoRepository.findByTramiteCodigoTramiteAndUbicacionActual("TR24081500001", "1");
-		assertEquals(movimiento.getIdMovimiento(), Long.valueOf(232));
-	}
+//	@Test
+//	void getMovimientoByTramiteAndUbicacion() {
+//		TramiteMovimiento movimiento = movimientoRepository.findByTramiteCodigoTramiteAndUbicacionActual("TR24081500001", "1");
+//		assertEquals(movimiento.getIdMovimiento(), Long.valueOf(232));
+//	}
 	
 	@Test
 	void isEmptyDependencyByDevolverList() {

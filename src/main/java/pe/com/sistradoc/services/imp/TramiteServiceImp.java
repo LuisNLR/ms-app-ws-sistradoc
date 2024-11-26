@@ -211,6 +211,16 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 													movimientoAnterior.getTramite());
 			movimientoRepository.save(movimientoNuevo);
 			
+			TramiteResponseDTO tramiteResponse = new TramiteResponseDTO(movimientoNuevo.getTramite().getCodigoTramite(), 
+					movimientoNuevo.getTramite().getAsunto(), 
+					movimientoNuevo.getTramite().getTipoTramite().getFullName(), 
+					movimientoNuevo.getTramite().getSolicitante().getSolicitanteFullName(), 
+					movimientoNuevo.getMotivoEnvio(), 
+					movimientoAnterior.getDependencia().getNombreDependencia(), 
+					movimientoNuevo.getDependencia().getNombreDependencia());
+
+			validate.setData(tramiteResponse);
+			
 			LOGGER.info(correlationId + ":::: Proceso derivarTramite. Datos - CodigoTramite. '{}' ", movimientoAnterior.getTramite().getCodigoTramite());
 			LOGGER.info(correlationId + ":::: Proceso derivarTramite. Datos - TipoTramite. '{}' ", movimientoAnterior.getTramite().getTipoTramite().getIdTipoTramite() + " - " + movimientoAnterior.getTramite().getTipoTramite().getNombreTipoTramite());
 			LOGGER.info(correlationId + ":::: Proceso derivarTramite. Datos - Dependencia anterior. '{}' ", movimientoAnterior.getDependencia().getIdDependencia() + " - " + movimientoAnterior.getDependencia().getNombreDependencia());
@@ -218,15 +228,7 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 			
 		}
 		
-		TramiteResponseDTO tramiteResponse = new TramiteResponseDTO(movimientoNuevo.getTramite().getCodigoTramite(), 
-																	movimientoNuevo.getTramite().getAsunto(), 
-																	movimientoNuevo.getTramite().getTipoTramite().getFullName(), 
-																	movimientoNuevo.getTramite().getSolicitante().getSolicitanteFullName(), 
-																	movimientoNuevo.getMotivoEnvio(), 
-																	movimientoAnterior.getDependencia().getNombreDependencia(), 
-																	movimientoNuevo.getDependencia().getNombreDependencia());
 		
-		validate.setData(tramiteResponse);
 		
 		LOGGER.info(correlationId + ":::: Proceso derivarTramite. Resultado '{}' ", validate.isIsvalid()+ " - " + validate.getMsj());
 		LOGGER.info(correlationId + ":::: Proceso derivarTramite. Final :::: '{}' ", TramiteServiceImp.class.getName());
