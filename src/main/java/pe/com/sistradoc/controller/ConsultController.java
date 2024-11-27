@@ -48,21 +48,10 @@ public class ConsultController {
 		}
 	}
 	
-	@GetMapping("/getListTramiteByDeriverDelayed")
-	public ResponseEntity<List<TramiteQueryResumen>> getListTramiteDeriverDelayedResumen() {
+	@GetMapping("/getListTramiteDelayedByNotify")
+	public ResponseEntity<List<TramiteQueryResumen>> getListTramiteDelayedByNotify() {
 		try {
-			List<TramiteQueryResumen> list = tramiteQueryService.getListTramiteDeriverDelayed();
-			System.out.println(list.size());
-			return new ResponseEntity<>(tramiteQueryService.getListTramiteDeriverDelayed(), HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-	
-	@GetMapping("/getListTramiteByFinishedDelayed")
-	public ResponseEntity<List<TramiteQueryResumen>> getListTramiteFinishedDelayedResumen() {
-		try {
-			return new ResponseEntity<>(tramiteQueryService.getListTramiteFinishedDelayed(), HttpStatus.OK);
+			return new ResponseEntity<>(tramiteQueryService.getListTramiteDelayedByNotify(), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}

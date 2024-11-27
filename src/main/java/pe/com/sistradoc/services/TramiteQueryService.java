@@ -13,8 +13,6 @@ public interface TramiteQueryService {
 	
 	public List<TramiteQueryByDeriver> getListTramiteByFinished();
 	
-	public List<TramiteQueryResumen> getListTramiteDeriverDelayed();
-	
-	public List<TramiteQueryResumen> getListTramiteFinishedDelayed();
+	public List<TramiteQueryResumen> getListTramiteDelayedByNotify();
 	
 }

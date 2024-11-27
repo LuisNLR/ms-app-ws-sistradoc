@@ -32,13 +32,8 @@ public class TramiteQueryServiceImp implements TramiteQueryService {
 	}
 
 	@Override
-	public List<TramiteQueryResumen> getListTramiteDeriverDelayed() {
+	public List<TramiteQueryResumen> getListTramiteDelayedByNotify() {
 		return tramiteRepository.getListTramiteDeriverResumen();
-	}
-
-	@Override
-	public List<TramiteQueryResumen> getListTramiteFinishedDelayed() {
-		return tramiteRepository.getListTramiteFinishedResumen();
 	}
 
 }
