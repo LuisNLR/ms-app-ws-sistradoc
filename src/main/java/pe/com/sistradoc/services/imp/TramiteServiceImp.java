@@ -160,6 +160,7 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 		TramiteMovimiento movimientoAnterior=null;
 		TramiteMovimiento movimientoNuevo=null;
 		Dependencia dependenciaSiguiente = null;
+		Dependencia dependenciaDestino = null;
 		try {
 			movimientoAnterior = movimientoRepository.findByTramiteCodigoTramiteAndUbicacionActual(movimientoDto.getTramiteDto().getCodigoTramite(), "1");
 			dependenciaSiguiente = dependenciaRepository.findDependenciaByPasoAndTipoTramite(movimientoAnterior.getPasoActual() +1, movimientoAnterior.getTramite().getTipoTramite().getIdTipoTramite());
@@ -194,7 +195,7 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 			movimientoRepository.save(movimientoAnterior);
 			
 			//Manipulación en movimiento nuevo
-			Dependencia dependenciaDestino = null;
+			
 			if(Objects.equals(movimientoAnterior.getTramite().getTipoTramite().getIdTipoTramite(), Utils.valueDefaultLongOne)) {
 				dependenciaDestino = new Dependencia(movimientoDto.getDependenciaDto().getIdDependencia(), 
 													 movimientoDto.getDependenciaDto().getNombreDependencia());
@@ -211,22 +212,24 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 													movimientoAnterior.getTramite());
 			movimientoRepository.save(movimientoNuevo);
 			
-			TramiteResponseDTO tramiteResponse = new TramiteResponseDTO(movimientoNuevo.getTramite().getCodigoTramite(), 
-					movimientoNuevo.getTramite().getAsunto(), 
-					movimientoNuevo.getTramite().getTipoTramite().getFullName(), 
-					movimientoNuevo.getTramite().getSolicitante().getSolicitanteFullName(), 
-					movimientoNuevo.getMotivoEnvio(), 
-					movimientoAnterior.getDependencia().getNombreDependencia(), 
-					movimientoNuevo.getDependencia().getNombreDependencia());
-
-			validate.setData(tramiteResponse);
 			
-			LOGGER.info(correlationId + ":::: Proceso derivarTramite. Datos - CodigoTramite. '{}' ", movimientoAnterior.getTramite().getCodigoTramite());
-			LOGGER.info(correlationId + ":::: Proceso derivarTramite. Datos - TipoTramite. '{}' ", movimientoAnterior.getTramite().getTipoTramite().getIdTipoTramite() + " - " + movimientoAnterior.getTramite().getTipoTramite().getNombreTipoTramite());
-			LOGGER.info(correlationId + ":::: Proceso derivarTramite. Datos - Dependencia anterior. '{}' ", movimientoAnterior.getDependencia().getIdDependencia() + " - " + movimientoAnterior.getDependencia().getNombreDependencia());
-			LOGGER.info(correlationId + ":::: Proceso derivarTramite. Datos - Dependencia a enviar. '{}' ", dependenciaDestino.getIdDependencia() + " - " + dependenciaDestino.getNombreDependencia());
 			
 		}
+		
+		TramiteResponseDTO tramiteResponse = new TramiteResponseDTO(movimientoAnterior.getTramite()!=null ? movimientoAnterior.getTramite().getCodigoTramite():null , 
+				movimientoAnterior.getTramite().getAsunto(), 
+				movimientoAnterior.getTramite().getTipoTramite().getFullName(), 
+				movimientoAnterior.getTramite().getSolicitante().getSolicitanteFullName(), 
+				movimientoNuevo!=null ? movimientoNuevo.getMotivoEnvio() : null, 
+				movimientoAnterior.getDependencia().getNombreDependencia(), 
+				(movimientoNuevo!=null && movimientoNuevo.getDependencia()!=null) ? movimientoNuevo.getDependencia().getNombreDependencia() : null);
+
+		validate.setData(tramiteResponse);
+		
+		LOGGER.info(correlationId + ":::: Proceso derivarTramite. Datos - CodigoTramite. '{}' ", movimientoAnterior.getTramite().getCodigoTramite());
+		LOGGER.info(correlationId + ":::: Proceso derivarTramite. Datos - TipoTramite. '{}' ", movimientoAnterior.getTramite().getTipoTramite().getIdTipoTramite() + " - " + movimientoAnterior.getTramite().getTipoTramite().getNombreTipoTramite());
+		LOGGER.info(correlationId + ":::: Proceso derivarTramite. Datos - Dependencia anterior. '{}' ", movimientoAnterior.getDependencia().getIdDependencia() + " - " + movimientoAnterior.getDependencia().getNombreDependencia());
+		LOGGER.info(correlationId + ":::: Proceso derivarTramite. Datos - Dependencia a enviar. '{}' ", dependenciaDestino!=null ? (dependenciaDestino.getIdDependencia() + " - " + dependenciaDestino.getNombreDependencia()) : null);
 		
 		
 		
