@@ -1,5 +1,6 @@
 package pe.com.sistradoc.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,7 @@ import pe.com.sistradoc.dto.TipoTramiteDTO;
 import pe.com.sistradoc.dto.TramiteDTO;
 import pe.com.sistradoc.dto.TramiteMovimientoDTO;
 import pe.com.sistradoc.dto.TramiteRegisterDTO;
+import pe.com.sistradoc.dto.TramiteTareaDTO;
 import pe.com.sistradoc.model.Dependencia;
 import pe.com.sistradoc.model.DiaNoLaboral;
 import pe.com.sistradoc.repository.DependenciaRepository;
@@ -26,6 +28,7 @@ import pe.com.sistradoc.repository.DiaNoLaboralRepository;
 import pe.com.sistradoc.services.DependenciaService;
 import pe.com.sistradoc.services.SolicitanteService;
 import pe.com.sistradoc.services.TipoTramiteService;
+import pe.com.sistradoc.services.TramiteMovimientoTareaService;
 import pe.com.sistradoc.services.TramiteService;
 import pe.com.sistradoc.utils.ResponseService;
 import pe.com.sistradoc.utils.ValidateService;
@@ -53,6 +56,9 @@ public class MaintenanceController {
 	
 	@Autowired
 	private TramiteService tramiteService;
+	
+	@Autowired
+	private TramiteMovimientoTareaService tramiteTareaService;
 	
 	
 	@GetMapping("/allNonWorkingDays")
@@ -128,9 +134,12 @@ public class MaintenanceController {
 	}
 	
 	@GetMapping("/getListTipoTramite")
-	public List<TipoTramiteDTO> listTipoTramite() {
-		List<TipoTramiteDTO> list = tipoTramiteService.listTipoTramite();
-		return list;
+	public ResponseEntity<List<TipoTramiteDTO>> listTipoTramite() {
+		try {
+			return new ResponseEntity<>(tipoTramiteService.listTipoTramite(), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	@GetMapping("/getDependencia/{idDependencia}")
@@ -285,6 +294,25 @@ public class MaintenanceController {
 			response.setMensaje(e.getMessage());
 			e.printStackTrace();
 			
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PostMapping("/registerTareaTramite")
+	public ResponseEntity<ResponseService> registerTramite(@RequestBody TramiteTareaDTO tramiteTareaDto) {
+		ResponseService response = new ResponseService();
+		try {
+			ValidateService validate = tramiteTareaService.registrarTramiteTarea(tramiteTareaDto);
+			if(validate.isIsvalid()) {
+				response.setStatus(200);
+			}
+			response.setMensaje(validate.getMsj());
+			response.setFlag(validate.isIsvalid());
+			response.setData(tramiteTareaDto);
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			response.setMensaje(e.getMessage());
+			e.printStackTrace();
 			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

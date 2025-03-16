@@ -56,6 +56,7 @@ public class TipoTramiteServiceImp implements TipoTramiteService{
 																tipoTramite.getMontoTipoTramite(), 
 																tipoTramite.getNumeroDias(), 
 																tipoTramite.getEstado()))
+													.filter(tipoTramite -> tipoTramite.getEstado().equals("H"))
 													.collect(Collectors.toList());
 		return listTipoTramiteDto;
 	}

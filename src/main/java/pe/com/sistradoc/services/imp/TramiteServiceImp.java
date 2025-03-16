@@ -162,8 +162,38 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 		Dependencia dependenciaSiguiente = null;
 		Dependencia dependenciaDestino = null;
 		try {
-			movimientoAnterior = movimientoRepository.findByTramiteCodigoTramiteAndUbicacionActual(movimientoDto.getTramiteDto().getCodigoTramite(), "1");
-			dependenciaSiguiente = dependenciaRepository.findDependenciaByPasoAndTipoTramite(movimientoAnterior.getPasoActual() +1, movimientoAnterior.getTramite().getTipoTramite().getIdTipoTramite());
+			if(movimientoDto==null) {
+				validate.setIsvalid(false);
+				validate.setMsj("No se ha creado el nuevo movimiento");
+			}else if(movimientoDto.getTramiteDto()==null) {
+				validate.setIsvalid(false);
+				validate.setMsj("Asigne o seleccione un trámite");
+			}else if(movimientoDto.getTramiteDto().getCodigoTramite()==null) {
+				validate.setIsvalid(false);
+				validate.setMsj("Asigne o seleccione un tipo de trámite");
+			}else {
+				movimientoAnterior = movimientoRepository.findByTramiteCodigoTramiteAndUbicacionActual(movimientoDto.getTramiteDto().getCodigoTramite(), "1");
+			}
+			
+			if(movimientoAnterior==null) {
+				validate.setIsvalid(false);
+				validate.setMsj("Asigne o seleccione un tramite existente");
+			}else if(movimientoAnterior.getPasoActual()==null ) {
+				validate.setIsvalid(false);
+				validate.setMsj("No existe el paso indicado");
+			}else if(movimientoAnterior.getTramite()==null) {
+				validate.setIsvalid(false);
+				validate.setMsj("El movimiento anterior no tiene tramite");
+			}else if(movimientoAnterior.getTramite().getTipoTramite()==null) {
+				validate.setIsvalid(false);
+				validate.setMsj("El movimiento anterior no tiene Tipo de tramite");
+			}else if(movimientoAnterior.getTramite().getTipoTramite().getIdTipoTramite()==null) {
+				validate.setIsvalid(false);
+				validate.setMsj("El movimiento anterior no tiene ID Tipo de tramite");
+			}else {
+				dependenciaSiguiente = dependenciaRepository.findDependenciaByPasoAndTipoTramite(movimientoAnterior.getPasoActual() +1, movimientoAnterior.getTramite().getTipoTramite().getIdTipoTramite());
+			}
+			
 		}catch (Exception e) {
 			LOGGER.error(correlationId + ":::: Proceso derivarTramite. Error Mensaje :::: '{}' ", e.getMessage());
 			LOGGER.error(e.getLocalizedMessage(), e);
@@ -171,10 +201,16 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 		
 		if(movimientoAnterior==null) {
 			validate.setIsvalid(false);
-			validate.setMsj("No existe movimiento anterior");
+			validate.setMsj("Seleccione un tramite existente");
 		}else if(movimientoDto==null) {
 			validate.setIsvalid(false);
 			validate.setMsj("No se ha creado el nuevo movimiento");
+		}else if(movimientoDto.getTramiteDto()==null) {
+			validate.setIsvalid(false);
+			validate.setMsj("Asigne o seleccione un trámite");
+		}else if(movimientoDto.getTramiteDto().getCodigoTramite()==null) {
+			validate.setIsvalid(false);
+			validate.setMsj("Asigne o seleccione un tipo de trámite");
 		}else if(movimientoDto.getMotivoEnvio()==null || movimientoDto.getMotivoEnvio().isEmpty()) {
 			validate.setIsvalid(false);
 			validate.setMsj("Asigne un motivo para derivar dicho tramite");
@@ -216,20 +252,20 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 			
 		}
 		
-		TramiteResponseDTO tramiteResponse = new TramiteResponseDTO(movimientoAnterior.getTramite()!=null ? movimientoAnterior.getTramite().getCodigoTramite():null , 
-				movimientoAnterior.getTramite().getAsunto(), 
-				movimientoAnterior.getTramite().getTipoTramite().getFullName(), 
-				movimientoAnterior.getTramite().getSolicitante().getSolicitanteFullName(), 
+		TramiteResponseDTO tramiteResponse = new TramiteResponseDTO((movimientoAnterior!=null && movimientoAnterior.getTramite()!=null) ? movimientoAnterior.getTramite().getCodigoTramite():null , 
+				(movimientoAnterior!=null && movimientoAnterior.getTramite()!=null && movimientoAnterior.getTramite().getAsunto()!=null) ? movimientoAnterior.getTramite().getAsunto() : null, 
+				(movimientoAnterior!=null && movimientoAnterior.getTramite()!=null && movimientoAnterior.getTramite().getTipoTramite()!= null && movimientoAnterior.getTramite().getTipoTramite().getFullName()!= null) ? movimientoAnterior.getTramite().getTipoTramite().getFullName() : null, 
+				(movimientoAnterior!=null && movimientoAnterior.getTramite()!=null && movimientoAnterior.getTramite().getSolicitante()!=null && movimientoAnterior.getTramite().getSolicitante().getSolicitanteFullName()!=null)  ? movimientoAnterior.getTramite().getSolicitante().getSolicitanteFullName() : null, 
 				movimientoNuevo!=null ? movimientoNuevo.getMotivoEnvio() : null, 
-				movimientoAnterior.getDependencia().getNombreDependencia(), 
+				(movimientoAnterior!=null && movimientoAnterior.getDependencia()!=null && movimientoAnterior.getDependencia().getNombreDependencia()!=null) ? movimientoAnterior.getDependencia().getNombreDependencia() : null, 
 				(movimientoNuevo!=null && movimientoNuevo.getDependencia()!=null) ? movimientoNuevo.getDependencia().getNombreDependencia() : null);
 
 		validate.setData(tramiteResponse);
 		
-		LOGGER.info(correlationId + ":::: Proceso derivarTramite. Datos - CodigoTramite. '{}' ", movimientoAnterior.getTramite().getCodigoTramite());
-		LOGGER.info(correlationId + ":::: Proceso derivarTramite. Datos - TipoTramite. '{}' ", movimientoAnterior.getTramite().getTipoTramite().getIdTipoTramite() + " - " + movimientoAnterior.getTramite().getTipoTramite().getNombreTipoTramite());
-		LOGGER.info(correlationId + ":::: Proceso derivarTramite. Datos - Dependencia anterior. '{}' ", movimientoAnterior.getDependencia().getIdDependencia() + " - " + movimientoAnterior.getDependencia().getNombreDependencia());
-		LOGGER.info(correlationId + ":::: Proceso derivarTramite. Datos - Dependencia a enviar. '{}' ", dependenciaDestino!=null ? (dependenciaDestino.getIdDependencia() + " - " + dependenciaDestino.getNombreDependencia()) : null);
+		LOGGER.info(correlationId + ":::: Proceso derivarTramite. Datos - CodigoTramite. '{}' ", tramiteResponse.getCodigoTramite());
+		LOGGER.info(correlationId + ":::: Proceso derivarTramite. Datos - TipoTramite. '{}' ", tramiteResponse.getTipoTramite());
+		LOGGER.info(correlationId + ":::: Proceso derivarTramite. Datos - Dependencia anterior. '{}' ", tramiteResponse.getDependenciaActual() /* movimientoAnterior.getDependencia().getIdDependencia() + " - " + movimientoAnterior.getDependencia().getNombreDependencia() */);
+		LOGGER.info(correlationId + ":::: Proceso derivarTramite. Datos - Dependencia a enviar. '{}' ", tramiteResponse.getDependenciaDestino() /* dependenciaDestino!=null ? (dependenciaDestino.getIdDependencia() + " - " + dependenciaDestino.getNombreDependencia()) : null*/);
 		
 		
 		

@@ -15,5 +15,19 @@ public interface TramiteQueryByDeriver {
 	public String getDependenciaActual();
 	
 	public String getDependenciaDestino();
+	
+	public Integer getDuracion();
+	
+	public Integer getDiasTranscurridos();
+	
+	public String getFlujoRealizar();
+	
+	public String getEstadoTramite();
+	
+	public Integer getNroFolios();
+	
+	public String getTipoDocumentoTramite();
+	
+	public String getFechaFin();
 
 }
