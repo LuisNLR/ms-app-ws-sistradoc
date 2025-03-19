@@ -29,61 +29,42 @@ public class SolicitanteServiceImp extends ValidateServiceImp implements Solicit
 		ValidateService validate = new ValidateServiceImp();
 		validate.setIsvalid(true);
 		validate.setMsj("Registro de Solicitante exitoso");
-		
-		if(solicitanteDto!=null && solicitanteDto.getNumeroDocumento()!=null && 
-								   !obtenerSolicitante(solicitanteDto.getNumeroDocumento()).getNumeroDocumento().equals("")) {
-			validate.setIsvalid(true);
-			validate.setMsj("Solicitante ya existe");
-		}else {
-			if(solicitanteDto==null) {
-				validate.setIsvalid(false);
-				validate.setMsj("No se ha creado el solicitante");
-			}else if(solicitanteDto.getTipoSolicitante()==null || solicitanteDto.getTipoSolicitante().isEmpty()) {
-				validate.setIsvalid(false);
-				validate.setMsj("Ingrese tipo de solicitante");
-			}else if(solicitanteDto.getNumeroDocumento()==null || solicitanteDto.getNumeroDocumento().isEmpty()) {
-				validate.setIsvalid(false);
-				validate.setMsj("Ingrese número de documento");
-			}else if(solicitanteDto.getTipoDocumento()==null || solicitanteDto.getTipoDocumento().isEmpty()) {
-				validate.setIsvalid(false);
-				validate.setMsj("Ingrese tipo de documento");
-			}else if(solicitanteDto.getNombreSolicitante()==null || solicitanteDto.getNombreSolicitante().isEmpty()) {
-				validate.setIsvalid(false);
-				validate.setMsj("Ingrese Nombre del solicitante");
-			}else if(solicitanteDto.getTipoSolicitante().equals(Utils.tipoSolicitantePersona) && 
-					(solicitanteDto.getApellidoPaterno()==null || solicitanteDto.getApellidoPaterno().isEmpty())) {
-				validate.setIsvalid(false);
-				validate.setMsj("Ingrese Apellido paterno del solicitante");
-			}else if(solicitanteDto.getTipoSolicitante().equals(Utils.tipoSolicitantePersona) && 
-					(solicitanteDto.getApellidoMaterno()==null || solicitanteDto.getApellidoMaterno().isEmpty())) {
-				validate.setIsvalid(false);
-				validate.setMsj("Ingrese Apellido materno del solicitante");
-			}else if(solicitanteDto.getTipoSolicitante().equals(Utils.tipoSolicitanteEntidad) && 
-					(solicitanteDto.getRepresentante()==null || solicitanteDto.getRepresentante().isEmpty())) {
-				validate.setIsvalid(false);
-				validate.setMsj("Para el tipo de solicitante ENTIDAD Ingrese el nombre del representante");
-			}
-		}
-		
-		Solicitante solicitante = new Solicitante();
-		solicitante.setNumeroDocumento(solicitanteDto.getNumeroDocumento());
-		solicitante.setNombreSolicitante(solicitanteDto.getNombreSolicitante());
-		solicitante.setTipoDocumento(solicitanteDto.getTipoDocumento());
-		solicitante.setTipoSolicitante(solicitanteDto.getTipoSolicitante());
-		solicitante.setApellidoMaterno(solicitanteDto.getApellidoMaterno());
-		solicitante.setApellidoPaterno(solicitanteDto.getApellidoPaterno());
-		solicitante.setDireccion(solicitanteDto.getDireccion());
-		solicitante.setMail(solicitanteDto.getMail());
-		solicitante.setRepresentante(solicitanteDto.getRepresentante());
-		solicitante.setTelefono(solicitanteDto.getTelefono());
-		
-		try {
-			if(validate.isIsvalid()) {
-				solicitanteRepository.save(solicitante);
-			}
-		} catch (Exception sE) {
+		if(solicitanteDto==null) {
 			validate.setIsvalid(false);
-			validate.setMsj(sE.getMessage());
+			validate.setMsj("No se ha creado el solicitante");
+		}else if(solicitanteDto.getTipoSolicitante()==null || solicitanteDto.getTipoSolicitante().isEmpty()) {
+			validate.setIsvalid(false);
+			validate.setMsj("Ingrese tipo de solicitante");
+		}else if(solicitanteDto.getNumeroDocumento()==null || solicitanteDto.getNumeroDocumento().isEmpty()) {
+			validate.setIsvalid(false);
+			validate.setMsj("Ingrese número de documento");
+		}else if(solicitanteDto.getTipoDocumento()==null || solicitanteDto.getTipoDocumento().isEmpty()) {
+			validate.setIsvalid(false);
+			validate.setMsj("Ingrese tipo de documento");
+		}else if(solicitanteDto.getNombreSolicitante()==null || solicitanteDto.getNombreSolicitante().isEmpty()) {
+			validate.setIsvalid(false);
+			validate.setMsj("Ingrese Nombre del solicitante");
+		}else if(!isValidPersona(solicitanteDto).isIsvalid()) {
+			validate.setIsvalid(false);
+			validate.setMsj(isValidPersona(solicitanteDto).getMsj());
+		}else if(solicitanteDto.getTipoSolicitante().equals(Utils.tipoSolicitanteEntidad) && 
+				(solicitanteDto.getRepresentante()==null || solicitanteDto.getRepresentante().isEmpty())) {
+			validate.setIsvalid(false);
+			validate.setMsj("Para el tipo de solicitante ENTIDAD Ingrese el nombre del representante");
+		}else {
+			Solicitante solicitante = new Solicitante();
+			solicitante.setNumeroDocumento(solicitanteDto.getNumeroDocumento());
+			solicitante.setNombreSolicitante(solicitanteDto.getNombreSolicitante());
+			solicitante.setTipoDocumento(solicitanteDto.getTipoDocumento());
+			solicitante.setTipoSolicitante(solicitanteDto.getTipoSolicitante());
+			solicitante.setApellidoMaterno(solicitanteDto.getApellidoMaterno());
+			solicitante.setApellidoPaterno(solicitanteDto.getApellidoPaterno());
+			solicitante.setDireccion(solicitanteDto.getDireccion());
+			solicitante.setMail(solicitanteDto.getMail());
+			solicitante.setRepresentante(solicitanteDto.getRepresentante());
+			solicitante.setTelefono(solicitanteDto.getTelefono());
+			
+			solicitanteRepository.save(solicitante);
 		}
 		return validate;
 	}
@@ -124,5 +105,21 @@ public class SolicitanteServiceImp extends ValidateServiceImp implements Solicit
 		}
 		return solicDto;
 	}
-
+	
+	private ValidateService isValidPersona(SolicitanteDTO solicitanteDto) {
+		ValidateService validate = new ValidateServiceImp();
+		validate.setIsvalid(true);
+		validate.setMsj("Solicitante persona OK");
+		if(solicitanteDto.getTipoSolicitante().equals(Utils.tipoSolicitantePersona) && 
+				(solicitanteDto.getApellidoPaterno()==null || solicitanteDto.getApellidoPaterno().isEmpty())) {
+			validate.setIsvalid(false);
+			validate.setMsj("Ingrese Apellido paterno del solicitante");
+		}else if(solicitanteDto.getTipoSolicitante().equals(Utils.tipoSolicitantePersona) && 
+				(solicitanteDto.getApellidoMaterno()==null || solicitanteDto.getApellidoMaterno().isEmpty())) {
+			validate.setIsvalid(false);
+			validate.setMsj("Ingrese Apellido materno del solicitante");
+		}
+		return validate;
+	}
+	
 }
