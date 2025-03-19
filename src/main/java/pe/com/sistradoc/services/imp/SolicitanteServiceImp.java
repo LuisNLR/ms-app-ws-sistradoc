@@ -121,7 +121,6 @@ public class SolicitanteServiceImp extends ValidateServiceImp implements Solicit
 		} catch (Exception e) {
 			LOGGER.error("Mensaje de errores desde '{}'", SolicitanteServiceImp.class.getName());
 			LOGGER.error(e.getMessage());
-			e.printStackTrace();
 		}
 		return solicDto;
 	}

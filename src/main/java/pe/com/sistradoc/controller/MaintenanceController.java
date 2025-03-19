@@ -90,7 +90,6 @@ public class MaintenanceController {
 			LOGGER.error("Error generado al intentar obtener  '{}'", documentNumber);
 			LOGGER.error(e.getMessage());
 			LOGGER.error(e.getLocalizedMessage(), e);
-			e.printStackTrace();
 		} 
 		
 		return solicitanteDto;
@@ -109,7 +108,6 @@ public class MaintenanceController {
 			
 		} catch (Exception e) {
 			response.setMensaje(e.getMessage());
-			e.printStackTrace();
 		}
 		return response;
 	}
@@ -127,7 +125,6 @@ public class MaintenanceController {
 			LOGGER.error("Error generado al intentar obtener  '{}'", idTipoTramite);
 			LOGGER.error(e.getMessage());
 			LOGGER.error(e.getLocalizedMessage(), e);
-			e.printStackTrace();
 		} 
 		
 		return tipoTramiteDto;
@@ -155,7 +152,6 @@ public class MaintenanceController {
 			LOGGER.error("Error generado al intentar obtener  '{}'", idDependencia);
 			LOGGER.error(e.getMessage());
 			LOGGER.error(e.getLocalizedMessage(), e);
-			e.printStackTrace();
 		}
 		
 		return dependenciaDto;
@@ -174,7 +170,6 @@ public class MaintenanceController {
 			LOGGER.error("Error generado al intentar obtener  '{}'", idTipoTramite);
 			LOGGER.error(e.getMessage());
 			LOGGER.error(e.getLocalizedMessage(), e);
-			e.printStackTrace();
 		}
 		
 		return dependenciaDto;
@@ -202,7 +197,6 @@ public class MaintenanceController {
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
 			response.setMensaje(e.getMessage());
-			e.printStackTrace();
 			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -224,7 +218,6 @@ public class MaintenanceController {
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
 			response.setMensaje(e.getMessage());
-			e.printStackTrace();
 			
 			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -249,8 +242,6 @@ public class MaintenanceController {
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
 			response.setMensaje(e.getMessage());
-			e.printStackTrace();
-			
 			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -271,7 +262,6 @@ public class MaintenanceController {
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
 			response.setMensaje(e.getMessage());
-			e.printStackTrace();
 			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -292,8 +282,6 @@ public class MaintenanceController {
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
 			response.setMensaje(e.getMessage());
-			e.printStackTrace();
-			
 			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -312,7 +300,6 @@ public class MaintenanceController {
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
 			response.setMensaje(e.getMessage());
-			e.printStackTrace();
 			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
