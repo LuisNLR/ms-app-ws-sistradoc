@@ -71,7 +71,7 @@ public class SolicitanteServiceImp extends ValidateServiceImp implements Solicit
 
 	@Override
 	public SolicitanteDTO obtenerSolicitante(String numeroDocumento) throws SQLException, ServiceException {
-		LOGGER.info("Obtener información del documento '{}'", numeroDocumento);
+		LOGGER.info("Obtener información del documento '{}'", numeroDocumento.replaceAll("[\n\r]", "_"));
 		Solicitante solicitante = solicitanteRepository.findByNumeroDocumento(numeroDocumento);
 		
 		SolicitanteDTO solicDto = new SolicitanteDTO();
