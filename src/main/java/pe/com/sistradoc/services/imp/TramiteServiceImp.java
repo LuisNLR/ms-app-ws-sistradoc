@@ -214,11 +214,11 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 		}else if(movimientoDto.getMotivoEnvio()==null || movimientoDto.getMotivoEnvio().isEmpty()) {
 			validate.setIsvalid(false);
 			validate.setMsj("Asigne un motivo para derivar dicho tramite");
-		}else if(movimientoAnterior.getTramite().getTipoTramite().getIdTipoTramite()==Utils.valueDefaultLongOne && 
+		}else if(movimientoAnterior.getTramite().getTipoTramite().getIdTipoTramite().equals(Utils.valueDefaultLongOne) && 
 				movimientoDto.getDependenciaDto()==null) {
 			validate.setIsvalid(false);
 			validate.setMsj("Asigne la dependencia, este tramite no tiene efecto administrativo");
-		}else if(movimientoAnterior.getTramite().getTipoTramite().getIdTipoTramite()!=Utils.valueDefaultLongOne && 
+		}else if(movimientoAnterior.getTramite().getTipoTramite().getIdTipoTramite().equals(Utils.valueDefaultLongOne) && 
 				dependenciaSiguiente==null) {
 			validate.setIsvalid(false);
 			validate.setMsj("Dicho trámite ya no tiene más dependencias a derivar");

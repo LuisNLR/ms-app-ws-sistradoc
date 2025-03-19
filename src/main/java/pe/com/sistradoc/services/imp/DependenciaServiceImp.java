@@ -119,7 +119,7 @@ public class DependenciaServiceImp implements DependenciaService {
 	@Override
 	public boolean isExistDependenciainFlujoTramite(List<DependenciaDTO> listDependenciaDto, DependenciaDTO dependenciaDto) {
 		for(DependenciaDTO dependencyDto : listDependenciaDto) {
-			if(dependencyDto.getIdDependencia()==dependenciaDto.getIdDependencia()) {
+			if(dependencyDto.getIdDependencia().equals(dependenciaDto.getIdDependencia())) {
 				return true;
 			}
 		}
