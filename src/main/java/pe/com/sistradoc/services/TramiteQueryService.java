@@ -2,6 +2,7 @@ package pe.com.sistradoc.services;
 
 import java.util.List;
 
+import pe.com.sistradoc.model.TramiteMovimientoQueryFlujo;
 import pe.com.sistradoc.model.TramiteQueryByDeriver;
 import pe.com.sistradoc.model.TramiteQueryResumen;
 
@@ -28,5 +29,7 @@ public interface TramiteQueryService {
 	public List<TramiteQueryByDeriver> getListTramiteFindBySolicitante(String tipoDocumento, String nroDocumento);
 	
 	public List<TramiteQueryByDeriver> getListTramiteFindByDateRange(String tipoDocumento, String nroDocumento);
+	
+	public List<TramiteMovimientoQueryFlujo> getListFlujosMovimientoTramite(String codigoTramite);
 	
 }

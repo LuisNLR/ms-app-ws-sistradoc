@@ -1,17 +1,14 @@
 package pe.com.sistradoc.services.imp;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pe.com.sistradoc.model.TramiteMovimientoQueryFlujo;
 import pe.com.sistradoc.model.TramiteQueryByDeriver;
 import pe.com.sistradoc.model.TramiteQueryResumen;
+import pe.com.sistradoc.repository.TramiteMovimientoRepository;
 import pe.com.sistradoc.repository.TramiteRepository;
 import pe.com.sistradoc.services.TramiteQueryService;
 
@@ -20,6 +17,9 @@ public class TramiteQueryServiceImp implements TramiteQueryService {
 
 	@Autowired
 	TramiteRepository tramiteRepository;
+	
+	@Autowired
+	TramiteMovimientoRepository movimientoRepository;
 	
 	@Override
 	public List<TramiteQueryByDeriver> getListTramiteByDeriver() {
@@ -73,17 +73,12 @@ public class TramiteQueryServiceImp implements TramiteQueryService {
 	
 	@Override
 	public List<TramiteQueryByDeriver> getListTramiteFindByDateRange(String fechaInicio, String fechaFin) {
-//		DateTimeFormatter formatoDateTime = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		
-//		LocalDate fechaInicioL = LocalDate.parse(fechaInicio);
-//		String fechaFormateadaInicio = fechaInicioL.format(formatoDateTime);
-//		
-//		LocalDate fechaFinL = LocalDate.parse(fechaFin);
-//		String fechaFormateadaFin = fechaFinL.format(formatoDateTime);
-//		
-//		return tramiteRepository.getListTramiteFindByDateRange(fechaFormateadaInicio, fechaFormateadaFin);
-		
 		return tramiteRepository.getListTramiteFindByDateRange(fechaInicio, fechaFin);
+	}
+	
+	@Override
+	public List<TramiteMovimientoQueryFlujo> getListFlujosMovimientoTramite(String codigoTramite) {
+		return movimientoRepository.getListFlujosMovimientoTramite(codigoTramite);
 	}
 
 

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pe.com.sistradoc.model.TareaQueryByTramite;
+import pe.com.sistradoc.model.TramiteMovimientoQueryFlujo;
 import pe.com.sistradoc.model.TramiteQueryByDeriver;
 import pe.com.sistradoc.model.TramiteQueryResumen;
 import pe.com.sistradoc.services.TramiteMovimientoTareaService;
@@ -132,6 +133,15 @@ public class ConsultController {
 	public ResponseEntity<List<TareaQueryByTramite>> getListTareasByCodigoTramite(@PathVariable("codigoTramite")String codigoTramite) {
 		try {
 			return new ResponseEntity<>(tareaService.getListTareaByTramites(codigoTramite), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("/getListFlujoTramiteByCodigo/{codigoTramite}")
+	public ResponseEntity<List<TramiteMovimientoQueryFlujo>> getListFlujoTramiteByCodigo(@PathVariable("codigoTramite")String codigoTramite) {
+		try {
+			return new ResponseEntity<>(tramiteQueryService.getListFlujosMovimientoTramite(codigoTramite), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}

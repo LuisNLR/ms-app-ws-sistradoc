@@ -401,12 +401,16 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 								 Utils.estadoTramiteFinalizadoAprobado + " ó " +
 								 Utils.estadoTramiteFinalizadoDesaprobado);
 			}else {
+				Date fechaTermino = new Date();
+				
 				tramite.setEstadoTramite(tramiteDto.getEstadoTramite());
 				tramite.setObservacion(tramite.getObservacion()!=null?tramite.getObservacion()+ "\n" : "" + tramiteDto.getObservacion());
-				tramite.setFechaTermino(new Date());
-				
+				tramite.setFechaTermino(fechaTermino);
 				tramiteRepository.save(tramite);
 				
+				TramiteMovimiento tramiteMovimiento = movimientoRepository.findByTramiteCodigoTramiteAndUbicacionActual(tramiteDto.getEstadoTramite(), "1");
+				tramiteMovimiento.setFechaDerivacionPosterior(fechaTermino);
+				movimientoRepository.save(tramiteMovimiento);
 			}
 		} catch (Exception e) {
 			LOGGER.error(correlationId + ":::: Proceso finalizarTramite. Error Mensaje :::: '{}' ", e.getMessage());
