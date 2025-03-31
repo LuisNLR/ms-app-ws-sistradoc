@@ -408,7 +408,7 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 				tramite.setFechaTermino(fechaTermino);
 				tramiteRepository.save(tramite);
 				
-				TramiteMovimiento tramiteMovimiento = movimientoRepository.findByTramiteCodigoTramiteAndUbicacionActual(tramiteDto.getEstadoTramite(), "1");
+				TramiteMovimiento tramiteMovimiento = movimientoRepository.findByTramiteCodigoTramiteAndUbicacionActual(tramiteDto.getCodigoTramite(), "1");
 				tramiteMovimiento.setFechaDerivacionPosterior(fechaTermino);
 				movimientoRepository.save(tramiteMovimiento);
 			}
