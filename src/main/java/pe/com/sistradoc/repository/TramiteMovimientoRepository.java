@@ -21,35 +21,35 @@ public interface TramiteMovimientoRepository extends JpaRepository<TramiteMovimi
 	TramiteMovimiento findByTramiteCodigoTramiteAndUbicacionActual(String codigoTramite, String ubicacionActual);
 	
 	
-	@Query(value = "select m.num_paso_actu as pasoActual from tb_tram_padr_movi m "
+	@Query(value = "select m.num_paso_actu as pasoactual from tb_tram_padr_movi m "
 			     + " where m.fk1_tram_idx_tram=:codigoTramite "
 			     + "   and m.txt_ubic_actu<>'1' "
 			     + "   and m.fk0_depe_enti_idx=:idDependencia "
-			     + " LIMIT 0,1 "
+			     + " limit 0,1 "
 		       , nativeQuery = true)
 	MovimientoPasoByTramiteAndDependencia findPasoByTramiteAndDependencia(
 		     @Param("codigoTramite") String codigoTramite,
 		     @Param("idDependencia") Long   idDependencia);
 	
 	
-	@Query(value = "SELECT movi.TXT_ESTA_MOVI as 'proceso'  \r\n"
-			+ "     , movi.TXT_MOTI_ENVI as 'motivoEnvio' \r\n"
-			+ "     , depe.TXT_NOMB_DEPE AS 'dependenciaAsignada'  \r\n"
-			+ "     , DATE_FORMAT(movi.FEC_DERI_MOVI, '%d/%m/%y %h:%i %p') as 'fechaAsignacion'  \r\n"
-			+ "     , DATE_FORMAT(movi.FEC_DERI_MOVI_POST, '%d/%m/%y %h:%i %p') as 'fechaFin'  \r\n"
-			+ "     , IF(movi.FEC_DERI_MOVI_POST is null  \r\n"
-			+ "          , if(  fnGetRequestTime(movi.FEC_DERI_MOVI, sysdate())  < 1  \r\n"
-			+ "               , concat(fnGetRequestTime(movi.FEC_DERI_MOVI, sysdate()) , '  ', TIMEDIFF(sysdate(), movi.FEC_DERI_MOVI))  \r\n"
-			+ "               , fnGetRequestTime(movi.FEC_DERI_MOVI, sysdate()))  \r\n"
-			+ "          , if(  fnGetRequestTime(movi.FEC_DERI_MOVI, movi.FEC_DERI_MOVI_POST) < 1  \r\n"
-			+ "               , concat(fnGetRequestTime(movi.FEC_DERI_MOVI, movi.FEC_DERI_MOVI_POST), '  ', TIMEDIFF(movi.FEC_DERI_MOVI_POST, movi.FEC_DERI_MOVI))  \r\n"
-			+ "               , fnGetRequestTime(movi.FEC_DERI_MOVI, movi.FEC_DERI_MOVI_POST))  \r\n"
-			+ "         ) as 'tiempoTranscurrido'  \r\n"
-			+ " FROM db_tram_docu.tb_tram_padr_movi movi  \r\n"
-			+ " inner join tb_depe_enti depe on depe.IDX_DEPE_ENTI=movi.FK0_DEPE_ENTI_IDX  \r\n"
-			+ " inner join tb_tram_padr tram on tram.TXT_CODI_TRAM=movi.FK1_TRAM_IDX_TRAM  \r\n"
-			+ " where tram.TXT_CODI_TRAM=:codigoTramite  \r\n"
-			+ " order by movi.FK1_TRAM_IDX_TRAM, movi.NUM_NUME_MOVI  "
+	@Query(value = "select movi.txt_esta_movi as 'proceso'  \r\n"
+			+ "     , movi.txt_moti_envi as 'motivoenvio' \r\n"
+			+ "     , depe.txt_nomb_depe as 'dependenciaasignada'  \r\n"
+			+ "     , date_format(movi.fec_deri_movi, '%d/%m/%y %h:%i %p') as 'fechaasignacion'  \r\n"
+			+ "     , date_format(movi.fec_deri_movi_post, '%d/%m/%y %h:%i %p') as 'fechafin'  \r\n"
+			+ "     , if(movi.fec_deri_movi_post is null  \r\n"
+			+ "          , if(  fnGetRequestTime(movi.fec_deri_movi, sysdate())  < 1  \r\n"
+			+ "               , concat(fnGetRequestTime(movi.fec_deri_movi, sysdate()) , '  ', timediff(sysdate(), movi.fec_deri_movi))  \r\n"
+			+ "               , fnGetRequestTime(movi.fec_deri_movi, sysdate()))  \r\n"
+			+ "          , if(  fnGetRequestTime(movi.fec_deri_movi, movi.fec_deri_movi_post) < 1  \r\n"
+			+ "               , concat(fnGetRequestTime(movi.fec_deri_movi, movi.fec_deri_movi_post), '  ', timediff(movi.fec_deri_movi_post, movi.fec_deri_movi))  \r\n"
+			+ "               , fnGetRequestTime(movi.fec_deri_movi, movi.fec_deri_movi_post))  \r\n"
+			+ "         ) as 'tiempotranscurrido'  \r\n"
+			+ " from db_tram_docu.tb_tram_padr_movi movi  \r\n"
+			+ " inner join tb_depe_enti depe on depe.idx_depe_enti=movi.fk0_depe_enti_idx  \r\n"
+			+ " inner join tb_tram_padr tram on tram.txt_codi_tram=movi.fk1_tram_idx_tram  \r\n"
+			+ " where tram.txt_codi_tram=:codigoTramite  \r\n"
+			+ " order by movi.fk1_tram_idx_tram, movi.num_nume_movi  "
 	     , nativeQuery = true)
 	List<TramiteMovimientoQueryFlujo> getListFlujosMovimientoTramite(@Param("codigoTramite") String codigoTramite);
 	

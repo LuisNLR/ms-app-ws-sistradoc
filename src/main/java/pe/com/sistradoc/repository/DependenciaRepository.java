@@ -16,17 +16,17 @@ public interface DependenciaRepository extends JpaRepository<Dependencia, Long> 
 	Dependencia findByIdDependencia(Long id);
 	
 	
-	@Query(value = "SELECT D.IDX_DEPE_ENTI AS idDependencia, "
-		      	 + "       D.TXT_NOMB_DEPE AS nombreDependencia, "
-			     + "       A.TXT_NOMB_AREA AS nombreArea, "
-			     + "       A.IDX_AREA_ENTI as idArea "
-			     + "  FROM tb_depe_enti d "
-			     + " INNER JOIN tb_area_enti a      ON a.IDX_AREA_ENTI=d.FK0_AREA_IDEX "
-			     + " INNER JOIN tb_fluj_tram_depe F ON D.IDX_DEPE_ENTI=F.FK0_DEPE_ENTI_IDX "
-			     + "                               AND F.NUM_ORDE_FLUJ=:nroPaso "
-			     + " INNER JOIN tb_tipo_tram TT     ON TT.IDX_TIPO_TRAM=F.FK1_TIPO_TRAM_IDX "
-			     + "                               AND TT.IDX_TIPO_TRAM=:idTipoTramite "
-			     + " LIMIT 1 "
+	@Query(value = "select d.idx_depe_enti as iddependencia, \r\n"
+			   + "         d.txt_nomb_depe as nombredependencia, \r\n"
+			     + "       a.txt_nomb_area as nombrearea, \r\n"
+			     + "       a.idx_area_enti as idarea \r\n"
+			     + "  from tb_depe_enti d \r\n"
+			     + " inner join tb_area_enti a      on a.idx_area_enti=d.fk0_area_idex \r\n"
+			     + " inner join tb_fluj_tram_depe f on d.idx_depe_enti=f.fk0_depe_enti_idx \r\n"
+			     + "                               and f.num_orde_fluj=:nroPaso \r\n"
+			     + " inner join tb_tipo_tram tt     on tt.idx_tipo_tram=f.fk1_tipo_tram_idx \r\n"
+			     + "                               and tt.idx_tipo_tram=:idTipoTramite \r\n"
+			     + " limit 1  "
 			       , nativeQuery = true)
 	DependenciaByTipoTramite findDependenciaByTipoTramite(
 	      @Param("nroPaso") Integer nroPasoObtener,
