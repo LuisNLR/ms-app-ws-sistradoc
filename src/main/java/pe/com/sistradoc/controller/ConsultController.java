@@ -1,22 +1,26 @@
 package pe.com.sistradoc.controller;
 
+//import java.net.http.HttpHeaders;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import pe.com.sistradoc.model.TareaQueryByTramite;
 import pe.com.sistradoc.model.TramiteMovimientoQueryFlujo;
 import pe.com.sistradoc.model.TramiteQueryByDeriver;
 import pe.com.sistradoc.model.TramiteQueryResumen;
+import pe.com.sistradoc.services.ReportService;
 import pe.com.sistradoc.services.TramiteMovimientoTareaService;
 import pe.com.sistradoc.services.TramiteQueryService;
+
 
 @RestController
 @RequestMapping("/querys")
@@ -27,6 +31,9 @@ public class ConsultController {
 	
 	@Autowired
 	private TramiteMovimientoTareaService tareaService;
+	
+	@Autowired
+	private ReportService reportService;
 	
 	@GetMapping("/getListTramiteByDeriver")
 	public ResponseEntity<List<TramiteQueryByDeriver>> getListTramiteByDeriver() {
@@ -144,6 +151,38 @@ public class ConsultController {
 			return new ResponseEntity<>(tramiteQueryService.getListFlujosMovimientoTramite(codigoTramite), HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("/getReportTramInProgressByDependency")
+	public ResponseEntity<byte[]> getReportTramiteInProgressByDependencia() throws Exception {
+		
+		try {
+			byte[] report = reportService.getReportTramInProgressByDependencia();
+			HttpHeaders headers = new org.springframework.http.HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_PDF);
+			headers.add("Content-Disposition", "inline; fileName=reportTramInProgressByDependency.pdf");
+			return new ResponseEntity<>(report, headers, HttpStatus.OK); 
+		} catch (Exception e) {
+			System.out.println("Error al generar reporte: " + e.getMessage());
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
+	}
+	
+	@GetMapping("/getReportTramInProgressByTipoTram")
+	public ResponseEntity<byte[]> getReportTramiteInProgressByTipoTramite() throws Exception {
+		
+		try {
+			byte[] report = reportService.getReportTramInProgressByTipoTramite();
+			HttpHeaders headers = new org.springframework.http.HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_PDF);
+			headers.add("Content-Disposition", "inline; fileName=reportTramInProgressByTipoTram.pdf");
+			return new ResponseEntity<>(report, headers, HttpStatus.OK); 
+		} catch (Exception e) {
+			System.out.println("Error al generar reporte: " + e.getMessage());
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 		}
 	}
 	
