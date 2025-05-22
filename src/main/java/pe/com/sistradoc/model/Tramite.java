@@ -12,9 +12,14 @@ import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
 @Table(name = "TB_TRAM_PADR")
 @EntityListeners(AuditingEntityListener.class)
+@Getter
+@Setter
 public class Tramite {
 	
 	@Id
@@ -82,116 +87,116 @@ public class Tramite {
 		this.solicitante = solicitante;
 	}
 	
-	public String getCodigoTramite() {
-		return codigoTramite;
-	}
-
-	public void setCodigoTramite(String codigoTramite) {
-		this.codigoTramite = codigoTramite;
-	}
-
-	public String getArchivado() {
-		return archivado;
-	}
-
-	public void setArchivado(String archivado) {
-		this.archivado = archivado;
-	}
-
-	public String getAsunto() {
-		return asunto;
-	}
-
-	public void setAsunto(String asunto) {
-		this.asunto = asunto;
-	}
-
-	public String getObservacion() {
-		return observacion;
-	}
-
-	public void setObservacion(String observacion) {
-		this.observacion = observacion;
-	}
-
-	public String getMotivoAnulacion() {
-		return motivoAnulacion;
-	}
-
-	public void setMotivoAnulacion(String motivoAnulacion) {
-		this.motivoAnulacion = motivoAnulacion;
-	}
-
-	public Date getFechaRegistro() {
-		return fechaRegistro;
-	}
-
-	public void setFechaRegistro(Date fechaRegistro) {
-		this.fechaRegistro = fechaRegistro;
-	}
-
-	public Date getFechaTermino() {
-		return fechaTermino;
-	}
-
-	public void setFechaTermino(Date fechaTermino) {
-		this.fechaTermino = fechaTermino;
-	}
-
-	public Integer getNumeroFolios() {
-		return numeroFolios;
-	}
-
-	public void setNumeroFolios(Integer numeroFolios) {
-		this.numeroFolios = numeroFolios;
-	}
-
-	public String getReferencia() {
-		return referencia;
-	}
-
-	public void setReferencia(String referencia) {
-		this.referencia = referencia;
-	}
-
-	public String getEstadoTramite() {
-		return estadoTramite;
-	}
-
-	public void setEstadoTramite(String estadoTramite) {
-		this.estadoTramite = estadoTramite;
-	}
-
-	public String getTipoDocumento() {
-		return tipoDocumento;
-	}
-
-	public void setTipoDocumento(String tipoDocumento) {
-		this.tipoDocumento = tipoDocumento;
-	}
-
-	public TipoTramite getTipoTramite() {
-		return tipoTramite;
-	}
-
-	public void setTipoTramite(TipoTramite tipoTramite) {
-		this.tipoTramite = tipoTramite;
-	}
-
-	public Solicitante getSolicitante() {
-		return solicitante;
-	}
-
-	public void setSolicitante(Solicitante solicitante) {
-		this.solicitante = solicitante;
-	}
-
-	public Long getIdDependencia() {
-		return idDependencia;
-	}
-
-	public void setIdDependencia(Long idDependencia) {
-		this.idDependencia = idDependencia;
-	}
+//	public String getCodigoTramite() {
+//		return codigoTramite;
+//	}
+//
+//	public void setCodigoTramite(String codigoTramite) {
+//		this.codigoTramite = codigoTramite;
+//	}
+//
+//	public String getArchivado() {
+//		return archivado;
+//	}
+//
+//	public void setArchivado(String archivado) {
+//		this.archivado = archivado;
+//	}
+//
+//	public String getAsunto() {
+//		return asunto;
+//	}
+//
+//	public void setAsunto(String asunto) {
+//		this.asunto = asunto;
+//	}
+//
+//	public String getObservacion() {
+//		return observacion;
+//	}
+//
+//	public void setObservacion(String observacion) {
+//		this.observacion = observacion;
+//	}
+//
+//	public String getMotivoAnulacion() {
+//		return motivoAnulacion;
+//	}
+//
+//	public void setMotivoAnulacion(String motivoAnulacion) {
+//		this.motivoAnulacion = motivoAnulacion;
+//	}
+//
+//	public Date getFechaRegistro() {
+//		return fechaRegistro;
+//	}
+//
+//	public void setFechaRegistro(Date fechaRegistro) {
+//		this.fechaRegistro = fechaRegistro;
+//	}
+//
+//	public Date getFechaTermino() {
+//		return fechaTermino;
+//	}
+//
+//	public void setFechaTermino(Date fechaTermino) {
+//		this.fechaTermino = fechaTermino;
+//	}
+//
+//	public Integer getNumeroFolios() {
+//		return numeroFolios;
+//	}
+//
+//	public void setNumeroFolios(Integer numeroFolios) {
+//		this.numeroFolios = numeroFolios;
+//	}
+//
+//	public String getReferencia() {
+//		return referencia;
+//	}
+//
+//	public void setReferencia(String referencia) {
+//		this.referencia = referencia;
+//	}
+//
+//	public String getEstadoTramite() {
+//		return estadoTramite;
+//	}
+//
+//	public void setEstadoTramite(String estadoTramite) {
+//		this.estadoTramite = estadoTramite;
+//	}
+//
+//	public String getTipoDocumento() {
+//		return tipoDocumento;
+//	}
+//
+//	public void setTipoDocumento(String tipoDocumento) {
+//		this.tipoDocumento = tipoDocumento;
+//	}
+//
+//	public TipoTramite getTipoTramite() {
+//		return tipoTramite;
+//	}
+//
+//	public void setTipoTramite(TipoTramite tipoTramite) {
+//		this.tipoTramite = tipoTramite;
+//	}
+//
+//	public Solicitante getSolicitante() {
+//		return solicitante;
+//	}
+//
+//	public void setSolicitante(Solicitante solicitante) {
+//		this.solicitante = solicitante;
+//	}
+//
+//	public Long getIdDependencia() {
+//		return idDependencia;
+//	}
+//
+//	public void setIdDependencia(Long idDependencia) {
+//		this.idDependencia = idDependencia;
+//	}
 	
 }

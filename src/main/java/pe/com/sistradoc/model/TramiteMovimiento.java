@@ -14,9 +14,14 @@ import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
 @Table(name = "TB_TRAM_PADR_MOVI")
 @EntityListeners(AuditingEntityListener.class)
+@Getter
+@Setter
 public class TramiteMovimiento {
 	
 	@Id
@@ -76,96 +81,96 @@ public class TramiteMovimiento {
 		this.tramite = tramite;
 	}
 
-	public Long getIdMovimiento() {
-		return idMovimiento;
-	}
-
-	public Date getFechaDerivacionPosterior() {
-		return fechaDerivacionPosterior;
-	}
-
-	public void setFechaDerivacionPosterior(Date fechaDerivacionPosterior) {
-		this.fechaDerivacionPosterior = fechaDerivacionPosterior;
-	}
-
-	public Date getFechaDerivacion() {
-		return fechaDerivacion;
-	}
-
-	public void setFechaDerivacion(Date fechaDerivacion) {
-		this.fechaDerivacion = fechaDerivacion;
-	}
-
-	public Date getFechaRecepcion() {
-		return fechaRecepcion;
-	}
-
-	public void setFechaRecepcion(Date fechaRecepcion) {
-		this.fechaRecepcion = fechaRecepcion;
-	}
-
-	public String getMotivoEnvio() {
-		return motivoEnvio;
-	}
-
-	public void setMotivoEnvio(String motivoEnvio) {
-		this.motivoEnvio = motivoEnvio;
-	}
-
-	public Integer getNumeroMovimiento() {
-		return numeroMovimiento;
-	}
-
-	public void setNumeroMovimiento(Integer numeroMovimiento) {
-		this.numeroMovimiento = numeroMovimiento;
-	}
-
-	public Integer getPasoActual() {
-		return pasoActual;
-	}
-
-	public void setPasoActual(Integer pasoActual) {
-		this.pasoActual = pasoActual;
-	}
-
-	public String getRepecpcionDocumento() {
-		return repecpcionDocumento;
-	}
-
-	public void setRepecpcionDocumento(String repecpcionDocumento) {
-		this.repecpcionDocumento = repecpcionDocumento;
-	}
-
-	public String getUbicacionActual() {
-		return ubicacionActual;
-	}
-
-	public void setUbicacionActual(String ubicacionActual) {
-		this.ubicacionActual = ubicacionActual;
-	}
-
-	public String getEstadoMovimiento() {
-		return estadoMovimiento;
-	}
-
-	public void setEstadoMovimiento(String estadoMovimiento) {
-		this.estadoMovimiento = estadoMovimiento;
-	}
-
-	public Dependencia getDependencia() {
-		return dependencia;
-	}
-
-	public void setDependencia(Dependencia dependencia) {
-		this.dependencia = dependencia;
-	}
-
-	public Tramite getTramite() {
-		return tramite;
-	}
-
-	public void setTramite(Tramite tramite) {
-		this.tramite = tramite;
-	}
+//	public Long getIdMovimiento() {
+//		return idMovimiento;
+//	}
+//
+//	public Date getFechaDerivacionPosterior() {
+//		return fechaDerivacionPosterior;
+//	}
+//
+//	public void setFechaDerivacionPosterior(Date fechaDerivacionPosterior) {
+//		this.fechaDerivacionPosterior = fechaDerivacionPosterior;
+//	}
+//
+//	public Date getFechaDerivacion() {
+//		return fechaDerivacion;
+//	}
+//
+//	public void setFechaDerivacion(Date fechaDerivacion) {
+//		this.fechaDerivacion = fechaDerivacion;
+//	}
+//
+//	public Date getFechaRecepcion() {
+//		return fechaRecepcion;
+//	}
+//
+//	public void setFechaRecepcion(Date fechaRecepcion) {
+//		this.fechaRecepcion = fechaRecepcion;
+//	}
+//
+//	public String getMotivoEnvio() {
+//		return motivoEnvio;
+//	}
+//
+//	public void setMotivoEnvio(String motivoEnvio) {
+//		this.motivoEnvio = motivoEnvio;
+//	}
+//
+//	public Integer getNumeroMovimiento() {
+//		return numeroMovimiento;
+//	}
+//
+//	public void setNumeroMovimiento(Integer numeroMovimiento) {
+//		this.numeroMovimiento = numeroMovimiento;
+//	}
+//
+//	public Integer getPasoActual() {
+//		return pasoActual;
+//	}
+//
+//	public void setPasoActual(Integer pasoActual) {
+//		this.pasoActual = pasoActual;
+//	}
+//
+//	public String getRepecpcionDocumento() {
+//		return repecpcionDocumento;
+//	}
+//
+//	public void setRepecpcionDocumento(String repecpcionDocumento) {
+//		this.repecpcionDocumento = repecpcionDocumento;
+//	}
+//
+//	public String getUbicacionActual() {
+//		return ubicacionActual;
+//	}
+//
+//	public void setUbicacionActual(String ubicacionActual) {
+//		this.ubicacionActual = ubicacionActual;
+//	}
+//
+//	public String getEstadoMovimiento() {
+//		return estadoMovimiento;
+//	}
+//
+//	public void setEstadoMovimiento(String estadoMovimiento) {
+//		this.estadoMovimiento = estadoMovimiento;
+//	}
+//
+//	public Dependencia getDependencia() {
+//		return dependencia;
+//	}
+//
+//	public void setDependencia(Dependencia dependencia) {
+//		this.dependencia = dependencia;
+//	}
+//
+//	public Tramite getTramite() {
+//		return tramite;
+//	}
+//
+//	public void setTramite(Tramite tramite) {
+//		this.tramite = tramite;
+//	}
 
 }
