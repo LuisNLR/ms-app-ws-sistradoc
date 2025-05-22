@@ -10,9 +10,14 @@ import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
 @Table(name = "TB_AREA_ENTI")
 @EntityListeners(AuditingEntityListener.class)
+@Getter
+@Setter
 public class AreaEntidad {
 	
 	@Id
@@ -23,16 +28,16 @@ public class AreaEntidad {
 	@Column(name = "TXT_NOMB_AREA")
 	private String nombreArea;
 
-	public Long getIdArea() {
-		return idArea;
-	}
-
-	public String getNombreArea() {
-		return nombreArea;
-	}
-
-	public void setNombreArea(String nombreArea) {
-		this.nombreArea = nombreArea;
-	}
+//	public Long getIdArea() {
+//		return idArea;
+//	}
+//
+//	public String getNombreArea() {
+//		return nombreArea;
+//	}
+//
+//	public void setNombreArea(String nombreArea) {
+//		this.nombreArea = nombreArea;
+//	}
 
 }
