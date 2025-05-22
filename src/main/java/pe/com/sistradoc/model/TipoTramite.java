@@ -67,5 +67,9 @@ public class TipoTramite {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
+	
+	public String getFullName() {
+		return idTipoTramite + ". " + nombreTipoTramite;
+	}
 
 }
