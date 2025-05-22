@@ -28,16 +28,4 @@ public class AreaEntidad {
 	@Column(name = "TXT_NOMB_AREA")
 	private String nombreArea;
 
-//	public Long getIdArea() {
-//		return idArea;
-//	}
-//
-//	public String getNombreArea() {
-//		return nombreArea;
-//	}
-//
-//	public void setNombreArea(String nombreArea) {
-//		this.nombreArea = nombreArea;
-//	}
-
 }

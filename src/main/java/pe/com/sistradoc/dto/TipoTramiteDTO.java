@@ -30,35 +30,4 @@ public class TipoTramiteDTO {
 		this.estado = estado;
 	}
 	
-//	public Long getIdTipoTramite() {
-//		return idTipoTramite;
-//	}
-//	public void setIdTipoTramite(Long idTipoTramite) {
-//		this.idTipoTramite = idTipoTramite;
-//	}
-//	public String getNombreTipoTramite() {
-//		return nombreTipoTramite;
-//	}
-//	public void setNombreTipoTramite(String nombreTipoTramite) {
-//		this.nombreTipoTramite = nombreTipoTramite;
-//	}
-//	public Double getMontoTipoTramite() {
-//		return montoTipoTramite;
-//	}
-//	public void setMontoTipoTramite(Double montoTipoTramite) {
-//		this.montoTipoTramite = montoTipoTramite;
-//	}
-//	public Integer getNumeroDias() {
-//		return numeroDias;
-//	}
-//	public void setNumeroDias(Integer numeroDias) {
-//		this.numeroDias = numeroDias;
-//	}
-//	public String getEstado() {
-//		return estado;
-//	}
-//	public void setEstado(String estado) {
-//		this.estado = estado;
-//	}
-	
 }
