@@ -56,7 +56,6 @@ public class ReportServiceImp implements ReportService {
 	        // Exportar a PDF
 	        return JasperExportManager.exportReportToPdf(jasperPrint);
 	    } catch (Exception e) {
-			 e.printStackTrace();
 			 return null;
 		}
 	}
@@ -76,7 +75,6 @@ public class ReportServiceImp implements ReportService {
 	        // Exportar a PDF
 	        return JasperExportManager.exportReportToPdf(jasperPrint);
 	    } catch (Exception e) {
-			 e.printStackTrace();
 			 return null;
 		}
 	}

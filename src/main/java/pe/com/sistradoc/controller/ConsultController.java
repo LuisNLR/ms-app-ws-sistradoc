@@ -164,8 +164,6 @@ public class ConsultController {
 			headers.add("Content-Disposition", "inline; fileName=reportTramInProgressByDependency.pdf");
 			return new ResponseEntity<>(report, headers, HttpStatus.OK); 
 		} catch (Exception e) {
-			System.out.println("Error al generar reporte: " + e.getMessage());
-			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 		}
 	}
@@ -180,8 +178,6 @@ public class ConsultController {
 			headers.add("Content-Disposition", "inline; fileName=reportTramInProgressByTipoTram.pdf");
 			return new ResponseEntity<>(report, headers, HttpStatus.OK); 
 		} catch (Exception e) {
-			System.out.println("Error al generar reporte: " + e.getMessage());
-			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 		}
 	}
