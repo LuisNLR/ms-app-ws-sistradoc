@@ -6,8 +6,9 @@ import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import pe.com.sistradoc.utils.Utils;
 
 @Entity
 @Table(name = "TB_SOLI_TRAM")
@@ -16,7 +17,6 @@ public class Solicitante {
 	
 	@Id
 	@Column(name = "TXT_NUME_DOCU")
-	@CreatedDate
 	private String numeroDocumento;
 	
 	@Column(name = "TXT_TIPO_DOCU")
@@ -29,10 +29,10 @@ public class Solicitante {
 	private String nombreSolicitante;
 	
 	@Column(name = "TXT_APEX_PATE")
-	private String ApellidoPaterno;
+	private String apellidoPaterno;
 	
 	@Column(name = "TXT_APEX_MATE")
-	private String ApellidoMaterno;
+	private String apellidoMaterno;
 	
 	@Column(name = "TXT_MAIL_SOLI")
 	private String mail;
@@ -79,19 +79,19 @@ public class Solicitante {
 	}
 
 	public String getApellidoPaterno() {
-		return ApellidoPaterno;
+		return apellidoPaterno;
 	}
 
 	public void setApellidoPaterno(String apellidoPaterno) {
-		ApellidoPaterno = apellidoPaterno;
+		this.apellidoPaterno = apellidoPaterno;
 	}
 
 	public String getApellidoMaterno() {
-		return ApellidoMaterno;
+		return apellidoMaterno;
 	}
 
 	public void setApellidoMaterno(String apellidoMaterno) {
-		ApellidoMaterno = apellidoMaterno;
+		this.apellidoMaterno = apellidoMaterno;
 	}
 
 	public String getMail() {
@@ -124,6 +124,18 @@ public class Solicitante {
 
 	public void setRepresentante(String representante) {
 		this.representante = representante;
+	}
+	
+	public String getSolicitanteFullName() {
+		String solicitante = tipoDocumento + ". " + numeroDocumento;
+		String nombreCompleto = null;
+		if(tipoSolicitante.equals(Utils.tipoSolicitantePersona) ) {
+			nombreCompleto =  nombreSolicitante + " " + apellidoPaterno + " " + apellidoMaterno;
+		}else {
+			nombreCompleto =  nombreSolicitante;
+		}
+		solicitante = solicitante + " - " + nombreCompleto.toUpperCase();
+		return solicitante;
 	}
 
 }

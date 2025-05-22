@@ -16,7 +16,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
-@Table(name = "TB_TRAM_PADR_MOVI")
+@Table(name = "TB_TRAM_PADR_MOVI_TARE")
 @EntityListeners(AuditingEntityListener.class)
 public class TramiteMovimientoTarea {
 	
@@ -34,11 +34,24 @@ public class TramiteMovimientoTarea {
 	
 	@Column(name = "TXT_TIPO_TARE")
 	private String tipoTarea;
-	
+
 	@OneToOne
 	@JoinColumn(name = "FK0_MOVI_TRAM_ID_MOVI")
 	private TramiteMovimiento movimiento;
-
+	
+	public TramiteMovimientoTarea() {
+		super();
+	}
+	
+	public TramiteMovimientoTarea(Date fechaRegistro, String descripcion, String tipoTarea,
+			TramiteMovimiento movimiento) {
+		super();
+		this.fechaRegistro = fechaRegistro;
+		this.descripcion = descripcion;
+		this.tipoTarea = tipoTarea;
+		this.movimiento = movimiento;
+	}
+	
 	public Long getIdTarea() {
 		return idTarea;
 	}

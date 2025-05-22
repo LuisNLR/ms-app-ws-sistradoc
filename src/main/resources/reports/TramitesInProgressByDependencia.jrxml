@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report_tramites_inProgress" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="0" uuid="e115bc59-fd0f-446b-a585-04725e27d7f0">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#FFFFFF" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<queryString language="SQL">
+		<![CDATA[select t.txt_codi_tram as 'codigotramite',   
+       date_format(t.fec_ingr_tram,'%d/%m/%Y') as 'fechaingreso',  
+       concat(UPPER(tt.txt_nomb_tram), ' (', tt.NUM_NUME_DIAS, ' días)') as 'tipotramite',   
+     --  t.txt_asun_tram as 'asunto',   
+       if(s.txt_tipo_soli='persona', upper(concat(s.txt_tipo_docu, '. ', s.txt_nume_docu, ' - ', s.txt_nomb_soli, ' ', txt_apex_pate, ' ', txt_apex_mate)),   
+                                     upper(concat(s.txt_tipo_docu, '. ', s.txt_nume_docu, ' - ', s.txt_nomb_soli)) ) as 'solicitante',   
+       d.txt_nomb_depe as 'dependenciaactual'
+         , fnGetRequestTime(t.fec_ingr_tram, sysdate()) as 'diastranscurridos' 
+  from tb_tram_padr t   
+ inner join tb_tram_padr_movi tm on t.txt_codi_tram=tm.fk1_tram_idx_tram  
+ inner join tb_soli_tram s  on t.fk1_soli_nume_docu=s.txt_nume_docu  
+ inner join tb_depe_enti d  on tm.fk0_depe_enti_idx=d.idx_depe_enti  
+ inner join tb_tipo_tram tt on t.fk0_tipo_tram_idx=tt.idx_tipo_tram  
+ where tm.txt_ubic_actu='1'   
+   and t.txt_esta_tram='EN TRAMITE'  
+ order by d.txt_nomb_depe asc, t.fec_ingr_tram asc, tt.idx_tipo_tram asc]]>
+	</queryString>
+	<field name="codigotramite" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="TXT_CODI_TRAM"/>
+		<property name="com.jaspersoft.studio.field.label" value="codigotramite"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tb_tram_padr"/>
+	</field>
+	<field name="fechaingreso" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="fechaingreso"/>
+		<property name="com.jaspersoft.studio.field.label" value="fechaingreso"/>
+	</field>
+	<field name="tipotramite" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tipotramite"/>
+		<property name="com.jaspersoft.studio.field.label" value="tipotramite"/>
+	</field>
+	<field name="solicitante" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="solicitante"/>
+		<property name="com.jaspersoft.studio.field.label" value="solicitante"/>
+	</field>
+	<field name="dependenciaactual" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="TXT_NOMB_DEPE"/>
+		<property name="com.jaspersoft.studio.field.label" value="dependenciaactual"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tb_depe_enti"/>
+	</field>
+	<field name="diastranscurridos" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="diastranscurridos"/>
+		<property name="com.jaspersoft.studio.field.label" value="diastranscurridos"/>
+	</field>
+	<group name="Group1">
+		<groupExpression><![CDATA[$F{dependenciaactual}]]></groupExpression>
+		<groupHeader>
+			<band height="40">
+				<textField>
+					<reportElement style="SubTitle" x="143" y="13" width="657" height="24" forecolor="#000000" uuid="8caf7870-b3f6-4e56-b258-6eaf7c7087bd"/>
+					<textElement>
+						<font fontName="DejaVu Sans Condensed" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{dependenciaactual}]]></textFieldExpression>
+				</textField>
+				<rectangle>
+					<reportElement mode="Opaque" x="97" y="13" width="36" height="24" forecolor="#CCCCCC" backcolor="#CCCCCC" uuid="458a0922-48c8-457f-8e90-8e67fd92d657"/>
+				</rectangle>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="30">
+				<frame>
+					<reportElement mode="Opaque" x="652" y="0" width="150" height="30" forecolor="#CCCCCC" backcolor="#CCCCCC" uuid="a1b12e34-9d2f-4fb0-8965-da1707d7553c"/>
+				</frame>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band height="575" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="-20" y="475" width="105" height="100" backcolor="#666666" uuid="6eb7cb61-0dd7-47a8-8475-5fa6c3a348dc"/>
+				<textField>
+					<reportElement style="Column header" x="0" y="0" width="104" height="73" forecolor="#000000" uuid="db8457c8-99e9-434f-b439-2d400dff2bcd"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="DejaVu Sans Condensed" size="58" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="0" y="77" width="104" height="20" forecolor="#000000" uuid="e20c8a65-aded-41dc-a107-108a9159af99"/>
+					<box leftPadding="4" rightPadding="4"/>
+					<textElement textAlignment="Center">
+						<font fontName="DejaVu Sans Condensed" size="16" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement mode="Transparent" x="42" y="73" width="20" height="1" backcolor="#FFFFFF" uuid="db6d7ead-4383-4f8c-81cf-1e3064eb6924"/>
+				</line>
+			</frame>
+		</band>
+	</background>
+	<title>
+		<band height="104" splitType="Stretch">
+			<staticText>
+				<reportElement style="Title" x="0" y="0" width="802" height="67" uuid="1dcadd54-7d50-4470-85ed-189e4d910b25"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans Condensed" size="54" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Trámites en proceso]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="SubTitle" x="232" y="67" width="568" height="37" uuid="862cb50c-5a5e-4906-a495-226e25115fb6"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans Condensed" size="26"/>
+				</textElement>
+				<text><![CDATA[Agrupados por ubicación (Dependencia)]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="97" y="5" width="705" height="20" backcolor="#666666" uuid="35d90a9b-bb7e-4ec4-bfa2-68be1967d6b2"/>
+				<staticText>
+					<reportElement style="Column header" x="0" y="0" width="90" height="15" uuid="0556f5d7-7cd3-430d-81ef-fa65da975262">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d4dc3989-5866-454b-ab16-ae2bcda0d57f"/>
+					</reportElement>
+					<textElement textAlignment="Left">
+						<font fontName="DejaVu Sans Condensed"/>
+					</textElement>
+					<text><![CDATA[Tramite N°]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="90" y="0" width="80" height="15" uuid="a84ae55e-c07c-410b-b8ef-add82049ad93">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="48af850e-58d3-479b-a695-cd9b8ee4507d"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font fontName="DejaVu Sans Condensed"/>
+					</textElement>
+					<text><![CDATA[Fecha Reg. ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="170" y="0" width="210" height="15" uuid="5c9c8901-7180-4db3-9a1e-0df44e6d3df2">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="263f4fb1-5880-4989-9a4d-54860586d770"/>
+					</reportElement>
+					<textElement>
+						<font fontName="DejaVu Sans Condensed"/>
+					</textElement>
+					<text><![CDATA[Tipo de trámite]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="389" y="0" width="230" height="15" uuid="a4f81d03-6cdc-4ab0-abe6-a829389e1bb0">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e854220b-2f44-43c8-9510-ae15f1603104"/>
+					</reportElement>
+					<textElement>
+						<font fontName="DejaVu Sans Condensed"/>
+					</textElement>
+					<text><![CDATA[Solicitante]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" x="620" y="0" width="85" height="15" uuid="8213c905-bbc5-49d0-94eb-be3e0f4209e7">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="28890035-9baf-4915-a218-570aef11951e"/>
+					</reportElement>
+					<textElement>
+						<font fontName="DejaVu Sans Condensed"/>
+					</textElement>
+					<text><![CDATA[# Días Transc]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<frame>
+				<reportElement x="97" y="1" width="705" height="15" uuid="89a3da05-fdde-4ffe-965f-cc476f72e3ab"/>
+				<textField>
+					<reportElement style="Detail" x="0" y="0" width="90" height="15" uuid="4850b7d9-c0b6-4317-ab78-e3d1e02429ec">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d4dc3989-5866-454b-ab16-ae2bcda0d57f"/>
+					</reportElement>
+					<textElement>
+						<font fontName="DejaVu Sans Condensed" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{codigotramite}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Detail" x="90" y="0" width="80" height="15" uuid="afd8e53f-7f26-4023-8d8f-7f3a82a097c7">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="48af850e-58d3-479b-a695-cd9b8ee4507d"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font fontName="DejaVu Sans Condensed" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{fechaingreso}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement style="Detail" x="170" y="0" width="210" height="15" uuid="718ff536-e344-462d-841f-8ef098e80ba8">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="263f4fb1-5880-4989-9a4d-54860586d770"/>
+					</reportElement>
+					<textElement>
+						<font fontName="DejaVu Sans Condensed" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{tipotramite}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement style="Detail" x="389" y="0" width="230" height="15" uuid="037da7e7-c440-4e5d-b0df-4b7be6d167a0">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e854220b-2f44-43c8-9510-ae15f1603104"/>
+					</reportElement>
+					<textElement>
+						<font fontName="DejaVu Sans Condensed" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{solicitante}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Detail" x="620" y="0" width="60" height="15" uuid="adb0e261-eb5a-4735-8f5e-d11aa8b6f125">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="28890035-9baf-4915-a218-570aef11951e"/>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font fontName="DejaVu Sans Condensed" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{diastranscurridos}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="97" y="16" width="705" height="1" uuid="e5f21b91-7f24-498e-97a1-0e93db9225a4"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="39" splitType="Stretch">
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement style="Column header" x="671" y="0" width="131" height="20" forecolor="#000000" uuid="95484ca0-40b4-4752-95d8-1afbc33c820b"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans Condensed" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="96" y="0" width="267" height="38" uuid="0ec52099-dcd7-42f4-8baa-f3874f05208a"/>
+				<textElement>
+					<font fontName="DejaVu Sans Condensed" size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Lista de trámites en proceso categorizados por ubicación]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

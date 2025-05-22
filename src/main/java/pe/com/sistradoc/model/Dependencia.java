@@ -28,6 +28,16 @@ public class Dependencia {
 	@OneToOne
 	@JoinColumn(name = "FK0_AREA_IDEX")
 	private AreaEntidad areaEntidad;
+	
+	public Dependencia() {
+		super();
+	}
+	
+	public Dependencia(Long idDependencia, String nombreDependencia) {
+		super();
+		this.idDependencia = idDependencia;
+		this.nombreDependencia = nombreDependencia;
+	}
 
 	public Long getIdDependencia() {
 		return idDependencia;
