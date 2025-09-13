@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import pe.com.sistradoc.model.Tramite;
 import pe.com.sistradoc.model.TramiteQueryByDeriver;
+import pe.com.sistradoc.model.TramiteQueryExport;
 import pe.com.sistradoc.model.TramiteQueryResumen;
 import pe.com.sistradoc.model.TramiteCode;
 
@@ -360,6 +361,70 @@ public interface TramiteRepository extends JpaRepository<Tramite, Long> {
 			, nativeQuery = true)
 	List<TramiteQueryByDeriver> getListTramiteFindByDateRange(@Param("fechaInicio") String fechaInicio, 
 															  @Param("fechaFin") String fechaFin);
+	
+	
+	@Query(value =  
+			  "     SELECT  \r\n"
+			+ "            t.txt_codi_tram as 'codigotramite',  \r\n"
+			+ "            date_format(t.fec_ingr_tram, '%d/%m/%Y') as 'fechaingreso',  \r\n"
+			+ "            date_format(t.FEC_TERM_TRAM, '%d/%m/%Y') as 'fechatermino',  \r\n"
+			+ "            tt.txt_nomb_tram as 'tipotramite',  \r\n"
+			+ "            t.txt_asun_tram as 'asunto',  \r\n"
+			+ "            if(s.txt_tipo_soli = 'persona', upper(concat(s.txt_tipo_docu, '. ', s.txt_nume_docu, ' - ', s.txt_nomb_soli, ' ', txt_apex_pate, ' ', txt_apex_mate)),  \r\n"
+			+ "                                            upper(concat(s.txt_tipo_docu, '. ', s.txt_nume_docu, ' - ', s.txt_nomb_soli))  \r\n"
+			+ "              ) as 'solicitante',  \r\n"
+			+ "            t.NUM_FOLI_TRAM AS 'numerofolios',  \r\n"
+			+ "            t.txt_esta_tram AS 'estadotramite',  \r\n"
+			+ "            tt.num_nume_dias as 'duracion',  \r\n"
+			+ "            fnGetRequestTime( t.fec_ingr_tram,  \r\n"
+			+ "                              if(t.FEC_TERM_TRAM IS NOT NULL, t.FEC_TERM_TRAM, SYSDATE())  \r\n"
+			+ "                            ) as 'diastranscurridos',  \r\n"
+			+ "            '' AS 'separatortramiteflow',  \r\n"
+			+ "            tm.NUM_NUME_MOVI AS 'numeromovimiento',  \r\n"
+			+ "            tm.TXT_ESTA_MOVI AS 'estadomovimiento',  \r\n"
+			+ "            tm.TXT_MOTI_ENVI AS 'motivomovimiento',  \r\n"
+			+ "            d.txt_nomb_depe as 'dependenciaorigen',  \r\n"
+			+ "            ( select d.txt_nomb_depe  \r\n"
+			+ "                from tb_depe_enti d  \r\n"
+			+ "               inner join tb_fluj_tram_depe f  \r\n"
+			+ "                  on d.idx_depe_enti = f.fk0_depe_enti_idx  \r\n"
+			+ "               inner join tb_tipo_tram tt  \r\n"
+			+ "                  on tt.idx_tipo_tram = f.fk1_tipo_tram_idx  \r\n"
+			+ "               where f.num_orde_fluj = tm.num_paso_actu + 1  \r\n"
+			+ "                 and tt.idx_tipo_tram = t.fk0_tipo_tram_idx limit 1  \r\n"
+			+ "            ) as 'dependenciadestino',  \r\n"
+			+ "            date_format(tm.FEC_DERI_MOVI, '%d/%m/%Y') AS 'fechaasignacion',  \r\n"
+			+ "            date_format(tm.FEC_DERI_MOVI_POST, '%d/%m/%Y') AS 'fechafin',  \r\n"
+			+ "            fnGetRequestTime( tm.FEC_DERI_MOVI,  \r\n"
+			+ "                              if(tm.FEC_DERI_MOVI_POST IS NOT NULL, tm.FEC_DERI_MOVI_POST, SYSDATE())  \r\n"
+			+ "                            ) as 'diasasignaciontranscurrido',  \r\n"
+			+ "            '' AS 'separatortramiteactivities',  \r\n"
+			+ "            ta.TXT_TIPO_TARE AS 'tipotarea',  \r\n"
+			+ "            ta.TXT_DESC_TARE AS 'descripciontarea',  \r\n"
+			+ "            date_format(ta.FEC_REGI_TARE, '%d/%m/%Y') AS 'fecharegistrotarea'  \r\n"
+			+ "       FROM tb_tram_padr t  \r\n"
+			+ " inner join tb_tram_padr_movi tm  \r\n"
+			+ "         on t.txt_codi_tram = tm.fk1_tram_idx_tram  \r\n"
+			+ " inner join tb_soli_tram s  \r\n"
+			+ "         on t.fk1_soli_nume_docu = s.txt_nume_docu  \r\n"
+			+ " inner join tb_depe_enti d  \r\n"
+			+ "         on tm.fk0_depe_enti_idx = d.idx_depe_enti  \r\n"
+			+ " inner join tb_tipo_tram tt  \r\n"
+			+ "         on t.fk0_tipo_tram_idx = tt.idx_tipo_tram  \r\n"
+			+ "  left join tb_tram_padr_movi_tare ta  \r\n"
+			+ "         on tm.IDX_MOVI_TRAM = ta.FK0_MOVI_TRAM_ID_MOVI  \r\n"
+			+ "      WHERE (  \r\n"
+			+ "                 t.txt_esta_tram = 'EN TRAMITE'  \r\n"
+			+ "             OR (  \r\n"
+			+ "                      t.txt_esta_tram <> 'EN TRAMITE'  \r\n"
+			+ "                 AND  DATE(t.FEC_TERM_TRAM) = CURDATE()  \r\n"
+			+ "                )  \r\n"
+			+ "            )  \r\n"
+			+ "   ORDER BY t.txt_codi_tram ASC,  \r\n"
+			+ "            tm.NUM_NUME_MOVI ASC,  \r\n"
+			+ "            ta.FEC_REGI_TARE ASC  "
+	     , nativeQuery = true)
+	List<TramiteQueryExport> getListTramiteInformations();
 	
 	
 }
