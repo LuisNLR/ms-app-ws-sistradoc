@@ -100,11 +100,11 @@ public class MaintenanceController {
 		ResponseService response = new ResponseService();
 		try {
 			ValidateService validate = solicitanteService.registrarSolicitante(solicDTO);
-			if(validate.isIsvalid()) {
+			if(validate.isValid()) {
 				response.setStatus(200);
 			}
-			response.setMensaje(validate.getMsj());
-			response.setFlag(validate.isIsvalid());
+			response.setMensaje(validate.getMessage());
+			response.setFlag(validate.isValid());
 			
 		} catch (Exception e) {
 			response.setMensaje(e.getMessage());
@@ -188,11 +188,11 @@ public class MaintenanceController {
 		try {
 			tramiteDto = tramiteRegisterDto.getTramiteDto();
 			ValidateService validate = tramiteService.registrarTramite(tramiteDto);
-			if(validate.isIsvalid()) {
+			if(validate.isValid()) {
 				response.setStatus(200);
 			}
-			response.setMensaje(validate.getMsj());
-			response.setFlag(validate.isIsvalid());
+			response.setMensaje(validate.getMessage());
+			response.setFlag(validate.isValid());
 			response.setData(tramiteDto);
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
@@ -206,11 +206,11 @@ public class MaintenanceController {
 		ResponseService response = new ResponseService();
 		try {
 			ValidateService validate = tramiteService.derivarTramite(tramiteDeriverDto);
-			if(validate.isIsvalid()) {
+			if(validate.isValid()) {
 				response.setStatus(200);
 			}
-			response.setMensaje(validate.getMsj());
-			response.setFlag(validate.isIsvalid());
+			response.setMensaje(validate.getMessage());
+			response.setFlag(validate.isValid());
 //			Map<String, String> datos = new HashMap<>();
 //			datos.put("codigoTramite", tramiteDeriverDto.getTramiteDto().getCodigoTramite());
 //			datos.put("motivoEnvio", tramiteDeriverDto.getMotivoEnvio());
@@ -233,11 +233,11 @@ public class MaintenanceController {
 		ResponseService response = new ResponseService();
 		try {
 			ValidateService validate = tramiteService.devolverTramite(tramiteDeriverDto);
-			if(validate.isIsvalid()) {
+			if(validate.isValid()) {
 				response.setStatus(200);
 			}
-			response.setMensaje(validate.getMsj());
-			response.setFlag(validate.isIsvalid());
+			response.setMensaje(validate.getMessage());
+			response.setFlag(validate.isValid());
 			response.setData(validate.getData());
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
@@ -253,11 +253,11 @@ public class MaintenanceController {
 		try {
 			tramiteDto = tramiteRegisterDto.getTramiteDto();
 			ValidateService validate = tramiteService.finalizarTramite(tramiteDto);
-			if(validate.isIsvalid()) {
+			if(validate.isValid()) {
 				response.setStatus(200);
 			}
-			response.setMensaje(validate.getMsj());
-			response.setFlag(validate.isIsvalid());
+			response.setMensaje(validate.getMessage());
+			response.setFlag(validate.isValid());
 			response.setData(validate.getData());
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
@@ -273,11 +273,11 @@ public class MaintenanceController {
 		try {
 			tramiteDto = tramiteRegisterDto.getTramiteDto();
 			ValidateService validate = tramiteService.anularTramite(tramiteDto);
-			if(validate.isIsvalid()) {
+			if(validate.isValid()) {
 				response.setStatus(200);
 			}
-			response.setMensaje(validate.getMsj());
-			response.setFlag(validate.isIsvalid());
+			response.setMensaje(validate.getMessage());
+			response.setFlag(validate.isValid());
 			
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
@@ -291,11 +291,11 @@ public class MaintenanceController {
 		ResponseService response = new ResponseService();
 		try {
 			ValidateService validate = tramiteTareaService.registrarTramiteTarea(tramiteTareaDto);
-			if(validate.isIsvalid()) {
+			if(validate.isValid()) {
 				response.setStatus(200);
 			}
-			response.setMensaje(validate.getMsj());
-			response.setFlag(validate.isIsvalid());
+			response.setMensaje(validate.getMessage());
+			response.setFlag(validate.isValid());
 			response.setData(tramiteTareaDto);
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {

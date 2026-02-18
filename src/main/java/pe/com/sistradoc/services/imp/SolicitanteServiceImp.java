@@ -27,30 +27,30 @@ public class SolicitanteServiceImp extends ValidateServiceImp implements Solicit
 	@Override
 	public ValidateService registrarSolicitante(SolicitanteDTO solicitanteDto) throws SQLException, ServiceException {
 		ValidateService validate = new ValidateServiceImp();
-		validate.setIsvalid(true);
-		validate.setMsj("Registro de Solicitante exitoso");
+		validate.setValid(true);
+		validate.setMessage("Registro de Solicitante exitoso");
 		if(solicitanteDto==null) {
-			validate.setIsvalid(false);
-			validate.setMsj("No se ha creado el solicitante");
+			validate.setValid(false);
+			validate.setMessage("No se ha creado el solicitante");
 		}else if(solicitanteDto.getTipoSolicitante()==null || solicitanteDto.getTipoSolicitante().isEmpty()) {
-			validate.setIsvalid(false);
-			validate.setMsj("Ingrese tipo de solicitante");
+			validate.setValid(false);
+			validate.setMessage("Ingrese tipo de solicitante");
 		}else if(solicitanteDto.getNumeroDocumento()==null || solicitanteDto.getNumeroDocumento().isEmpty()) {
-			validate.setIsvalid(false);
-			validate.setMsj("Ingrese número de documento");
+			validate.setValid(false);
+			validate.setMessage("Ingrese número de documento");
 		}else if(solicitanteDto.getTipoDocumento()==null || solicitanteDto.getTipoDocumento().isEmpty()) {
-			validate.setIsvalid(false);
-			validate.setMsj("Ingrese tipo de documento");
+			validate.setValid(false);
+			validate.setMessage("Ingrese tipo de documento");
 		}else if(solicitanteDto.getNombreSolicitante()==null || solicitanteDto.getNombreSolicitante().isEmpty()) {
-			validate.setIsvalid(false);
-			validate.setMsj("Ingrese Nombre del solicitante");
-		}else if(!isValidPersona(solicitanteDto).isIsvalid()) {
-			validate.setIsvalid(false);
-			validate.setMsj(isValidPersona(solicitanteDto).getMsj());
+			validate.setValid(false);
+			validate.setMessage("Ingrese Nombre del solicitante");
+		}else if(!isValidPersona(solicitanteDto).isValid()) {
+			validate.setValid(false);
+			validate.setMessage(isValidPersona(solicitanteDto).getMessage());
 		}else if(solicitanteDto.getTipoSolicitante().equals(Utils.tipoSolicitanteEntidad) && 
 				(solicitanteDto.getRepresentante()==null || solicitanteDto.getRepresentante().isEmpty())) {
-			validate.setIsvalid(false);
-			validate.setMsj("Para el tipo de solicitante ENTIDAD Ingrese el nombre del representante");
+			validate.setValid(false);
+			validate.setMessage("Para el tipo de solicitante ENTIDAD Ingrese el nombre del representante");
 		}else {
 			Solicitante solicitante = new Solicitante();
 			solicitante.setNumeroDocumento(solicitanteDto.getNumeroDocumento());
@@ -108,16 +108,16 @@ public class SolicitanteServiceImp extends ValidateServiceImp implements Solicit
 	
 	private ValidateService isValidPersona(SolicitanteDTO solicitanteDto) {
 		ValidateService validate = new ValidateServiceImp();
-		validate.setIsvalid(true);
-		validate.setMsj("Solicitante persona OK");
+		validate.setValid(true);
+		validate.setMessage("Solicitante persona OK");
 		if(solicitanteDto.getTipoSolicitante().equals(Utils.tipoSolicitantePersona) && 
 				(solicitanteDto.getApellidoPaterno()==null || solicitanteDto.getApellidoPaterno().isEmpty())) {
-			validate.setIsvalid(false);
-			validate.setMsj("Ingrese Apellido paterno del solicitante");
+			validate.setValid(false);
+			validate.setMessage("Ingrese Apellido paterno del solicitante");
 		}else if(solicitanteDto.getTipoSolicitante().equals(Utils.tipoSolicitantePersona) && 
 				(solicitanteDto.getApellidoMaterno()==null || solicitanteDto.getApellidoMaterno().isEmpty())) {
-			validate.setIsvalid(false);
-			validate.setMsj("Ingrese Apellido materno del solicitante");
+			validate.setValid(false);
+			validate.setMessage("Ingrese Apellido materno del solicitante");
 		}
 		return validate;
 	}

@@ -1,7 +1,6 @@
 package pe.com.sistradoc.services;
 
 import java.util.List;
-import java.util.Map;
 
 import pe.com.sistradoc.dto.TramiteExportDTO;
 import pe.com.sistradoc.model.TramiteMovimientoQueryFlujo;

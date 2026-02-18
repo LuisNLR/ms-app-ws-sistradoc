@@ -1,28 +1,69 @@
 package pe.com.sistradoc.utils;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class ValidateServiceImp implements ValidateService {
 
-	private String msj;
-	private boolean isvalid;
-	private Object data;
-	
-	public String getMsj() {
-		return msj;
-	}
-	public void setMsj(String msj) {
-		this.msj = msj;
-	}
-	public boolean isIsvalid() {
-		return isvalid;
-	}
-	public void setIsvalid(boolean isvalid) {
-		this.isvalid = isvalid;
-	}
-	public Object getData() {
-		return data;
-	}
-	public void setData(Object data) {
-		this.data = data;
-	}
-	
+    private String message;
+    private boolean valid;
+    private Object data;
+    private Integer statusCode;
+    
+    public ValidateServiceImp() {
+    }
+
+    public ValidateServiceImp(boolean valid, String message, Integer statusCode) {
+        this.valid = valid;
+        this.message = message;
+        this.statusCode = statusCode;
+    }
+
+    public ValidateServiceImp(boolean valid, String message, Object data, Integer statusCode) {
+        this.valid = valid;
+        this.message = message;
+        this.data = data;
+        this.statusCode = statusCode;
+    }
+
+    @Override
+    public Object getData() {
+        return data;
+    }
+
+    @Override
+    public void setData(Object data) {
+        this.data = data;
+    }
+
+    @Override
+    public Integer getStatusCode() {
+        return statusCode;
+    }
+
+    @Override
+    public void setStatusCode(Integer statusCode) {
+        this.statusCode = statusCode;
+    }
+
+    @Override
+    public String getMessage() {
+        return message;
+    }
+
+    @Override
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    @Override
+    public boolean isValid() {
+        return valid;
+    }
+
+    @Override
+    public void setValid(boolean valid) {
+        this.valid = valid;
+    }
+
 }

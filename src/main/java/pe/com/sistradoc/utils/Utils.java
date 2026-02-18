@@ -36,5 +36,20 @@ public class Utils {
 	public static final Long valueDefaultLongOne = Long.valueOf(1);
 	public static final Integer valueDefaultIntegerOne = Integer.valueOf(1);
 	public static final Integer valueDefaultIntegerZero = Integer.valueOf(0);
+
+	public static final Integer STATUS_CODE_OK = Integer.valueOf(200);
+
+	public static final Integer STATUS_CODE_ERROR = Integer.valueOf(500);
+	public static final Integer STATUS_CODE_NOT_FOUND = Integer.valueOf(404);
+
+	public static final Integer STATUS_CODE_UNAUTHORIZED = Integer.valueOf(401);
+	public static final Integer STATUS_CODE_FORBIDDEN = Integer.valueOf(403);
+	public static final Integer STATUS_CODE_BAD_REQUEST = Integer.valueOf(400);
+	public static final Integer STATUS_CODE_CONFLICT = Integer.valueOf(409);
+	public static final Integer STATUS_CODE_UNPROCESSABLE_ENTITY = Integer.valueOf(422);
+	public static final Integer STATUS_CODE_LOCKED = Integer.valueOf(423);
+	public static final Integer STATUS_CODE_FAILED_DEPENDENCY = Integer.valueOf(424);
+	public static final Integer STATUS_CODE_INSUFFICIENT_STORAGE = Integer.valueOf(507);
+	
 	
 }

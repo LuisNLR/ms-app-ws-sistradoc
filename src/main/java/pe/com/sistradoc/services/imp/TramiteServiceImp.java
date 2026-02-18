@@ -67,8 +67,8 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 		String correlationId = UUID.randomUUID().toString();
 		LOGGER.info(correlationId + ":::: Proceso registrarTramite. Inicio :::: '{}' ", TramiteServiceImp.class.getName());
 		ValidateService validate = new ValidateServiceImp();
-		validate.setIsvalid(true);
-		validate.setMsj("Registro de tramite exitoso");
+		validate.setValid(true);
+		validate.setMessage("Registro de tramite exitoso");
 		
 		ValidateService validateSolicitante = null;
 		
@@ -88,26 +88,26 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 
 		//Validaciones funcionales para el registro de trámite
 		if(tramiteDto==null) {
-			validate.setIsvalid(false);
-			validate.setMsj("No se ha creado el tramite");
+			validate.setValid(false);
+			validate.setMessage("No se ha creado el tramite");
 		}else if(tramiteDto.getAsunto()==null || tramiteDto.getAsunto().isEmpty()) {
-			validate.setIsvalid(false);
-			validate.setMsj("Ingrese el asunto del trámite");
-		}else if(!validateSolicitante.isIsvalid()) {
-			validate.setMsj(validateSolicitante.getMsj());
-			validate.setIsvalid(validateSolicitante.isIsvalid());
+			validate.setValid(false);
+			validate.setMessage("Ingrese el asunto del trámite");
+		}else if(!validateSolicitante.isValid()) {
+			validate.setMessage(validateSolicitante.getMessage());
+			validate.setValid(validateSolicitante.isValid());
 		}else if(solicitante==null) {
-			validate.setIsvalid(false);
-			validate.setMsj("Ingrese o asigne el solicitante");
+			validate.setValid(false);
+			validate.setMessage("Ingrese o asigne el solicitante");
 		}else if(tipoTramite==null) {
-			validate.setIsvalid(false);
-			validate.setMsj("Asigne el tipo de tramite");
+			validate.setValid(false);
+			validate.setMessage("Asigne el tipo de tramite");
 		}else if(tramiteDto.getTipoDocumento()==null || tramiteDto.getTipoDocumento().isEmpty()) {
-			validate.setIsvalid(false);
-			validate.setMsj("Asigne el tipo de trámite");
+			validate.setValid(false);
+			validate.setMessage("Asigne el tipo de trámite");
 		}else if(tramiteDto.getNumeroFolios()<=0) {
-			validate.setIsvalid(false);
-			validate.setMsj("Ingrese la cantidad de folios presentados");
+			validate.setValid(false);
+			validate.setMessage("Ingrese la cantidad de folios presentados");
 		}else {
 			TramiteCode tramiteCode = tramiteRepository.getCodeTramite();
 			String codigoTramite = generateCode(tramiteCode.getCodigoTramite());
@@ -144,7 +144,7 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 			LOGGER.info(":::: Proceso registrarTramite. Datos - Solicitante. '{}' ", solicitante.getTipoDocumento() + " - " + solicitante.getNumeroDocumento());
 			LOGGER.info(":::: Proceso registrarTramite. Datos - TipoTramite. '{}' ", tipoTramite.getIdTipoTramite() + " - " + tipoTramite.getNombreTipoTramite());
 		}
-		LOGGER.info(":::: Proceso registrarTramite. Resultado '{}' ", validate.isIsvalid()+ " - " + validate.getMsj());
+		LOGGER.info(":::: Proceso registrarTramite. Resultado '{}' ", validate.isValid()+ " - " + validate.getMessage());
 		LOGGER.info(":::: Proceso registrarTramite. Final :::: '{}' ", TramiteServiceImp.class.getName());
 		return validate;
 	}
@@ -154,8 +154,8 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 		String correlationId = UUID.randomUUID().toString();
 		LOGGER.info(correlationId + ":::: Proceso derivarTramite. Inicio :::: '{}' ", TramiteServiceImp.class.getName());
 		ValidateService validate = new ValidateServiceImp();
-		validate.setIsvalid(true);
-		validate.setMsj("Registro de Derivación exitoso");
+		validate.setValid(true);
+		validate.setMessage("Registro de Derivación exitoso");
 		
 		TramiteMovimiento movimientoAnterior=null;
 		TramiteMovimiento movimientoNuevo=null;
@@ -163,33 +163,33 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 		Dependencia dependenciaDestino = null;
 		try {
 			if(movimientoDto==null) {
-				validate.setIsvalid(false);
-				validate.setMsj("No se ha creado el nuevo movimiento");
+				validate.setValid(false);
+				validate.setMessage("No se ha creado el nuevo movimiento");
 			}else if(movimientoDto.getTramiteDto()==null) {
-				validate.setIsvalid(false);
-				validate.setMsj("Asigne o seleccione un trámite");
+				validate.setValid(false);
+				validate.setMessage("Asigne o seleccione un trámite");
 			}else if(movimientoDto.getTramiteDto().getCodigoTramite()==null) {
-				validate.setIsvalid(false);
-				validate.setMsj("Asigne o seleccione un tipo de trámite");
+				validate.setValid(false);
+				validate.setMessage("Asigne o seleccione un tipo de trámite");
 			}else {
 				movimientoAnterior = movimientoRepository.findByTramiteCodigoTramiteAndUbicacionActual(movimientoDto.getTramiteDto().getCodigoTramite(), "1");
 			}
 			
 			if(movimientoAnterior==null) {
-				validate.setIsvalid(false);
-				validate.setMsj("Asigne o seleccione un tramite existente");
+				validate.setValid(false);
+				validate.setMessage("Asigne o seleccione un tramite existente");
 			}else if(movimientoAnterior.getPasoActual()==null ) {
-				validate.setIsvalid(false);
-				validate.setMsj("No existe el paso indicado");
+				validate.setValid(false);
+				validate.setMessage("No existe el paso indicado");
 			}else if(movimientoAnterior.getTramite()==null) {
-				validate.setIsvalid(false);
-				validate.setMsj("El movimiento anterior no tiene tramite");
+				validate.setValid(false);
+				validate.setMessage("El movimiento anterior no tiene tramite");
 			}else if(movimientoAnterior.getTramite().getTipoTramite()==null) {
-				validate.setIsvalid(false);
-				validate.setMsj("El movimiento anterior no tiene Tipo de tramite");
+				validate.setValid(false);
+				validate.setMessage("El movimiento anterior no tiene Tipo de tramite");
 			}else if(movimientoAnterior.getTramite().getTipoTramite().getIdTipoTramite()==null) {
-				validate.setIsvalid(false);
-				validate.setMsj("El movimiento anterior no tiene ID Tipo de tramite");
+				validate.setValid(false);
+				validate.setMessage("El movimiento anterior no tiene ID Tipo de tramite");
 			}else {
 				dependenciaSiguiente = dependenciaRepository.findDependenciaByPasoAndTipoTramite(movimientoAnterior.getPasoActual() +1, movimientoAnterior.getTramite().getTipoTramite().getIdTipoTramite());
 			}
@@ -200,28 +200,28 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 		}
 		
 		if(movimientoAnterior==null) {
-			validate.setIsvalid(false);
-			validate.setMsj("Seleccione un tramite existente");
+			validate.setValid(false);
+			validate.setMessage("Seleccione un tramite existente");
 		}else if(movimientoDto==null) {
-			validate.setIsvalid(false);
-			validate.setMsj("No se ha creado el nuevo movimiento");
+			validate.setValid(false);
+			validate.setMessage("No se ha creado el nuevo movimiento");
 		}else if(movimientoDto.getTramiteDto()==null) {
-			validate.setIsvalid(false);
-			validate.setMsj("Asigne o seleccione un trámite");
+			validate.setValid(false);
+			validate.setMessage("Asigne o seleccione un trámite");
 		}else if(movimientoDto.getTramiteDto().getCodigoTramite()==null) {
-			validate.setIsvalid(false);
-			validate.setMsj("Asigne o seleccione un tipo de trámite");
+			validate.setValid(false);
+			validate.setMessage("Asigne o seleccione un tipo de trámite");
 		}else if(movimientoDto.getMotivoEnvio()==null || movimientoDto.getMotivoEnvio().isEmpty()) {
-			validate.setIsvalid(false);
-			validate.setMsj("Asigne un motivo para derivar dicho tramite");
+			validate.setValid(false);
+			validate.setMessage("Asigne un motivo para derivar dicho tramite");
 		}else if(movimientoAnterior.getTramite().getTipoTramite().getIdTipoTramite().equals(Utils.valueDefaultLongOne) && 
 				movimientoDto.getDependenciaDto()==null) {
-			validate.setIsvalid(false);
-			validate.setMsj("Asigne la dependencia, este tramite no tiene efecto administrativo");
+			validate.setValid(false);
+			validate.setMessage("Asigne la dependencia, este tramite no tiene efecto administrativo");
 		}else if(movimientoAnterior.getTramite().getTipoTramite().getIdTipoTramite().equals(Utils.valueDefaultLongOne) && 
 				dependenciaSiguiente==null) {
-			validate.setIsvalid(false);
-			validate.setMsj("Dicho trámite ya no tiene más dependencias a derivar");
+			validate.setValid(false);
+			validate.setMessage("Dicho trámite ya no tiene más dependencias a derivar");
 		}else {
 			Date fechaDerivacion = new Date();
 			
@@ -269,7 +269,7 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 		
 		
 		
-		LOGGER.info(correlationId + ":::: Proceso derivarTramite. Resultado '{}' ", validate.isIsvalid()+ " - " + validate.getMsj());
+		LOGGER.info(correlationId + ":::: Proceso derivarTramite. Resultado '{}' ", validate.isValid()+ " - " + validate.getMessage());
 		LOGGER.info(correlationId + ":::: Proceso derivarTramite. Final :::: '{}' ", TramiteServiceImp.class.getName());
 		return validate;
 	}
@@ -285,8 +285,8 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 		String correlationId = UUID.randomUUID().toString();
 		LOGGER.info(correlationId + ":::: Proceso devolverTramite. Inicio :::: '{}' ", TramiteServiceImp.class.getName());
 		ValidateService validate = new ValidateServiceImp();
-		validate.setIsvalid(true);
-		validate.setMsj("Registro de Devolución exitoso");
+		validate.setValid(true);
+		validate.setMessage("Registro de Devolución exitoso");
 		
 		TramiteMovimiento movimientoAnterior=null;
 		TramiteMovimiento movimientoNuevo=null;
@@ -299,25 +299,25 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 		}
 		
 		if(movimientoAnterior==null) {
-			validate.setIsvalid(false);
-			validate.setMsj("No existe movimiento anterior");
+			validate.setValid(false);
+			validate.setMessage("No existe movimiento anterior");
 		}else if(movimientoDto==null) {
-			validate.setIsvalid(false);
-			validate.setMsj("No existe movimiento anterior");
+			validate.setValid(false);
+			validate.setMessage("No existe movimiento anterior");
 		}else if(movimientoDto.getMotivoEnvio()==null || movimientoDto.getMotivoEnvio().isEmpty()) {
-			validate.setIsvalid(false);
-			validate.setMsj("Asigne un motivo para derivar dicho tramite");
+			validate.setValid(false);
+			validate.setMessage("Asigne un motivo para derivar dicho tramite");
 		}else if(movimientoDto.getDependenciaDto()==null) {
-			validate.setIsvalid(false);
-			validate.setMsj("Asigne la dependencia a la que devolverá el documento");
+			validate.setValid(false);
+			validate.setMessage("Asigne la dependencia a la que devolverá el documento");
 		}else if(!dependenciaService.isExistDependenciainFlujoTramite(dependenciaService.listDependenciaByDevolver(movimientoDto.getTramiteDto().getCodigoTramite()), 
 																	  movimientoDto.getDependenciaDto())) {
-			validate.setIsvalid(false);
-			validate.setMsj("La dependencia indicada no existe en el flujo de este trámite");
+			validate.setValid(false);
+			validate.setMessage("La dependencia indicada no existe en el flujo de este trámite");
 		}else if(movimientoAnterior.getTramite().getEstadoTramite().equals(Utils.estadoTramiteFinalizadoAprobado) || 
 				 movimientoAnterior.getTramite().getEstadoTramite().equals(Utils.estadoTramiteFinalizadoDesaprobado)) {
-			validate.setIsvalid(false);
-			validate.setMsj("No se puede devolver un tramite ya finalizado");
+			validate.setValid(false);
+			validate.setMessage("No se puede devolver un tramite ya finalizado");
 		}else {
 			Date fechaDerivacion = new Date();
 			
@@ -356,7 +356,7 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 
 		validate.setData(tramiteResponse);
 		
-		LOGGER.info(correlationId + ":::: Proceso devolverTramite. Resultado '{}' ", validate.isIsvalid()+ " - " + validate.getMsj());
+		LOGGER.info(correlationId + ":::: Proceso devolverTramite. Resultado '{}' ", validate.isValid()+ " - " + validate.getMessage());
 		LOGGER.info(correlationId + ":::: Proceso devolverTramite. Final :::: '{}' ", TramiteServiceImp.class.getName());
 		return validate;
 	}
@@ -367,37 +367,37 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 		LOGGER.info(correlationId + ":::: Proceso finalizarTramite. Inicio :::: '{}' ", TramiteServiceImp.class.getName());
 		ValidateService validate = new ValidateServiceImp();
 		
-		validate.setIsvalid(true);
-		validate.setMsj("Se dió por finalizado dicho trámite");
+		validate.setValid(true);
+		validate.setMessage("Se dió por finalizado dicho trámite");
 		Tramite tramite = null;
 		try {
 			tramite = tramiteRepository.findByCodigoTramite(tramiteDto.getCodigoTramite());
 			
 			if(tramiteDto==null) {
-				validate.setIsvalid(false);
-				validate.setMsj("No existe el tramite a finalizar");
+				validate.setValid(false);
+				validate.setMessage("No existe el tramite a finalizar");
 			}else if(tramiteDto.getCodigoTramite()==null || tramiteDto.getCodigoTramite().isEmpty()) {
-				validate.setIsvalid(false);
-				validate.setMsj("Ingrese el código de tramite");
+				validate.setValid(false);
+				validate.setMessage("Ingrese el código de tramite");
 			}else if(tramite==null) {
-				validate.setIsvalid(false);
-				validate.setMsj("No existe el tramite");
+				validate.setValid(false);
+				validate.setMessage("No existe el tramite");
 			}else if(tramite.getCodigoTramite()==null || tramite.getCodigoTramite().isEmpty()) {
-				validate.setIsvalid(false);
-				validate.setMsj("El trámite ingresado no se encuentra registrado");
+				validate.setValid(false);
+				validate.setMessage("El trámite ingresado no se encuentra registrado");
 			}else if(tramite.getEstadoTramite().equals(Utils.estadoTramiteFinalizadoAprobado) || 
 					 tramite.getEstadoTramite().equals(Utils.estadoTramiteFinalizadoDesaprobado)) {
-				validate.setIsvalid(false);
-				validate.setMsj("El trámite indicado previamente ya ha sido finalizado");
+				validate.setValid(false);
+				validate.setMessage("El trámite indicado previamente ya ha sido finalizado");
 			}else if(tramite.getEstadoTramite().equals(Utils.estadoTramiteAnulado)) {
-				validate.setIsvalid(false);
-				validate.setMsj("El trámite indicado previamente ha sido anulado");
+				validate.setValid(false);
+				validate.setMessage("El trámite indicado previamente ha sido anulado");
 			}else if(tramiteDto.getEstadoTramite()==null || tramiteDto.getEstadoTramite().isEmpty()) {
-				validate.setIsvalid(false);
-				validate.setMsj("Asigne el estado del trámite");
+				validate.setValid(false);
+				validate.setMessage("Asigne el estado del trámite");
 			}else if(!isEstadoTramiteFinalized(tramiteDto.getEstadoTramite())) {
-				validate.setIsvalid(false);
-				validate.setMsj("El estado asignado no es permitido, solo puede asignarse " + 
+				validate.setValid(false);
+				validate.setMessage("El estado asignado no es permitido, solo puede asignarse " + 
 								 Utils.estadoTramiteFinalizadoAprobado + " ó " +
 								 Utils.estadoTramiteFinalizadoDesaprobado);
 			}else {
@@ -429,7 +429,7 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 																	tramite.getEstadoTramite());
 		validate.setData(tramiteResponse);
 		
-		LOGGER.info(correlationId + ":::: Proceso finalizarTramite. Resultado '{}' ", validate.isIsvalid()+ " - " + validate.getMsj());
+		LOGGER.info(correlationId + ":::: Proceso finalizarTramite. Resultado '{}' ", validate.isValid()+ " - " + validate.getMessage());
 		LOGGER.info(correlationId + ":::: Proceso finalizarTramite. Final :::: '{}' ", TramiteServiceImp.class.getName());
 		return validate;
 	}
@@ -465,8 +465,8 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 		LOGGER.info(correlationId + ":::: Proceso anularTramite. Inicio :::: '{}' ", TramiteServiceImp.class.getName());
 		ValidateService validate = new ValidateServiceImp();
 		
-		validate.setIsvalid(true);
-		validate.setMsj("Se dió por finalizado dicho trámite");
+		validate.setValid(true);
+		validate.setMessage("Se dió por finalizado dicho trámite");
 		Tramite tramite = null;
 		try {
 			tramite = tramiteRepository.findByCodigoTramite(tramiteDto.getCodigoTramite());
@@ -475,27 +475,27 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 		}
 		
 		if(tramiteDto==null) {
-			validate.setIsvalid(false);
-			validate.setMsj("No existe el tramite a finalizar");
+			validate.setValid(false);
+			validate.setMessage("No existe el tramite a finalizar");
 		}else if(tramiteDto.getCodigoTramite()==null || tramiteDto.getCodigoTramite().isEmpty()) {
-			validate.setIsvalid(false);
-			validate.setMsj("Ingrese el código de tramite");
+			validate.setValid(false);
+			validate.setMessage("Ingrese el código de tramite");
 		}else if(tramite==null) {
-			validate.setIsvalid(false);
-			validate.setMsj("No eixste el tramite");
+			validate.setValid(false);
+			validate.setMessage("No eixste el tramite");
 		}else if(tramite.getCodigoTramite()==null || tramite.getCodigoTramite().isEmpty()) {
-			validate.setIsvalid(false);
-			validate.setMsj("El trámite ingresado no se encuentra registrado");
+			validate.setValid(false);
+			validate.setMessage("El trámite ingresado no se encuentra registrado");
 		}else if(tramite.getEstadoTramite().equals(Utils.estadoTramiteFinalizadoAprobado) || 
 				 tramite.getEstadoTramite().equals(Utils.estadoTramiteFinalizadoDesaprobado)) {
-			validate.setIsvalid(false);
-			validate.setMsj("El trámite indicado previamente ya ha sido finalizado");
+			validate.setValid(false);
+			validate.setMessage("El trámite indicado previamente ya ha sido finalizado");
 		}else if(tramite.getEstadoTramite().equals(Utils.estadoTramiteAnulado)) {
-			validate.setIsvalid(false);
-			validate.setMsj("El trámite indicado anteriormente ha sido anulado");
+			validate.setValid(false);
+			validate.setMessage("El trámite indicado anteriormente ha sido anulado");
 		}else if(tramiteDto.getMotivoAnulacion()==null || tramiteDto.getMotivoAnulacion().isEmpty()) {
-			validate.setIsvalid(false);
-			validate.setMsj("Ingrese el motivo por el que se anula dicho tramite");
+			validate.setValid(false);
+			validate.setMessage("Ingrese el motivo por el que se anula dicho tramite");
 		}else {
 			try {
 				tramite.setEstadoTramite(Utils.estadoTramiteAnulado);
@@ -514,7 +514,7 @@ public class TramiteServiceImp extends ValidateServiceImp implements TramiteServ
 			}
 		}
 		
-		LOGGER.info(correlationId + ":::: Proceso anularTramite. Resultado '{}' ", validate.isIsvalid()+ " - " + validate.getMsj());
+		LOGGER.info(correlationId + ":::: Proceso anularTramite. Resultado '{}' ", validate.isValid()+ " - " + validate.getMessage());
 		LOGGER.info(correlationId + ":::: Proceso anularTramite. Final :::: '{}' ", TramiteServiceImp.class.getName());
 		
 		return validate;

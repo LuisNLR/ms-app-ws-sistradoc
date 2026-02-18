@@ -34,27 +34,27 @@ public class TramiteMovimientoTareaServiceImp extends ValidateServiceImp impleme
 	@Override
 	public ValidateService registrarTramiteTarea(TramiteTareaDTO tramiteTareaDto) throws ServiceException {
 		ValidateService validate = new ValidateServiceImp();
-		validate.setIsvalid(true);
-		validate.setMsj("Registro de tarea exitoso");
+		validate.setValid(true);
+		validate.setMessage("Registro de tarea exitoso");
 		
 		if(tramiteTareaDto==null) {
-			validate.setIsvalid(false);
-			validate.setMsj("Tiene que crear una tarea");
+			validate.setValid(false);
+			validate.setMessage("Tiene que crear una tarea");
 		}else if(tramiteTareaDto.getTramiteMovimientoDto()==null) {
-			validate.setIsvalid(false);
-			validate.setMsj("La tarea creada se debe asignarse a un movimiento");
+			validate.setValid(false);
+			validate.setMessage("La tarea creada se debe asignarse a un movimiento");
 		}else if(tramiteTareaDto.getTramiteMovimientoDto().getTramiteDto()==null) {
-			validate.setIsvalid(false);
-			validate.setMsj("La tarea creada se debe asignarse a un tramite");
+			validate.setValid(false);
+			validate.setMessage("La tarea creada se debe asignarse a un tramite");
 		}else if(tramiteTareaDto.getTramiteMovimientoDto().getTramiteDto().getCodigoTramite()==null || tramiteTareaDto.getTramiteMovimientoDto().getTramiteDto().getCodigoTramite().isEmpty()) {
-			validate.setIsvalid(false);
-			validate.setMsj("La tarea creada se debe asignarse a un tramite existente");
+			validate.setValid(false);
+			validate.setMessage("La tarea creada se debe asignarse a un tramite existente");
 		}else if(tramiteTareaDto.getTipoTarea()==null) {
-			validate.setIsvalid(false);
-			validate.setMsj("La tarea creada se debe asignarse a un movimiento");
+			validate.setValid(false);
+			validate.setMessage("La tarea creada se debe asignarse a un movimiento");
 		}else if(tramiteTareaDto.getDescripcion()==null || tramiteTareaDto.getDescripcion().isEmpty()) {
-			validate.setIsvalid(false);
-			validate.setMsj("Ingrese la tarea a registrar");
+			validate.setValid(false);
+			validate.setMessage("Ingrese la tarea a registrar");
 		}else {
 			try {
 				Date fecha = new Date();
