@@ -36,14 +36,14 @@ public class ConsultController {
 	@Autowired
 	private ReportService reportService;
 	
-	@GetMapping("/getListTramiteByDeriver")
-	public ResponseEntity<List<TramiteQueryByDeriver>> getListTramiteByDeriver() {
-		try {
-			return new ResponseEntity<>(tramiteQueryService.getListTramiteByDeriver(), HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
+//	@GetMapping("/getListTramiteByDeriver")
+//	public ResponseEntity<List<TramiteQueryByDeriver>> getListTramiteByDeriver() {
+//		try {
+//			return new ResponseEntity<>(tramiteQueryService.getListTramiteByDeriver(), HttpStatus.OK);
+//		} catch (Exception e) {
+//			return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+//		}
+//	}
 	
 	@GetMapping("/getListTramiteToDeriverByDependency/{idDependencia}")
 	public ResponseEntity<List<TramiteQueryByDeriver>> getListTramiteByDeriver(@PathVariable("idDependencia")Long idDependencia) {
@@ -54,14 +54,14 @@ public class ConsultController {
 		}
 	}
 	
-	@GetMapping("/getListTramiteByDevolver")
-	public ResponseEntity<List<TramiteQueryByDeriver>> getListTramiteByDevolver() {
-		try {
-			return new ResponseEntity<>(tramiteQueryService.getListTramiteByDevolver(), HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
+//	@GetMapping("/getListTramiteByDevolver")
+//	public ResponseEntity<List<TramiteQueryByDeriver>> getListTramiteByDevolver() {
+//		try {
+//			return new ResponseEntity<>(tramiteQueryService.getListTramiteByDevolver(), HttpStatus.OK);
+//		} catch (Exception e) {
+//			return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+//		}
+//	}
 	
 	@GetMapping("/getListTramiteToDevolverByDependency/{idDependencia}")
 	public ResponseEntity<List<TramiteQueryByDeriver>> getListTramiteByDevolver(@PathVariable("idDependencia")Long idDependencia) {
@@ -72,14 +72,14 @@ public class ConsultController {
 		}
 	}
 	
-	@GetMapping("/getListTramiteByFinished")
-	public ResponseEntity<List<TramiteQueryByDeriver>> getListTramiteByFinished() {
-		try {
-			return new ResponseEntity<>(tramiteQueryService.getListTramiteByFinished(), HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
+//	@GetMapping("/getListTramiteByFinished")
+//	public ResponseEntity<List<TramiteQueryByDeriver>> getListTramiteByFinished() {
+//		try {
+//			return new ResponseEntity<>(tramiteQueryService.getListTramiteByFinished(), HttpStatus.OK);
+//		} catch (Exception e) {
+//			return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+//		}
+//	}
 	
 	@GetMapping("/getListTramiteToFinishedByDependency/{idDependencia}")
 	public ResponseEntity<List<TramiteQueryByDeriver>> getListTramiteByFinished(@PathVariable("idDependencia")Long idDependencia) {

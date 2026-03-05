@@ -30,30 +30,30 @@ public class TramiteQueryServiceImp implements TramiteQueryService {
 	@Autowired
 	TramiteMovimientoRepository movimientoRepository;
 
-	@Override
-	public List<TramiteQueryByDeriver> getListTramiteByDeriver() {
-		return tramiteRepository.getListTramiteDerivar();
-	}
+//	@Override
+//	public List<TramiteQueryByDeriver> getListTramiteByDeriver() {
+//		return tramiteRepository.getListTramiteDerivar();
+//	}
 	
 	@Override
 	public List<TramiteQueryByDeriver> getListTramiteByDeriver(Long idDependencia) {
 		return tramiteRepository.getListTramiteDerivar(idDependencia);
 	}
 	
-	@Override
-	public List<TramiteQueryByDeriver> getListTramiteByDevolver() {
-		return tramiteRepository.getListTramiteDevolver();
-	}
+//	@Override
+//	public List<TramiteQueryByDeriver> getListTramiteByDevolver() {
+//		return tramiteRepository.getListTramiteDevolver();
+//	}
 	
 	@Override
 	public List<TramiteQueryByDeriver> getListTramiteByDevolver(Long idDependencia) {
 		return tramiteRepository.getListTramiteDevolver(idDependencia);
 	}
 	
-	@Override
-	public List<TramiteQueryByDeriver> getListTramiteByFinished() {
-		return tramiteRepository.getListTramiteFinished();
-	}
+//	@Override
+//	public List<TramiteQueryByDeriver> getListTramiteByFinished() {
+//		return tramiteRepository.getListTramiteFinished();
+//	}
 	
 	@Override
 	public List<TramiteQueryByDeriver> getListTramiteByFinished(Long idDependencia) {

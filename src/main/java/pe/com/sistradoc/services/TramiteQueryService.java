@@ -9,15 +9,15 @@ import pe.com.sistradoc.model.TramiteQueryResumen;
 
 public interface TramiteQueryService {
 	
-	public List<TramiteQueryByDeriver> getListTramiteByDeriver();
+//	public List<TramiteQueryByDeriver> getListTramiteByDeriver();
 	
 	public List<TramiteQueryByDeriver> getListTramiteByDeriver(Long idDependencia);
 	
-	public List<TramiteQueryByDeriver> getListTramiteByDevolver();
+//	public List<TramiteQueryByDeriver> getListTramiteByDevolver();
 	
 	public List<TramiteQueryByDeriver> getListTramiteByDevolver(Long idDependencia);
 	
-	public List<TramiteQueryByDeriver> getListTramiteByFinished();
+//	public List<TramiteQueryByDeriver> getListTramiteByFinished();
 	
 	public List<TramiteQueryByDeriver> getListTramiteByFinished(Long idDependencia);
 	

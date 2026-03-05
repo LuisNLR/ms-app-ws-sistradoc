@@ -17,16 +17,19 @@ public interface DependenciaRepository extends JpaRepository<Dependencia, Long> 
 	
 	
 	@Query(value = "select d.idx_depe_enti as iddependencia, \r\n"
-			   + "         d.txt_nomb_depe as nombredependencia, \r\n"
-			     + "       a.txt_nomb_area as nombrearea, \r\n"
-			     + "       a.idx_area_enti as idarea \r\n"
-			     + "  from tb_depe_enti d \r\n"
-			     + " inner join tb_area_enti a      on a.idx_area_enti=d.fk0_area_idex \r\n"
-			     + " inner join tb_fluj_tram_depe f on d.idx_depe_enti=f.fk0_depe_enti_idx \r\n"
-			     + "                               and f.num_orde_fluj=:nroPaso \r\n"
-			     + " inner join tb_tipo_tram tt     on tt.idx_tipo_tram=f.fk1_tipo_tram_idx \r\n"
-			     + "                               and tt.idx_tipo_tram=:idTipoTramite \r\n"
-			     + " limit 1  "
+            + "            d.txt_nomb_depe as nombredependencia, \r\n"
+            + "            a.txt_nomb_area as nombrearea, \r\n"
+            + "            a.idx_area_enti as idarea \r\n"
+            + "       from tb_depe_enti d \r\n"
+            + "      inner join tb_area_enti a "
+            + "         on a.idx_area_enti = d.fk0_area_idex \r\n"
+            + "      inner join tb_fluj_tram_depe f  "
+            + "         on d.idx_depe_enti = f.fk0_depe_enti_idx \r\n"
+            + "        and f.num_orde_fluj = :nroPaso \r\n"
+            + "      inner join tb_tipo_tram tt "
+            + "         on tt.idx_tipo_tram = f.fk1_tipo_tram_idx \r\n"
+            + "        and tt.idx_tipo_tram = :idTipoTramite \r\n"
+            + "      limit 1 "
 			       , nativeQuery = true)
 	DependenciaByTipoTramite findDependenciaByTipoTramite(
 	      @Param("nroPaso") Integer nroPasoObtener,
@@ -34,7 +37,7 @@ public interface DependenciaRepository extends JpaRepository<Dependencia, Long> 
 	
 	
 	@Query(value = " SELECT ft.dependencia FROM FlujoTramiteDependencia ft  " + 
-	               "  WHERE ft.ordenFlujo=:nroPaso" + 
+	               "  WHERE ft.ordenFlujo=:nroPaso " + 
 				   "    AND ft.tipoTramite.idTipoTramite=:idTipoTramite ")
 	Dependencia findDependenciaByPasoAndTipoTramite(
 		      @Param("nroPaso") Integer nroPasoObtener,
