@@ -2,28 +2,32 @@
 <!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report_tramites_inProgress" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="0" uuid="e115bc59-fd0f-446b-a585-04725e27d7f0">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="CONE_LOCAL_POSTGRESS"/>
 	<style name="Title" fontName="Arial" fontSize="26" isBold="true"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#FFFFFF" fontName="Arial" fontSize="12" isBold="true"/>
 	<style name="Detail" fontName="Arial" fontSize="12"/>
 	<queryString language="SQL">
-		<![CDATA[select t.txt_codi_tram as 'codigotramite',   
-       date_format(t.fec_ingr_tram,'%d/%m/%Y') as 'fechaingreso',  
-       concat(UPPER(tt.txt_nomb_tram), ' (', tt.NUM_NUME_DIAS, ' días)') as 'tipotramite',   
-     --  t.txt_asun_tram as 'asunto',   
-       if(s.txt_tipo_soli='persona', upper(concat(s.txt_tipo_docu, '. ', s.txt_nume_docu, ' - ', s.txt_nomb_soli, ' ', txt_apex_pate, ' ', txt_apex_mate)),   
-                                     upper(concat(s.txt_tipo_docu, '. ', s.txt_nume_docu, ' - ', s.txt_nomb_soli)) ) as 'solicitante',   
-       d.txt_nomb_depe as 'dependenciaactual'
-         , fnGetRequestTime(t.fec_ingr_tram, sysdate()) as 'diastranscurridos' 
-  from tb_tram_padr t   
- inner join tb_tram_padr_movi tm on t.txt_codi_tram=tm.fk1_tram_idx_tram  
- inner join tb_soli_tram s  on t.fk1_soli_nume_docu=s.txt_nume_docu  
- inner join tb_depe_enti d  on tm.fk0_depe_enti_idx=d.idx_depe_enti  
- inner join tb_tipo_tram tt on t.fk0_tipo_tram_idx=tt.idx_tipo_tram  
- where tm.txt_ubic_actu='1'   
-   and t.txt_esta_tram='EN TRAMITE'  
- order by d.txt_nomb_depe asc, t.fec_ingr_tram asc, tt.idx_tipo_tram asc]]>
+		<![CDATA[SELECT t.txt_codi_tram AS codigotramite,
+       TO_CHAR(t.fec_ingr_tram, 'DD/MM/YYYY') AS fechaingreso,
+       UPPER(tt.txt_nomb_tram) || ' (' || tt.num_nume_dias || ' días)' AS tipotramite,
+       CASE
+         WHEN s.txt_tipo_soli = 'persona' THEN
+              UPPER(s.txt_tipo_docu || '. ' || s.txt_nume_docu || ' - ' ||
+                    s.txt_nomb_soli || ' ' || s.txt_apex_pate || ' ' || s.txt_apex_mate)
+         ELSE
+              UPPER(s.txt_tipo_docu || '. ' || s.txt_nume_docu || ' - ' || s.txt_nomb_soli)
+       END AS solicitante,
+       d.txt_nomb_depe AS dependenciaactual,
+       fnGetRequestTime(CAST(t.fec_ingr_tram AS date), CAST(CURRENT_TIMESTAMP AS date)) AS diastranscurridos
+  FROM tb_tram_padr t
+ INNER JOIN tb_tram_padr_movi tm ON t.txt_codi_tram = tm.fk1_tram_idx_tram
+ INNER JOIN tb_soli_tram s ON t.fk1_soli_nume_docu = s.txt_nume_docu
+ INNER JOIN tb_depe_enti d ON tm.fk0_depe_enti_idx = d.idx_depe_enti
+ INNER JOIN tb_tipo_tram tt ON t.fk0_tipo_tram_idx = tt.idx_tipo_tram
+ WHERE tm.txt_ubic_actu = '1'
+   AND t.txt_esta_tram = 'EN TRAMITE'
+ ORDER BY d.txt_nomb_depe ASC, t.fec_ingr_tram ASC, tt.idx_tipo_tram ASC;]]>
 	</queryString>
 	<field name="codigotramite" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="TXT_CODI_TRAM"/>
